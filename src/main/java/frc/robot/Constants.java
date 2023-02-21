@@ -48,8 +48,11 @@ public final class Constants {
     public interface Encoder {
       public interface Turn {
 
+        double POSITION_CONVERSION = 1;
+        double VELOCITY_CONVERSION = POSITION_CONVERSION / 60.0;
+
         double MIN_PID_INPUT = 0;
-        double MAX_PID_INPUT = 0;
+        double MAX_PID_INPUT = POSITION_CONVERSION;
 
       }
       public interface Drive {
@@ -115,7 +118,33 @@ public final class Constants {
         double openLoopRampRate = 0;
       }
     }
+    public interface Arm{
+      public interface Extension{
+        boolean kInverted = false;
+        IdleMode idlemode = IdleMode.kBrake;
+        int currentLimit = 40;
+        double openLoopRampRate = 0;
+      }
+    }
   }
 
-public static final double DT = 0.02; 
+  public static class ArmConstants{
+    public interface Extension{
+
+      public static final double kMaxSpeed = .4; //40% speed
+      public static final double kMaxDistance = 0;
+      public static final double kMinDistance = 0;
+      public static final int extensionMotorID = 15;
+      public static final double kP = 0;
+    public static final double kI = 0;
+    public static final double kD = 0;
+      public interface Encoder{
+        
+        double POSITION_CONVERSION = 0;
+        double VELOCITY_CONVERSION = 0;
+        
+      }
+    }
+  }
+  public static final double DT = 0.02; 
 }

@@ -5,6 +5,8 @@ import edu.wpi.first.wpilibj.XboxController;
 
 public class Inputs {
     private static final XboxController driver = new XboxController(OperatorConstants.kDriverControllerPort);
+    
+    //Drivetrain
     public static double getTranslationX(){
         return driver.getLeftX();
     }
@@ -14,4 +16,11 @@ public class Inputs {
     public static double getRotation(){
         return driver.getRightX();
     }
+
+    //Arm
+    public static double getExtension(){
+        //right trigger goes out, left trigger goes in
+        return driver.getRightTriggerAxis()-driver.getLeftTriggerAxis();
+    }
+
 }

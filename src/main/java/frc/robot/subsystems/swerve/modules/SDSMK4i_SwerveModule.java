@@ -105,7 +105,6 @@ public class SDSMK4i_SwerveModule extends SwerveModule {
         turnPID.setD(SwerveConstants.Turn.kD);
         turnPID.setOutputRange(-1, 1);
 
-
         turnPID.setPositionPIDWrappingEnabled(true);
         turnPID.setPositionPIDWrappingMinInput(Encoder.Turn.MIN_PID_INPUT);
         turnPID.setPositionPIDWrappingMaxInput(Encoder.Turn.MAX_PID_INPUT);
