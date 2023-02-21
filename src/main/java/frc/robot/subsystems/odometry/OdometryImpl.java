@@ -1,5 +1,7 @@
 package frc.robot.subsystems.odometry;
 
+import frc.robot.subsystems.swerve.SwerveSubsystem;
+
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -9,7 +11,6 @@ import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.FieldObject2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.subsystems.swerve.SwerveSubsystem;
 
 public class OdometryImpl extends Odometry {
     private final SwerveDrivePoseEstimator poseEstimator;

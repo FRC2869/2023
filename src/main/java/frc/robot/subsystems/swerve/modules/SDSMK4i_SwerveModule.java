@@ -1,5 +1,11 @@
 package frc.robot.subsystems.swerve.modules;
 
+import frc.robot.Constants;
+import frc.robot.Constants.Motors;
+import frc.robot.Constants.SwerveConstants;
+import frc.robot.Constants.SwerveConstants.Drive;
+import frc.robot.Constants.SwerveConstants.Encoder;
+
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.ControlType;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
@@ -14,11 +20,6 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.Constants;
-import frc.robot.Constants.Motors;
-import frc.robot.Constants.SwerveConstants;
-import frc.robot.Constants.SwerveConstants.Drive;
-import frc.robot.Constants.SwerveConstants.Encoder;
 
 public class SDSMK4i_SwerveModule extends SwerveModule {
     // module data
@@ -98,7 +99,7 @@ public class SDSMK4i_SwerveModule extends SwerveModule {
         turnMotor.restoreFactoryDefaults();
 
         turnPID = turnMotor.getPIDController();
-        turnPID.setFeedbackDevice(absoluteEncoder);
+        // turnPID.setFeedbackDevice(absoluteEncoder);
 
         turnPID.setP(SwerveConstants.Turn.kP);
         turnPID.setI(SwerveConstants.Turn.kI);

@@ -1,5 +1,12 @@
 package frc.robot.subsystems.swerve;
 
+import frc.robot.Constants;
+import frc.robot.Constants.SwerveConstants;
+import frc.robot.Constants.SwerveConstants.*;
+import frc.robot.subsystems.odometry.Odometry;
+import frc.robot.subsystems.swerve.modules.SDSMK4i_SwerveModule;
+import frc.robot.subsystems.swerve.modules.SwerveModule;
+
 import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.math.geometry.Pose2d;
@@ -15,12 +22,6 @@ import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.FieldObject2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.subsystems.odometry.Odometry;
-import frc.robot.subsystems.swerve.modules.SDSMK4i_SwerveModule;
-import frc.robot.subsystems.swerve.modules.SwerveModule;
-import frc.robot.Constants;
-import frc.robot.Constants.SwerveConstants;
-import frc.robot.Constants.SwerveConstants.*;
 public class SwerveSubsystem extends SubsystemBase {
     
     private static SwerveSubsystem instance;
