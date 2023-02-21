@@ -1,4 +1,11 @@
-package frc.robot.subsystems.swerve;
+package org.team2869.subsystems.swerve;
+
+import org.team2869.Constants;
+import org.team2869.Constants.SwerveConstants;
+import org.team2869.Constants.SwerveConstants.*;
+import org.team2869.subsystems.odometry.Odometry;
+import org.team2869.subsystems.swerve.modules.SDSMK4i_SwerveModule;
+import org.team2869.subsystems.swerve.modules.SwerveModule;
 
 import com.kauailabs.navx.frc.AHRS;
 
@@ -15,12 +22,6 @@ import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.FieldObject2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.subsystems.odometry.Odometry;
-import frc.robot.subsystems.swerve.modules.SDSMK4i_SwerveModule;
-import frc.robot.subsystems.swerve.modules.SwerveModule;
-import frc.robot.Constants;
-import frc.robot.Constants.SwerveConstants;
-import frc.robot.Constants.SwerveConstants.*;
 public class SwerveSubsystem extends SubsystemBase {
     
     private static SwerveSubsystem instance;
@@ -28,7 +29,7 @@ public class SwerveSubsystem extends SubsystemBase {
     public static SwerveSubsystem getInstance() {
         if (instance == null) {
             instance = new SwerveSubsystem(
-                new SDSMK4i_SwerveModule(FrontLeft.name,FrontLeft.location,FrontLeft.turnMotorId,FrontLeft.offset,FrontLeft.driveMotorId,FrontLeft.encoderId),
+                new SDSMK4i_SwerveModule(ModuleSwerve.FrontLeft.getValue(),getModuleLocation(ModuleSwerve.FrontLeft),FrontLeft.turnMotorId,FrontLeft.offset,FrontLeft.driveMotorId,FrontLeft.encoderId),
                 new SDSMK4i_SwerveModule(FrontRight.name,FrontRight.location,FrontRight.turnMotorId,FrontRight.offset,FrontRight.driveMotorId,FrontRight.encoderId),
                 new SDSMK4i_SwerveModule(BackLeft.name,BackLeft.location,BackLeft.turnMotorId,BackLeft.offset,BackLeft.driveMotorId,BackLeft.encoderId),
                 new SDSMK4i_SwerveModule(BackRight.name,BackRight.location,BackRight.turnMotorId,BackRight.offset,BackRight.driveMotorId,BackRight.encoderId)

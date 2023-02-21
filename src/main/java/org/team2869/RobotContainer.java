@@ -2,13 +2,14 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot;
+package org.team2869;
+
+import org.team2869.commands.Autos;
+import org.team2869.commands.swerve.SwerveDriveDrive;
+import org.team2869.subsystems.ExampleSubsystem;
+import org.team2869.subsystems.swerve.SwerveSubsystem;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.commands.Autos;
-import frc.robot.commands.swerve.SwerveDriveDrive;
-import frc.robot.subsystems.ExampleSubsystem;
-import frc.robot.subsystems.swerve.SwerveSubsystem;
 
 /**
  * This class is where the bulk of the robot should be declared. Since

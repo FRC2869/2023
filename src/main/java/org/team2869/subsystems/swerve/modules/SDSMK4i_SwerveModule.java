@@ -1,4 +1,10 @@
-package frc.robot.subsystems.swerve.modules;
+package org.team2869.subsystems.swerve.modules;
+
+import org.team2869.Constants;
+import org.team2869.Constants.Motors;
+import org.team2869.Constants.SwerveConstants;
+import org.team2869.Constants.SwerveConstants.Drive;
+import org.team2869.Constants.SwerveConstants.Encoder;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.ControlType;
@@ -14,11 +20,6 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.Constants;
-import frc.robot.Constants.Motors;
-import frc.robot.Constants.SwerveConstants;
-import frc.robot.Constants.SwerveConstants.Drive;
-import frc.robot.Constants.SwerveConstants.Encoder;
 
 public class SDSMK4i_SwerveModule extends SwerveModule {
     // module data
@@ -60,7 +61,8 @@ public class SDSMK4i_SwerveModule extends SwerveModule {
         driveMotor = new CANSparkMax(driveMotorId, MotorType.kBrushless);
         configureDriveMotor();
         
-        driveFF = new SimpleMotorFeedforward(Drive.kS, Drive.kV, Drive.kA);
+		//TODO: look into feedforwards 
+        driveFF = new SimpleMotorFeedforward(Drive.kS.value(), Drive.kV.value(), Drive.kA.value());
 
         targetState = new SwerveModuleState();
 
@@ -77,9 +79,9 @@ public class SDSMK4i_SwerveModule extends SwerveModule {
         drivePID = driveMotor.getPIDController();
         drivePID.setFeedbackDevice(driveEncoder);
 
-        drivePID.setP(Drive.kP);
-        drivePID.setI(Drive.kI);
-        drivePID.setD(Drive.kD);
+        drivePID.setP(Drive.kP.value());
+        drivePID.setI(Drive.kI.value());
+        drivePID.setD(Drive.kD.value());
         drivePID.setOutputRange(-1, 1);
 
         driveMotor.enableVoltageCompensation(12.0);

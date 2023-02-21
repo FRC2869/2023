@@ -1,4 +1,4 @@
-package frc.robot.subsystems.odometry;
+package org.team2869.subsystems.odometry;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;

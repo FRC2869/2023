@@ -1,8 +1,9 @@
-package frc.robot.commands.swerve;
+package org.team2869.commands.swerve;
+
+import org.team2869.Inputs;
+import org.team2869.subsystems.swerve.SwerveSubsystem;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Inputs;
-import frc.robot.subsystems.swerve.SwerveSubsystem;
 
 public class SwerveDriveDrive extends CommandBase{
     private SwerveSubsystem swerve;

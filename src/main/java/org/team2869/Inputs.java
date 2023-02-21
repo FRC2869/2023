@@ -1,6 +1,7 @@
-package frc.robot;
+package org.team2869;
 
-import frc.robot.Constants.OperatorConstants;
+import org.team2869.Constants.OperatorConstants;
+
 import edu.wpi.first.wpilibj.XboxController;
 
 public class Inputs {
