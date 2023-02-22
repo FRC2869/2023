@@ -9,6 +9,7 @@ import com.revrobotics.CANSparkMax.IdleMode;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
@@ -23,7 +24,7 @@ public final class Constants {
     public static final int kDriverControllerPort = 0;
   }
   public static class SwerveConstants {
-    public static final double kMaxSpeed = 2; // 2 meters per second
+    public static final double kMaxSpeed = .5; // 2 meters per second
     public static final double kMaxAngularSpeed = Math.PI * 2; // 2 rotations per second
 
     public static final double trackWidth_meter = Units.inchesToMeters(15.8);
@@ -40,9 +41,10 @@ public final class Constants {
     }
     
     public interface Turn {
-      double kP = 2.0;
-	  double kI = 0.0;
-	  double kD = 0.1;
+      double kP = 7.0;
+	  double kI = 0.03;
+	  double kD = 0.3;
+	  
     }
 
     public interface Encoder {
@@ -92,8 +94,8 @@ public final class Constants {
       public static final Rotation2d offset = new Rotation2d(Units.degreesToRadians(-22));
       public static final Translation2d location =  new Translation2d(-trackWidth_meter / 2.0, -trackLength_meter / 2.0);
       public static final String name = "BR";
-      public static final int driveMotorId = 4;
-      public static final int turnMotorId = 3;
+      public static final int driveMotorId = 3;
+      public static final int turnMotorId = 4;
       public static final int encoderId = 13;
     }
 

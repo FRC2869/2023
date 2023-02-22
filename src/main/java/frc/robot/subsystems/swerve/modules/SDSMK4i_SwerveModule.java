@@ -6,6 +6,8 @@ import frc.robot.Constants.SwerveConstants;
 import frc.robot.Constants.SwerveConstants.Drive;
 import frc.robot.Constants.SwerveConstants.Encoder;
 
+import javax.swing.plaf.synth.SynthSeparatorUI;
+
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.ControlType;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
@@ -13,12 +15,14 @@ import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.SparkMaxPIDController.ArbFFUnits;
 
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class SDSMK4i_SwerveModule extends SwerveModule {
@@ -30,6 +34,7 @@ public class SDSMK4i_SwerveModule extends SwerveModule {
     // turn
     private CANSparkMax turnMotor;
     private CANCoderWrapper absoluteEncoder;
+	private RelativeEncoder turnEncoder;
 
     // drive
     private CANSparkMax driveMotor;
@@ -38,11 +43,12 @@ public class SDSMK4i_SwerveModule extends SwerveModule {
     // controller
     private SparkMaxPIDController drivePID;
     private SimpleMotorFeedforward driveFF;
-    private SparkMaxPIDController turnPID;
+    private PIDController turnPID;
     
     private final SlewRateLimiter turnRateLimit;
 
     private double prevVelocity;
+	private Rotation2d angleOffset;
     
     public SDSMK4i_SwerveModule(String id, Translation2d location, int turnMotorId, Rotation2d angleOffset, int driveMotorId, int encoderId){
         
@@ -96,20 +102,30 @@ public class SDSMK4i_SwerveModule extends SwerveModule {
 
 
     private void configureTurnMotor(Rotation2d angleOffset) {
-        turnMotor.restoreFactoryDefaults();
-
-        turnPID = turnMotor.getPIDController();
-        // turnPID.setFeedbackDevice(absoluteEncoder);
+        this.angleOffset = angleOffset;
+		turnMotor.restoreFactoryDefaults();
+		// System.out.println(absoluteEncoder.getAbsolutePosition());
+		// absoluteEncoder.setPosition(absoluteEncoder.getAbsolutePosition()+angleOffset.getDegrees());
+		turnEncoder = turnMotor.getEncoder();
+        // turnEncoder.setPosition(absoluteEncoder.getPosition());
+		turnEncoder.setVelocityConversionFactor(1.0/60.0);
+		turnEncoder.setPositionConversionFactor(1.0);
+        // System.out.println(absoluteEncoder.getPosition());
+		// System.out.println(turnEncoder.getPosition());
+		// turnPID = turnMotor.getPIDController();
+		turnPID = new PIDController(0, 0, 0);
+		// turnPID.setFeedbackDevice(turnEncoder);
+		turnPID.enableContinuousInput(-Math.PI, Math.PI);
 
         turnPID.setP(SwerveConstants.Turn.kP);
         turnPID.setI(SwerveConstants.Turn.kI);
         turnPID.setD(SwerveConstants.Turn.kD);
-        turnPID.setOutputRange(-1, 1);
+        // turnPID.setOutputRange(-1, 1);
 
 
-        turnPID.setPositionPIDWrappingEnabled(true);
-        turnPID.setPositionPIDWrappingMinInput(Encoder.Turn.MIN_PID_INPUT);
-        turnPID.setPositionPIDWrappingMaxInput(Encoder.Turn.MAX_PID_INPUT);
+        // turnPID.setPositionPIDWrappingEnabled(true);
+        // turnPID.setPositionPIDWrappingMinInput(Encoder.Turn.MIN_PID_INPUT);
+        // turnPID.setPositionPIDWrappingMaxInput(Encoder.Turn.MAX_PID_INPUT);
 
         turnMotor.enableVoltageCompensation(12.0);
 
@@ -137,7 +153,7 @@ public class SDSMK4i_SwerveModule extends SwerveModule {
     }
 
     private Rotation2d getAngle() {
-        return Rotation2d.fromRotations(absoluteEncoder.getPosition());
+        return Rotation2d.fromDegrees(absoluteEncoder.getAbsolutePosition()).minus(angleOffset);
     }
 
 
@@ -145,6 +161,22 @@ public class SDSMK4i_SwerveModule extends SwerveModule {
         return driveEncoder.getVelocity();
     }
 
+	public void resetWheelsToAbsEnc() {
+		// SwerveModule[] swerves = { m_frontLeft, m_frontRight, m_backLeft, m_backRight };
+		// for (SwerveModule swerveModule : swerves) {
+			// if (Math.abs(swerveModule.getAbsAngle().getDegrees()) <= 5){
+			// swerveModule.m_turningMotor.m_encoder.setPosition(0.0);
+			// // System.out.println("STUFF CHANGED IDK");
+			// }
+			turnMotor.getEncoder()
+					.setPosition((absoluteEncoder.getAbsolutePosition() * 150) / (360 * 7));
+		// }
+		// System.out.println(m_frontLeft.m_turningMotor.m_encoder.getPosition());
+		// m_frontLeft.m_turningMotor.m_encoder.setPosition(0.0);
+		// m_frontRight.m_turningMotor.m_encoder.setPosition(0.0);
+		// m_backLeft.m_turningMotor.m_encoder.setPosition(0.0);
+		// m_backRight.m_turningMotor.m_encoder.setPosition(0.0);
+	}
 
     @Override
     public SwerveModulePosition getModulePosition() {
@@ -159,19 +191,44 @@ public class SDSMK4i_SwerveModule extends SwerveModule {
     @Override
     public void periodic() {
         // turn
-        turnPID.setReference(
-            turnRateLimit.calculate(targetState.angle.getRadians()),
-            ControlType.kPosition);
+        // turnPID.setReference(
+        //     turnRateLimit.calculate(targetState.angle.getRadians()),
+        //     ControlType.kPosition);
 
-        // drive
+		// turnPID.setReference(targetState.angle.getRadians(), ControlType.kPosition);
+
+        // // drive
         double vel = getVelocity();
-        double ffVoltage = driveFF.calculate(prevVelocity, vel, Constants.DT);
-        drivePID.setReference(targetState.speedMetersPerSecond, ControlType.kVelocity, 0, ffVoltage, ArbFFUnits.kVoltage);
+        // double ffVoltage = driveFF.calculate(prevVelocity, vel, Constants.DT);
+        // drivePID.setReference(targetState.speedMetersPerSecond, ControlType.kVelocity, 0, ffVoltage, ArbFFUnits.kVoltage);
         
-        prevVelocity = vel;
+        // prevVelocity = vel;
 
+				// Optimize the reference state to avoid spinning further than 90 degrees
+				SwerveModuleState state = SwerveModuleState.optimize(targetState, getAngle());
+
+				// Calculate the drive output with our own arbitrary feed-forward,
+				// but use the onboard PID control for the motor.
+				final double driveFeedforward = driveFF.calculate(state.speedMetersPerSecond);
+				var velCmd_radPerSec = state.speedMetersPerSecond / (Units.inchesToMeters(Constants.SwerveConstants.Encoder.Drive.WHEEL_DIAMETER)/2.0) * Constants.SwerveConstants.Encoder.Drive.GEAR_RATIO;
+				// driveMotor.setClosedLoopCmd(velCmd_radPerSec, driveFeedforward);
+				drivePID.setReference(Units.radiansPerSecondToRotationsPerMinute(velCmd_radPerSec), 
+					CANSparkMax.ControlType.kVelocity,
+					0,
+					driveFeedforward,
+					SparkMaxPIDController.ArbFFUnits.kVoltage);
+				// Calculate the turning motor output from the turning PID controller.
+				// Do this all onboard and just send a voltage command to the motor.
+				final double turnOutput = turnPID.calculate(getAngle().getRadians(), state.angle.getRadians());
+		
+				// SmartDashboard.putNumber(swerveName + " Des Angle", state.angle.getDegrees());
+		
+				// SmartDashboard.putNumber(id + " V", turnOutput);
+		
+				turnMotor.setVoltage(turnOutput);
         SmartDashboard.putNumber(id + "/Target Angle", targetState.angle.getDegrees());
         SmartDashboard.putNumber(id + "/Angle", getAngle().getDegrees());
+        SmartDashboard.putNumber(id + "/Angle1", absoluteEncoder.getPosition());
         SmartDashboard.putNumber(id + "/Target Velocity", targetState.speedMetersPerSecond);
         SmartDashboard.putNumber(id + "/Velocity", vel);
     }

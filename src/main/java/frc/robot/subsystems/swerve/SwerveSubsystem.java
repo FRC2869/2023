@@ -112,13 +112,14 @@ public class SwerveSubsystem extends SubsystemBase {
             Constants.DT * speeds.vxMetersPerSecond,
             Constants.DT * speeds.vyMetersPerSecond,
             Rotation2d.fromRadians(Constants.DT * speeds.omegaRadiansPerSecond));
-        Twist2d twistVel = new Pose2d().log(robotVel);
+        // Twist2d twistVel = new Pose2d().log(robotVel);
 
-        setChassisSpeeds(new ChassisSpeeds(
-            twistVel.dx / Constants.DT,
-            twistVel.dy / Constants.DT,
-            twistVel.dtheta / Constants.DT
-        ));
+        // setChassisSpeeds(new ChassisSpeeds(
+        //     twistVel.dx / Constants.DT,
+        //     twistVel.dy / Constants.DT,
+        //     twistVel.dtheta / Constants.DT
+        // ));
+		setChassisSpeeds(speeds);
     }
     
     public void setChassisSpeeds(ChassisSpeeds robotSpeed) {

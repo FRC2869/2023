@@ -4,12 +4,9 @@
 
 package frc.robot;
 
-import frc.robot.commands.Autos;
-import frc.robot.commands.swerve.SwerveDriveDrive;
-import frc.robot.subsystems.ExampleSubsystem;
-import frc.robot.subsystems.swerve.SwerveSubsystem;
-
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.commands.swerve.SwerveDriveDrive;
+import frc.robot.subsystems.swerve.SwerveSubsystem;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
