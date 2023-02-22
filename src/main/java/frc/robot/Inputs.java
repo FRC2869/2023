@@ -1,7 +1,6 @@
 package frc.robot;
 
 import frc.robot.Constants.OperatorConstants;
-
 import edu.wpi.first.wpilibj.XboxController;
 
 public class Inputs {
