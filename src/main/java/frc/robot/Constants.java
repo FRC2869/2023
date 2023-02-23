@@ -2,7 +2,7 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package org.team2869;
+package frc.robot;
 
 import com.revrobotics.CANSparkMax.IdleMode;
 
@@ -191,13 +191,29 @@ public final class Constants {
         double openLoopRampRate = 0;
       }
     }
+	public interface Pivot{
+		boolean kInverted = false;
+		IdleMode idlemode = IdleMode.kBrake;
+		int currentLimit = 40;
+		double openLoopRampRate = 0;
+	}
   }
 
-public static final double DT = 0.02; 
+  public static class PivotConstants{
+	public static final double startingPosition = 0.0;
+	public static final double kP = 1.0;
+	public static final double kI = 0;
+	public static final double kD = 0;
+	public static final double VELOCITY_CONVERSION = 1/60.0;
+	public static final double kMaxPower = .2;
+	public static final double kMinAngle = 0;
+	public static final double kMaxAngle = 0;
+	public static final double kS = 0;
+	public static final double kV = 0;
+	public static final double kG = 0;
+	public static int pivotMotorId = 14;
+	public static double GEAR_RATIO = 1/80.0;
 
-public static void main(String[] args) {
-	double kA = SwerveConstants.Drive.kA.value();
-	
-}
+  }
 }
 
