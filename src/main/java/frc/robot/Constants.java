@@ -200,19 +200,19 @@ public final class Constants {
   }
 
   public static class PivotConstants{
-	public static final double startingPosition = 0.0;
+	public static final double startingPosition = -60.0;
 	public static final double kP = 1.0;
 	public static final double kI = 0;
 	public static final double kD = 0;
 	public static final double VELOCITY_CONVERSION = 1/60.0;
 	public static final double kMaxPower = .2;
-	public static final double kMinAngle = 0;
-	public static final double kMaxAngle = 0;
-	public static final double kS = 0;
+	public static final double kMinAngle = -50;
+	public static final double kMaxAngle = 200;
+	public static final double kS = 1.0;
 	public static final double kV = 0;
-	public static final double kG = 0;
-	public static int pivotMotorId = 14;
-	public static double GEAR_RATIO = 1/80.0;
+	public static final double kG = 1.0;
+	public static final int pivotMotorId = 14;
+	public static final double GEAR_RATIO = ((4.62/1.09)/.85);
 
   }
 }

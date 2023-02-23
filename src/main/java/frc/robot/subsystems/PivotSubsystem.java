@@ -2,6 +2,7 @@ package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.ControlType;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
 
@@ -29,7 +30,7 @@ public class PivotSubsystem extends SubsystemBase {
 	}
 
 	public PivotSubsystem(){
-		pivotMotor = new CANSparkMax(PivotConstants.pivotMotorId, null);
+		pivotMotor = new CANSparkMax(PivotConstants.pivotMotorId, MotorType.kBrushless);
 		configurePivotMotor();
 		pivotFF = new ArmFeedforward(PivotConstants.kS, PivotConstants.kG, PivotConstants.kV);
 	}
@@ -55,7 +56,7 @@ public class PivotSubsystem extends SubsystemBase {
 		pivotMotor.setSmartCurrentLimit(Motors.Pivot.currentLimit);
 		pivotMotor.setOpenLoopRampRate(Motors.Pivot.openLoopRampRate);
 		pivotMotor.burnFlash();
-		
+
 		pivotEncoder.setPosition(PivotConstants.startingPosition);
 	}
 
@@ -65,7 +66,8 @@ public class PivotSubsystem extends SubsystemBase {
 	 * @param pwr the speed to set the motor to [-1,1]
 	 */
 	public void power(double pwr){
-		speed = MathUtil.clamp(pwr, -PivotConstants.kMaxPower, PivotConstants.kMaxPower);
+		// speed = MathUtil.clamp(pwr, -PivotConstants.kMaxPower, PivotConstants.kMaxPower);
+		speed = pwr*PivotConstants.kMaxPower;
 	}
 
 	/**
@@ -98,6 +100,11 @@ public class PivotSubsystem extends SubsystemBase {
 		if(isPositionControl){
 			pivotPID.setReference(pos, ControlType.kPosition, 0, pivotFF.calculate(getAngle(), getVelocity()));
 		}else{
+			System.out.println(pivotEncoder.getPosition());
+			if(speed<0 && pivotEncoder.getPosition()<=PivotConstants.kMinAngle)
+				speed = 0;
+			if(speed>0 && pivotEncoder.getPosition()>=PivotConstants.kMaxAngle)
+				speed = 0;
 			pivotMotor.set(speed);
 		}
 	}

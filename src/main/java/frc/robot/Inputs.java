@@ -19,7 +19,11 @@ public class Inputs {
         return driver.getRightX();
     }
 	public static double getPivotPower() {
-		return driver.getRightY();
+		var speed = -driver.getRightY();
+		if(Math.abs(speed)<.1){
+			speed = 0;
+		}
+		return speed;
 	}
 	public static double getPivotPosition() {
 		double pos = driver.getRightY(); // [-1, 1]
