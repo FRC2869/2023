@@ -71,14 +71,14 @@ public class OdometryImpl extends Odometry {
 
         Pose2d pose = odometry.getPoseMeters();
         odometryPose2d.setPose(pose);
-        SmartDashboard.putNumber("Odometry/Odometry Pose X", pose.getX());
-        SmartDashboard.putNumber("Odometry/Odometry Pose Y", pose.getY());
-        SmartDashboard.putNumber("Odometry/Odometry Rotation", pose.getRotation().getDegrees());
+        // SmartDashboard.putNumber("Odometry/Odometry Pose X", pose.getX());
+        // SmartDashboard.putNumber("Odometry/Odometry Pose Y", pose.getY());
+        // SmartDashboard.putNumber("Odometry/Odometry Rotation", pose.getRotation().getDegrees());
 
         
-        SmartDashboard.putNumber("Odometry/Pose Estimator Pose X", poseEstimator.getEstimatedPosition().getX());
-        SmartDashboard.putNumber("Odometry/Pose Estimator Pose Y", poseEstimator.getEstimatedPosition().getY());
-        SmartDashboard.putNumber("Odometry/Pose Estimator Rotation", poseEstimator.getEstimatedPosition().getRotation().getDegrees());
+        // SmartDashboard.putNumber("Odometry/Pose Estimator Pose X", poseEstimator.getEstimatedPosition().getX());
+        // SmartDashboard.putNumber("Odometry/Pose Estimator Pose Y", poseEstimator.getEstimatedPosition().getY());
+        // SmartDashboard.putNumber("Odometry/Pose Estimator Rotation", poseEstimator.getEstimatedPosition().getRotation().getDegrees());
         
     }
 }

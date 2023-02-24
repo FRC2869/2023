@@ -5,6 +5,8 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.commands.swerve.SwerveDriveAutoBalance;
 import frc.robot.commands.swerve.SwerveDriveDrive;
 import frc.robot.subsystems.swerve.SwerveSubsystem;
 
@@ -25,6 +27,7 @@ public class RobotContainer {
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
+	CommandScheduler.getInstance().cancelAll();
     configureDefaultCommands();
     configureBindings();
   }
@@ -45,7 +48,7 @@ public class RobotContainer {
   }
 
   private void configureDriverBindings() {
-
+	Inputs.getBalanceButton().onTrue(new SwerveDriveAutoBalance());
   }
 
   /**

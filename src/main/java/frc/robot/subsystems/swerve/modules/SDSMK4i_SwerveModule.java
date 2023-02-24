@@ -153,7 +153,8 @@ public class SDSMK4i_SwerveModule extends SwerveModule {
     }
 
     private Rotation2d getAngle() {
-        return Rotation2d.fromDegrees(absoluteEncoder.getAbsolutePosition()).minus(angleOffset);
+        // return Rotation2d.fromDegrees(absoluteEncoder.getAbsolutePosition()).minus(angleOffset);
+        return Rotation2d.fromDegrees(absoluteEncoder.getAbsolutePosition());
     }
 
 

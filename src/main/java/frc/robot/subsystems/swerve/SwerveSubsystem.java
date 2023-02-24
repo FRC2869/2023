@@ -172,9 +172,9 @@ public class SwerveSubsystem extends SubsystemBase {
             ));
         }
 
-        SmartDashboard.putNumber("Swerve/Gyro Angle", getGyroAngle().getDegrees());
-        SmartDashboard.putNumber("Swerve/Gyro Pitch", getGyroPitch().getDegrees());
-        SmartDashboard.putNumber("Swerve/Gyro Roll", getGyroRoll().getDegrees());
+        // SmartDashboard.putNumber("Swerve/Gyro Angle", getGyroAngle().getDegrees());
+        // SmartDashboard.putNumber("Swerve/Gyro Pitch", getGyroPitch().getDegrees());
+        // SmartDashboard.putNumber("Swerve/Gyro Roll", getGyroRoll().getDegrees());
     }
 
 }
