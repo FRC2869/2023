@@ -1,10 +1,12 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMax.ControlType;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ArmConstants;
 import frc.robot.Constants.ArmConstants.Extension;
@@ -16,6 +18,8 @@ public class ArmSubsystem extends SubsystemBase{
     private double speed;
     private RelativeEncoder extensionEncoder;
     private SparkMaxPIDController extensionPID;
+	private double pos;
+	private boolean isPositionControl;
 
     public static ArmSubsystem getInstance(){
         if(instance==null){
@@ -80,6 +84,14 @@ public class ArmSubsystem extends SubsystemBase{
         speed = -Extension.kMaxSpeed;
     }
 
+	public void position(double pos){
+		this.pos = MathUtil.clamp(pos, ArmConstants.Extension.kMinDistance, ArmConstants.Extension.kMaxDistance);
+
+	}
+
+	public void setPositionControl(boolean isPosition){
+		isPositionControl = isPosition;
+	}
 
     @Override
     public void periodic(){
@@ -96,6 +108,10 @@ public class ArmSubsystem extends SubsystemBase{
         else if(getPosition()<=Extension.kMinDistance && speed<0)
             speed = 0;
         
-        extensionMotor.set(speed);
+		if(isPositionControl){
+			extensionPID.setReference(pos, ControlType.kPosition);
+		}else{
+			extensionMotor.set(speed);
+		}
     }
 }

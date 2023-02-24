@@ -5,6 +5,12 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.commands.ArmConeHigh;
+import frc.robot.commands.ArmConeLow;
+import frc.robot.commands.ArmConeMid;
+import frc.robot.commands.ArmCubeHigh;
+import frc.robot.commands.ArmCubeLow;
+import frc.robot.commands.ArmCubeMid;
 import frc.robot.commands.arm.ArmDefault;
 // import frc.robot.subsystems.swerve.SwerveSubsystem;
 import frc.robot.commands.pivot.PivotDefault;
@@ -61,6 +67,12 @@ private final PivotSubsystem pivot = PivotSubsystem.getInstance();
   private void configureDriverBindings() {
     Inputs.getPivotPos().onTrue(new PivotPosPwrSwitch(true));
     Inputs.getPivotPwr().onTrue(new PivotPosPwrSwitch(false));
+	Inputs.getArmConeLow().onTrue(new ArmConeLow());
+	Inputs.getArmConeMid().onTrue(new ArmConeMid());
+	Inputs.getArmConeHigh().onTrue(new ArmConeHigh());
+	Inputs.getArmCubeLow().onTrue(new ArmCubeLow());
+	Inputs.getArmCubeMid().onTrue(new ArmCubeMid());
+	Inputs.getArmCubeHigh().onTrue(new ArmCubeHigh());
   }
 
   /**

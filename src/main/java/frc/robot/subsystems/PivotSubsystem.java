@@ -76,7 +76,7 @@ public class PivotSubsystem extends SubsystemBase {
 	 * @param pos the position to set the motor to [kMinAngle, kMaxAngle]
 	 */
 	public void position(double pos){
-		pos = MathUtil.clamp(pos, PivotConstants.kMinAngle, PivotConstants.kMaxAngle);
+		this.pos = MathUtil.clamp(pos, PivotConstants.kMinAngle, PivotConstants.kMaxAngle);
 	}
 
 	public double getAngle(){

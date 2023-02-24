@@ -57,4 +57,23 @@ public class Inputs {
 	public static Trigger getPivotPwr(){
 		return driverCmd.b();
 	}
+
+	public static Trigger getArmConeLow(){
+		return driverCmd.pov(0);
+	}
+	public static Trigger getArmConeMid(){
+		return driverCmd.pov(90);
+	}
+	public static Trigger getArmConeHigh(){
+		return driverCmd.pov(180);
+	}
+	public static Trigger getArmCubeLow(){
+		return driverCmd.pov(270);
+	}
+	public static Trigger getArmCubeMid(){
+		return driverCmd.x();
+	}
+	public static Trigger getArmCubeHigh(){
+		return driverCmd.y();
+	}
 }
