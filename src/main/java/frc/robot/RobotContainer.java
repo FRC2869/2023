@@ -5,13 +5,11 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.commands.Autos;
 import frc.robot.commands.arm.ArmDefault;
-import frc.robot.subsystems.ArmSubsystem;
-import frc.robot.subsystems.ExampleSubsystem;
 // import frc.robot.subsystems.swerve.SwerveSubsystem;
 import frc.robot.commands.pivot.PivotDefault;
 import frc.robot.commands.pivot.PivotPosPwrSwitch;
+import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.PivotSubsystem;
 
 /**
@@ -25,7 +23,7 @@ import frc.robot.subsystems.PivotSubsystem;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
+//   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
 //   private final SwerveSubsystem m_SwerveSubsystem = SwerveSubsystem.getInstance();
 private final ArmSubsystem arm = ArmSubsystem.getInstance();
 
@@ -50,7 +48,7 @@ private final PivotSubsystem pivot = PivotSubsystem.getInstance();
   private void configureDefaultCommands() {
     // m_SwerveSubsystem.setDefaultCommand(new SwerveDriveDrive());
     pivot.setDefaultCommand(new PivotDefault());
-    arm.setDefaultCommand(new ArmDefault())
+    arm.setDefaultCommand(new ArmDefault());
   }
 
   /***************/

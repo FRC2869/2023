@@ -90,7 +90,7 @@ public class ArmSubsystem extends SubsystemBase{
             speed = -Extension.kMaxSpeed;
 
         //don't go too far
-		System.out.println(getPosition());
+		// System.out.println(getPosition());
         if(getPosition()>=Extension.kMaxDistance && speed>0)
             speed = 0;
         else if(getPosition()<=Extension.kMinDistance && speed<0)
