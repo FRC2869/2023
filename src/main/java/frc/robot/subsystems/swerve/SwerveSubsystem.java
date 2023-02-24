@@ -108,10 +108,10 @@ public class SwerveSubsystem extends SubsystemBase {
                 -omega,
                 getGyroAngle());
 
-        Pose2d robotVel = new Pose2d(
-            Constants.DT * speeds.vxMetersPerSecond,
-            Constants.DT * speeds.vyMetersPerSecond,
-            Rotation2d.fromRadians(Constants.DT * speeds.omegaRadiansPerSecond));
+        // Pose2d robotVel = new Pose2d(
+        //     Constants.DT * speeds.vxMetersPerSecond,
+        //     Constants.DT * speeds.vyMetersPerSecond,
+        //     Rotation2d.fromRadians(Constants.DT * speeds.omegaRadiansPerSecond));
         // Twist2d twistVel = new Pose2d().log(robotVel);
 
         // setChassisSpeeds(new ChassisSpeeds(
