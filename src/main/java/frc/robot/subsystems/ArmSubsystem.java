@@ -51,7 +51,7 @@ public class ArmSubsystem extends SubsystemBase{
         extensionMotor.setOpenLoopRampRate(Motors.Arm.Extension.openLoopRampRate);
         extensionMotor.burnFlash();
         
-        extensionEncoder.setPosition(0);
+        extensionEncoder.setPosition(Extension.startingPosition);
     }
 
     // GET
@@ -90,6 +90,7 @@ public class ArmSubsystem extends SubsystemBase{
             speed = -Extension.kMaxSpeed;
 
         //don't go too far
+		System.out.println(getPosition());
         if(getPosition()>=Extension.kMaxDistance && speed>0)
             speed = 0;
         else if(getPosition()<=Extension.kMinDistance && speed<0)

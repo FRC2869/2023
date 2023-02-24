@@ -120,7 +120,7 @@ public final class Constants {
     }
     public interface Arm{
       public interface Extension{
-        boolean kInverted = false;
+        boolean kInverted = true;
         IdleMode idlemode = IdleMode.kBrake;
         int currentLimit = 40;
         double openLoopRampRate = 0;
@@ -132,16 +132,17 @@ public final class Constants {
     public interface Extension{
 
       public static final double kMaxSpeed = .4; //40% speed
-      public static final double kMaxDistance = 0;
-      public static final double kMinDistance = 0;
+      public static final double kMaxDistance = 35;
+      public static final double kMinDistance = 5;
+      public static final double startingPosition = 5;
       public static final int extensionMotorID = 15;
       public static final double kP = 0;
     public static final double kI = 0;
     public static final double kD = 0;
       public interface Encoder{
         
-        double POSITION_CONVERSION = 0;
-        double VELOCITY_CONVERSION = 0;
+        double POSITION_CONVERSION = 1;
+        double VELOCITY_CONVERSION = 1/60.0;
         
       }
     }

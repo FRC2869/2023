@@ -20,7 +20,7 @@ public class Inputs {
     //Arm
     public static double getExtension(){
         //right trigger goes out, left trigger goes in
-        return driver.getRightTriggerAxis()-driver.getLeftTriggerAxis();
+        return (driver.getRightTriggerAxis()-driver.getLeftTriggerAxis());
     }
 
 }

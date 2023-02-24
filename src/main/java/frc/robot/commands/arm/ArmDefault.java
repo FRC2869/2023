@@ -9,6 +9,7 @@ public class ArmDefault extends CommandBase{
     
     public ArmDefault(){
         this.arm = ArmSubsystem.getInstance();
+		addRequirements(arm);
 
     }
 
