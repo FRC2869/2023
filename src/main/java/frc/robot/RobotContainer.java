@@ -10,6 +10,9 @@ import frc.robot.commands.arm.ArmDefault;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.ExampleSubsystem;
 // import frc.robot.subsystems.swerve.SwerveSubsystem;
+import frc.robot.commands.pivot.PivotDefault;
+import frc.robot.commands.pivot.PivotPosPwrSwitch;
+import frc.robot.subsystems.PivotSubsystem;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -30,6 +33,8 @@ private final ArmSubsystem arm = ArmSubsystem.getInstance();
 //   private final CommandXboxController m_driverController = new CommandXboxController(
 //       OperatorConstants.kDriverControllerPort);
 
+//   private final SwerveSubsystem m_SwerveSubsystem = SwerveSubsystem.getInstance();
+private final PivotSubsystem pivot = PivotSubsystem.getInstance();
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
@@ -44,7 +49,8 @@ private final ArmSubsystem arm = ArmSubsystem.getInstance();
 
   private void configureDefaultCommands() {
     // m_SwerveSubsystem.setDefaultCommand(new SwerveDriveDrive());
-	arm.setDefaultCommand(new ArmDefault());
+    pivot.setDefaultCommand(new PivotDefault());
+    arm.setDefaultCommand(new ArmDefault())
   }
 
   /***************/
@@ -55,7 +61,8 @@ private final ArmSubsystem arm = ArmSubsystem.getInstance();
   }
 
   private void configureDriverBindings() {
-
+    Inputs.getPivotPos().onTrue(new PivotPosPwrSwitch(true));
+    Inputs.getPivotPwr().onTrue(new PivotPosPwrSwitch(false));
   }
 
   /**
@@ -65,6 +72,6 @@ private final ArmSubsystem arm = ArmSubsystem.getInstance();
    */
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
-    return Autos.exampleAuto(m_exampleSubsystem);
+    return null;
   }
 }

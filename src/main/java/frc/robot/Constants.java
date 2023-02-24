@@ -126,7 +126,14 @@ public final class Constants {
         double openLoopRampRate = 0;
       }
     }
+    public interface Pivot{
+      boolean kInverted = false;
+      IdleMode idlemode = IdleMode.kBrake;
+      int currentLimit = 40;
+      double openLoopRampRate = 0;
+    }
   }
+  
 
   public static class ArmConstants{
     public interface Extension{
@@ -137,8 +144,8 @@ public final class Constants {
       public static final double startingPosition = 5;
       public static final int extensionMotorID = 15;
       public static final double kP = 0;
-    public static final double kI = 0;
-    public static final double kD = 0;
+      public static final double kI = 0;
+      public static final double kD = 0;
       public interface Encoder{
         
         double POSITION_CONVERSION = 1;
@@ -148,4 +155,21 @@ public final class Constants {
     }
   }
   public static final double DT = 0.02; 
+
+  public static class PivotConstants{
+    public static final double startingPosition = -60.0;
+    public static final double kP = 1.0;
+    public static final double kI = 0;
+    public static final double kD = 0;
+    public static final double VELOCITY_CONVERSION = 1/60.0;
+    public static final double kMaxPower = .2;
+    public static final double kMinAngle = -50;
+    public static final double kMaxAngle = 200;
+    public static final double kS = 1.0;
+    public static final double kV = 0;
+    public static final double kG = 1.0;
+    public static final int pivotMotorId = 14;
+    public static final double GEAR_RATIO = ((4.62/1.09)/.85);
+  }
 }
+
