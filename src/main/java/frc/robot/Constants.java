@@ -67,7 +67,7 @@ public final class Constants {
     }
 
     public interface FrontLeft {
-      public static final Rotation2d offset = new Rotation2d(Units.degreesToRadians(163));
+      public static final Rotation2d offset = new Rotation2d(Units.degreesToRadians(286.2));
       public static final Translation2d location =  new Translation2d(trackWidth_meter / 2.0, trackLength_meter / 2.0);
       public static final String name = "FL";
       public static final int driveMotorId = 7;
@@ -75,7 +75,7 @@ public final class Constants {
       public static final int encoderId = 12;
     }
     public interface FrontRight {
-      public static final Rotation2d offset = new  Rotation2d(Units.degreesToRadians(167));
+      public static final Rotation2d offset = new  Rotation2d(Units.degreesToRadians(325.1));
       public static final Translation2d location =  new Translation2d(trackWidth_meter / 2.0, -trackLength_meter / 2.0);
       public static final String name = "FR";
       public static final int driveMotorId = 5;
@@ -83,7 +83,7 @@ public final class Constants {
       public static final int encoderId = 11;
     }
     public interface BackLeft {
-      public static final Rotation2d offset = new Rotation2d(Units.degreesToRadians(-170));
+      public static final Rotation2d offset = new Rotation2d(Units.degreesToRadians(124.8));
       public static final Translation2d location =  new Translation2d(-trackWidth_meter / 2.0, trackLength_meter / 2.0);
       public static final String name = "BL";
       public static final int driveMotorId = 9;
@@ -91,7 +91,7 @@ public final class Constants {
       public static final int encoderId = 10;
     }
     public interface BackRight {
-      public static final Rotation2d offset = new Rotation2d(Units.degreesToRadians(-22));
+      public static final Rotation2d offset = new Rotation2d(Units.degreesToRadians(234.8));
       public static final Translation2d location =  new Translation2d(-trackWidth_meter / 2.0, -trackLength_meter / 2.0);
       public static final String name = "BR";
       public static final int driveMotorId = 3;
@@ -119,5 +119,6 @@ public final class Constants {
     }
   }
 
-public static final double DT = 0.02; 
+public static final double DT = 0.02;
+public static final int pidCounter = 0; 
 }

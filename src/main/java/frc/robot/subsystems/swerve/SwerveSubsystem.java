@@ -104,9 +104,18 @@ public class SwerveSubsystem extends SubsystemBase {
     /** MODULE STATES API **/
     public void drive(double y, double x, double omega) {
         ChassisSpeeds speeds = ChassisSpeeds.fromFieldRelativeSpeeds(
-                y, -x,
+                x, -y,
                 -omega,
                 getGyroAngle());
+
+		ChassisSpeeds speeds2 = new ChassisSpeeds(-x, y, -omega);
+		var fieldRelative = false;
+
+		var swerveModuleStates = kinematics.toSwerveModuleStates(
+				fieldRelative
+						? ChassisSpeeds.fromFieldRelativeSpeeds(x, y, omega, gyro.getRotation2d())
+						: new ChassisSpeeds(x, y, omega));
+		// SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, SwerveConstants.kMaxSpeed);
 
         // Pose2d robotVel = new Pose2d(
         //     Constants.DT * speeds.vxMetersPerSecond,
@@ -119,7 +128,8 @@ public class SwerveSubsystem extends SubsystemBase {
         //     twistVel.dy / Constants.DT,
         //     twistVel.dtheta / Constants.DT
         // ));
-		setChassisSpeeds(speeds);
+		// setChassisSpeeds(speeds2);
+		setModuleStates(swerveModuleStates);
     }
     
     public void setChassisSpeeds(ChassisSpeeds robotSpeed) {
@@ -131,7 +141,7 @@ public class SwerveSubsystem extends SubsystemBase {
             throw new IllegalArgumentException("Number of desired module states does not match number of modules (" + modules.length + ")");
         }
 
-        SwerveDriveKinematics.desaturateWheelSpeeds(states, SwerveConstants.kMaxSpeed);
+        // SwerveDriveKinematics.desaturateWheelSpeeds(states, SwerveConstants.kMaxSpeed);
         
         for(int i = 0; i < modules.length; i++) {
             modules[i].setTargetState(states[i]);

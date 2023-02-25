@@ -1,13 +1,16 @@
 package frc.robot.commands.swerve;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants;
 import frc.robot.subsystems.swerve.SwerveSubsystem;
 
 public class SwerveDriveAutoBalance extends CommandBase {
 	private SwerveSubsystem swerve;
 
+	private int counter = 0;
 	public SwerveDriveAutoBalance(){
 		swerve = SwerveSubsystem.getInstance();
+		addRequirements(swerve);
 	}
 
 	@Override
@@ -23,8 +26,14 @@ public class SwerveDriveAutoBalance extends CommandBase {
 	@Override
 	public boolean isFinished(){
 		if(Math.abs(swerve.getGyroPitch().getDegrees())<2.5){
-			return true;
+			counter++;
 		}else{
+			counter = 0;
+		}
+
+		if (counter > Constants.pidCounter) {
+			return true;
+		} else {
 			return false;
 		}
 	}

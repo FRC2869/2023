@@ -153,8 +153,8 @@ public class SDSMK4i_SwerveModule extends SwerveModule {
     }
 
     private Rotation2d getAngle() {
-        // return Rotation2d.fromDegrees(absoluteEncoder.getAbsolutePosition()).minus(angleOffset);
-        return Rotation2d.fromDegrees(absoluteEncoder.getAbsolutePosition());
+        return Rotation2d.fromDegrees(absoluteEncoder.getAbsolutePosition()).minus(angleOffset);
+        // return Rotation2d.fromDegrees(absoluteEncoder.getAbsolutePosition());
     }
 
 
@@ -207,7 +207,7 @@ public class SDSMK4i_SwerveModule extends SwerveModule {
 
 				// Optimize the reference state to avoid spinning further than 90 degrees
 				SwerveModuleState state = SwerveModuleState.optimize(targetState, getAngle());
-
+				// SwerveModuleState state = targetState;
 				// Calculate the drive output with our own arbitrary feed-forward,
 				// but use the onboard PID control for the motor.
 				final double driveFeedforward = driveFF.calculate(state.speedMetersPerSecond);
@@ -229,7 +229,7 @@ public class SDSMK4i_SwerveModule extends SwerveModule {
 				turnMotor.setVoltage(turnOutput);
         SmartDashboard.putNumber(id + "/Target Angle", targetState.angle.getDegrees());
         SmartDashboard.putNumber(id + "/Angle", getAngle().getDegrees());
-        SmartDashboard.putNumber(id + "/Angle1", absoluteEncoder.getPosition());
+        SmartDashboard.putNumber(id + "/Angle1", absoluteEncoder.getAbsolutePosition());
         SmartDashboard.putNumber(id + "/Target Velocity", targetState.speedMetersPerSecond);
         SmartDashboard.putNumber(id + "/Velocity", vel);
     }
