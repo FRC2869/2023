@@ -31,19 +31,19 @@ public final class Constants {
     public static final double trackLength_meter = Units.inchesToMeters(20.8);
 
     public interface Drive {
-      double kP = 2.38;
-	  double kI = 0.0;
+      double kP = 1.0;
+	  double kI = 0.01;
 	  double kD = 0.0;
 
-      double kS = 0.17459;
-	  double kV = 2.4561;
-	  double kA = 0.40442;
+      double kS = 0.1;
+	  double kV = 12.0 / 4.4196;
+	  double kA = 0.0;
     }
     
     public interface Turn {
-      double kP = 7.0;
-	  double kI = 0.03;
-	  double kD = 0.3;
+      double kP = 1;
+	  double kI = 0.01;
+	  double kD = 0.00;
 	  
     }
 
@@ -111,7 +111,7 @@ public final class Constants {
         double openLoopRampRate = 0;
       }
       public interface Turn{
-        boolean kInverted = false;
+        boolean kInverted = true;
         IdleMode idlemode = IdleMode.kBrake;
         int currentLimit = 20;
         double openLoopRampRate = 0;

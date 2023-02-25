@@ -49,6 +49,7 @@ public class SDSMK4i_SwerveModule extends SwerveModule {
 
     private double prevVelocity;
 	private Rotation2d angleOffset;
+	private PIDController drivePID2;
     
     public SDSMK4i_SwerveModule(String id, Translation2d location, int turnMotorId, Rotation2d angleOffset, int driveMotorId, int encoderId){
         
@@ -71,6 +72,7 @@ public class SDSMK4i_SwerveModule extends SwerveModule {
 
         targetState = new SwerveModuleState();
 
+		resetWheelsToAbsEnc();
     }
 
 
@@ -88,6 +90,9 @@ public class SDSMK4i_SwerveModule extends SwerveModule {
         drivePID.setI(Drive.kI);
         drivePID.setD(Drive.kD);
         drivePID.setOutputRange(-1, 1);
+
+		drivePID2 = new PIDController(Drive.kP, Drive.kI, Drive.kD);
+		
 
         driveMotor.enableVoltageCompensation(12.0);
         
@@ -113,15 +118,15 @@ public class SDSMK4i_SwerveModule extends SwerveModule {
         // System.out.println(absoluteEncoder.getPosition());
 		// System.out.println(turnEncoder.getPosition());
 		// turnPID = turnMotor.getPIDController();
-		turnPID = new PIDController(0, 0, 0);
+		turnPID = new PIDController(SwerveConstants.Turn.kP, SwerveConstants.Turn.kI, SwerveConstants.Turn.kD);
 		// turnPID.setFeedbackDevice(turnEncoder);
 		turnPID.enableContinuousInput(-Math.PI, Math.PI);
 
-        turnPID.setP(SwerveConstants.Turn.kP);
-        turnPID.setI(SwerveConstants.Turn.kI);
-        turnPID.setD(SwerveConstants.Turn.kD);
+        // turnPID.setP(SwerveConstants.Turn.kP);
+        // turnPID.setI(SwerveConstants.Turn.kI);
+        // turnPID.setD(SwerveConstants.Turn.kD);
         // turnPID.setOutputRange(-1, 1);
-
+		turnPID.setIntegratorRange(-.1, .1);
 
         // turnPID.setPositionPIDWrappingEnabled(true);
         // turnPID.setPositionPIDWrappingMinInput(Encoder.Turn.MIN_PID_INPUT);
@@ -156,6 +161,10 @@ public class SDSMK4i_SwerveModule extends SwerveModule {
         return Rotation2d.fromDegrees(absoluteEncoder.getAbsolutePosition()).minus(angleOffset);
         // return Rotation2d.fromDegrees(absoluteEncoder.getAbsolutePosition());
     }
+    // private Rotation2d getAngle() {
+    //     return Rotation2d.fromDegrees(turnEncoder.getPosition());
+    //     // return Rotation2d.fromDegrees(absoluteEncoder.getAbsolutePosition());
+    // }
 
 
     private double getVelocity() {
@@ -168,9 +177,11 @@ public class SDSMK4i_SwerveModule extends SwerveModule {
 			// if (Math.abs(swerveModule.getAbsAngle().getDegrees()) <= 5){
 			// swerveModule.m_turningMotor.m_encoder.setPosition(0.0);
 			// // System.out.println("STUFF CHANGED IDK");
-			// }
-			turnMotor.getEncoder()
-					.setPosition((absoluteEncoder.getAbsolutePosition() * 150) / (360 * 7));
+			// // }
+			// turnMotor.getEncoder()
+			// 		.setPosition((getAbsoluteAngle().getDegrees()));
+			// turnMotor.getEncoder()
+			// 		.setPosition((getAbsoluteAngle().getDegrees() * 150) / (360 * 7));
 		// }
 		// System.out.println(m_frontLeft.m_turningMotor.m_encoder.getPosition());
 		// m_frontLeft.m_turningMotor.m_encoder.setPosition(0.0);
@@ -213,11 +224,13 @@ public class SDSMK4i_SwerveModule extends SwerveModule {
 				final double driveFeedforward = driveFF.calculate(state.speedMetersPerSecond);
 				var velCmd_radPerSec = state.speedMetersPerSecond / (Units.inchesToMeters(Constants.SwerveConstants.Encoder.Drive.WHEEL_DIAMETER)/2.0) * Constants.SwerveConstants.Encoder.Drive.GEAR_RATIO;
 				// driveMotor.setClosedLoopCmd(velCmd_radPerSec, driveFeedforward);
-				drivePID.setReference(Units.radiansPerSecondToRotationsPerMinute(velCmd_radPerSec), 
-					CANSparkMax.ControlType.kVelocity,
-					0,
-					driveFeedforward,
-					SparkMaxPIDController.ArbFFUnits.kVoltage);
+				// drivePID.setReference(Units.radiansPerSecondToRotationsPerMinute(velCmd_radPerSec), 
+				// 	CANSparkMax.ControlType.kVelocity,
+				// 	0,
+				// 	driveFeedforward,
+				// 	SparkMaxPIDController.ArbFFUnits.kVoltage);
+				final double driveOutput = drivePID2.calculate(vel, Units.radiansPerSecondToRotationsPerMinute(velCmd_radPerSec));
+				
 				// Calculate the turning motor output from the turning PID controller.
 				// Do this all onboard and just send a voltage command to the motor.
 				final double turnOutput = turnPID.calculate(getAngle().getRadians(), state.angle.getRadians());
@@ -225,12 +238,14 @@ public class SDSMK4i_SwerveModule extends SwerveModule {
 				// SmartDashboard.putNumber(swerveName + " Des Angle", state.angle.getDegrees());
 		
 				// SmartDashboard.putNumber(id + " V", turnOutput);
-		
+				driveMotor.set(driveOutput);
 				turnMotor.setVoltage(turnOutput);
-        SmartDashboard.putNumber(id + "/Target Angle", targetState.angle.getDegrees());
+        SmartDashboard.putNumber(id + "/Target Angle", state.angle.getDegrees());
         SmartDashboard.putNumber(id + "/Angle", getAngle().getDegrees());
-        SmartDashboard.putNumber(id + "/Angle1", absoluteEncoder.getAbsolutePosition());
+        SmartDashboard.putNumber(id + "/Turn Speed", turnOutput);
+        // SmartDashboard.putNumber(id + "/Angle Absolute", getAbsoluteAngle().getDegrees());
         SmartDashboard.putNumber(id + "/Target Velocity", targetState.speedMetersPerSecond);
         SmartDashboard.putNumber(id + "/Velocity", vel);
+        SmartDashboard.putNumber(id + "/Drive Speed", driveOutput);
     }
 }
