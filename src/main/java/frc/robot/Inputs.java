@@ -36,4 +36,12 @@ public class Inputs {
 	public static Trigger getBalanceButton() {
 		return drivercmd.a();
 	}
+
+	public static Trigger getCloseGrabber(){
+		return drivercmd.b();
+	}
+
+	public static Trigger getOpenGrabber(){
+		return drivercmd.x();
+	}
 }

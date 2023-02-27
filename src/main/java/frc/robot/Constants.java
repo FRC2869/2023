@@ -9,7 +9,6 @@ import com.revrobotics.CANSparkMax.IdleMode;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.util.Units;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
@@ -117,6 +116,11 @@ public final class Constants {
         double openLoopRampRate = 0;
       }
     }
+  }
+
+  public static class PneumaticsConstants{
+	public static int solenoidPortForwards = 0;
+	public static int solenoidPortBackwards = 0;
   }
 
 public static final double DT = 0.02;

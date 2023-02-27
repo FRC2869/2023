@@ -6,9 +6,12 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.commands.swerve.SwerveDriveAutoBalance;
-import frc.robot.commands.swerve.SwerveDriveDrive;
-import frc.robot.subsystems.swerve.SwerveSubsystem;
+// import frc.robot.commands.swerve.SwerveDriveAutoBalance;
+// import frc.robot.commands.swerve.SwerveDriveDrive;
+// import frc.robot.subsystems.swerve.SwerveSubsystem;
+import frc.robot.commands.grabber.CloseGrabber;
+import frc.robot.commands.grabber.OpenGrabber;
+import frc.robot.subsystems.GrabberSubsystem;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -21,8 +24,8 @@ import frc.robot.subsystems.swerve.SwerveSubsystem;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  private final SwerveSubsystem m_SwerveSubsystem = SwerveSubsystem.getInstance();
-
+//   private final SwerveSubsystem m_SwerveSubsystem = SwerveSubsystem.getInstance();
+	private final GrabberSubsystem grabber = GrabberSubsystem.getInstance();
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
@@ -30,6 +33,7 @@ public class RobotContainer {
 	CommandScheduler.getInstance().cancelAll();
     configureDefaultCommands();
     configureBindings();
+	grabber.compressorOn();
   }
 
   /****************/
@@ -37,7 +41,7 @@ public class RobotContainer {
   /****************/
 
   private void configureDefaultCommands() {
-    m_SwerveSubsystem.setDefaultCommand(new SwerveDriveDrive());
+    // m_SwerveSubsystem.setDefaultCommand(new SwerveDriveDrive());
   }
 
   /***************/
@@ -48,7 +52,9 @@ public class RobotContainer {
   }
 
   private void configureDriverBindings() {
-	Inputs.getBalanceButton().onTrue(new SwerveDriveAutoBalance());
+	// Inputs.getBalanceButton().onTrue(new SwerveDriveAutoBalance());
+	Inputs.getCloseGrabber().onTrue(new CloseGrabber());
+	Inputs.getOpenGrabber().onTrue(new OpenGrabber());
   }
 
   /**
