@@ -31,19 +31,19 @@ public final class Constants {
     public static final double trackLength_meter = Units.inchesToMeters(20.8);
 
     public interface Drive {
-      double kP = 1.0;
-	  double kI = 0.01;
-	  double kD = 0.0;
+      double kP = .1;
+	  double kI = 0.0;
+	  double kD = 0;
 
-      double kS = 0.1;
+      double kS = 0;
 	  double kV = 12.0 / 4.4196;
 	  double kA = 0.0;
     }
     
     public interface Turn {
       double kP = 1;
-	  double kI = 0.01;
-	  double kD = 0.00;
+	  double kI = 0.0;
+	  double kD = 0.12;
 	  
     }
 
@@ -83,7 +83,7 @@ public final class Constants {
       public static final int encoderId = 11;
     }
     public interface BackLeft {
-      public static final Rotation2d offset = new Rotation2d(Units.degreesToRadians(124.8));
+      public static final Rotation2d offset = new Rotation2d(Units.degreesToRadians(124.8-70));
       public static final Translation2d location =  new Translation2d(-trackWidth_meter / 2.0, trackLength_meter / 2.0);
       public static final String name = "BL";
       public static final int driveMotorId = 9;
@@ -91,7 +91,7 @@ public final class Constants {
       public static final int encoderId = 10;
     }
     public interface BackRight {
-      public static final Rotation2d offset = new Rotation2d(Units.degreesToRadians(234.8));
+      public static final Rotation2d offset = new Rotation2d(Units.degreesToRadians(234.8+71+180));
       public static final Translation2d location =  new Translation2d(-trackWidth_meter / 2.0, -trackLength_meter / 2.0);
       public static final String name = "BR";
       public static final int driveMotorId = 3;

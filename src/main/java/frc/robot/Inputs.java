@@ -17,20 +17,20 @@ public class Inputs {
         return speed;
     }
     public static double getTranslationY(){
-        return 0.0;
-		// double speed = driver.getLeftY();
-		// if(Math.abs(speed) < .1){
-		// 	speed = 0;
-		// }
-        // return speed;
+        // return 0.0;
+		double speed = driver.getLeftY();
+		if(Math.abs(speed) < .1){
+			speed = 0;
+		}
+        return speed;
     }
     public static double getRotation(){
-        return	 0.0;
-		// double speed = driver.getRightX();
-		// if(Math.abs(speed) < .1){
-		// 	speed = 0;
-		// }
-        // return speed;
+        // return	 0.0;
+		double speed = driver.getRightX();
+		if(Math.abs(speed) < .1){
+			speed = 0;
+		}
+        return speed;
     }
 
 	public static Trigger getBalanceButton() {
