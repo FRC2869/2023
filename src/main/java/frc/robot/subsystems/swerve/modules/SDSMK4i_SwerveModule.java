@@ -130,11 +130,12 @@ public class SDSMK4i_SwerveModule extends SwerveModule {
         // turnPID.setPositionPIDWrappingMaxInput(Encoder.Turn.MAX_PID_INPUT);
 
         turnMotor.enableVoltageCompensation(12.0);
-		if(id == SwerveConstants.BackLeft.name || id == SwerveConstants.BackRight.name){
-			turnMotor.setInverted(!Motors.Swerve.Turn.kInverted);
-		}else{
+		// if(id == SwerveConstants.BackLeft.name || id == SwerveConstants.BackRight.name){
+		// 	turnMotor.setInverted(!Motors.Swerve.Turn.kInverted);
+		// }else{
+		// 	turnMotor.setInverted(Motors.Swerve.Turn.kInverted);
+		// }
 			turnMotor.setInverted(Motors.Swerve.Turn.kInverted);
-		}
         turnMotor.setIdleMode(Motors.Swerve.Turn.idlemode);
         turnMotor.setSmartCurrentLimit(Motors.Swerve.Turn.currentLimit);
         turnMotor.setOpenLoopRampRate(Motors.Swerve.Turn.openLoopRampRate);

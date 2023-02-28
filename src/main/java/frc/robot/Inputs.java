@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 public class Inputs {
+	
     private static final XboxController driver = new XboxController(OperatorConstants.kDriverControllerPort);
     private static final CommandXboxController drivercmd = new CommandXboxController(OperatorConstants.kDriverControllerPort);
     public static double getTranslationX(){

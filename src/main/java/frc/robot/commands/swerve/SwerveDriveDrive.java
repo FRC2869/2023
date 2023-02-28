@@ -14,6 +14,6 @@ public class SwerveDriveDrive extends CommandBase{
 
     @Override
     public void execute(){
-        swerve.drive(Inputs.getTranslationY(), Inputs.getTranslationX(), Inputs.getRotation());
+        swerve.drive(Inputs.getTranslationX(), Inputs.getTranslationY(), Inputs.getRotation());
     }
 }

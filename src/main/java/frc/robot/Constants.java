@@ -24,14 +24,14 @@ public final class Constants {
     public static final int kDriverControllerPort = 0;
   }
   public static class SwerveConstants {
-    public static final double kMaxSpeed = .5; // 2 meters per second
+    public static final double kMaxSpeed = 3; // 2 meters per second
     public static final double kMaxAngularSpeed = Math.PI * 2; // 2 rotations per second
 
     public static final double trackWidth_meter = Units.inchesToMeters(15.8);
     public static final double trackLength_meter = Units.inchesToMeters(20.8);
 
     public interface Drive {
-      double kP = .1;
+      double kP = .5;
 	  double kI = 0.0;
 	  double kD = 0;
 
@@ -41,7 +41,7 @@ public final class Constants {
     }
     
     public interface Turn {
-      double kP = 1;
+      double kP = 2;
 	  double kI = 0.0;
 	  double kD = 0.12;
 	  
@@ -67,7 +67,7 @@ public final class Constants {
     }
 
     public interface FrontLeft {
-      public static final Rotation2d offset = new Rotation2d(Units.degreesToRadians(286.2));
+      public static final Rotation2d offset = new Rotation2d(Units.degreesToRadians(286.2-180));
       public static final Translation2d location =  new Translation2d(trackWidth_meter / 2.0, trackLength_meter / 2.0);
       public static final String name = "FL";
       public static final int driveMotorId = 7;
@@ -75,7 +75,7 @@ public final class Constants {
       public static final int encoderId = 12;
     }
     public interface FrontRight {
-      public static final Rotation2d offset = new  Rotation2d(Units.degreesToRadians(325.1));
+      public static final Rotation2d offset = new  Rotation2d(Units.degreesToRadians(325.1-180));
       public static final Translation2d location =  new Translation2d(trackWidth_meter / 2.0, -trackLength_meter / 2.0);
       public static final String name = "FR";
       public static final int driveMotorId = 5;
@@ -83,20 +83,20 @@ public final class Constants {
       public static final int encoderId = 11;
     }
     public interface BackLeft {
-      public static final Rotation2d offset = new Rotation2d(Units.degreesToRadians(124.8-70));
+      public static final Rotation2d offset = new Rotation2d(Units.degreesToRadians(124.8));
       public static final Translation2d location =  new Translation2d(-trackWidth_meter / 2.0, trackLength_meter / 2.0);
       public static final String name = "BL";
       public static final int driveMotorId = 9;
       public static final int turnMotorId = 2;
-      public static final int encoderId = 10;
+      public static final int encoderId = 13;
     }
     public interface BackRight {
-      public static final Rotation2d offset = new Rotation2d(Units.degreesToRadians(234.8+71+180));
+      public static final Rotation2d offset = new Rotation2d(Units.degreesToRadians(234.8+180));
       public static final Translation2d location =  new Translation2d(-trackWidth_meter / 2.0, -trackLength_meter / 2.0);
       public static final String name = "BR";
       public static final int driveMotorId = 3;
       public static final int turnMotorId = 4;
-      public static final int encoderId = 13;
+      public static final int encoderId = 10;
     }
 
 

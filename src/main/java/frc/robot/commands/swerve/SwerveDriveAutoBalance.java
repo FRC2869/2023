@@ -17,9 +17,9 @@ public class SwerveDriveAutoBalance extends CommandBase {
 	public void execute(){
 		var pitch = swerve.getGyroPitch().getDegrees();
 		if(pitch>2.5){
-			swerve.drive(.1, 0, 0);
+			swerve.drive(0, -.25, 0);
 		}else if(pitch<-2.5){
-			swerve.drive(-.1, 0, 0);
+			swerve.drive(0	, .25, 0);
 		}
 	}
 

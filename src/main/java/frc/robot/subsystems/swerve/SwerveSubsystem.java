@@ -12,7 +12,9 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.FieldObject2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import frc.robot.Constants.SwerveConstants;
 import frc.robot.Constants.SwerveConstants.BackLeft;
 import frc.robot.Constants.SwerveConstants.BackRight;
@@ -107,7 +109,7 @@ public class SwerveSubsystem extends SubsystemBase {
                 -omega,
                 getGyroAngle());
 
-		ChassisSpeeds speeds2 = new ChassisSpeeds(-x, y, -omega);
+		ChassisSpeeds speeds2 = new ChassisSpeeds(-x*SwerveConstants.kMaxSpeed, y, -omega);
 		var fieldRelative = false;
 
 		System.out.println(speeds);
@@ -182,9 +184,9 @@ public class SwerveSubsystem extends SubsystemBase {
             ));
         }
 
-        // SmartDashboard.putNumber("Swerve/Gyro Angle", getGyroAngle().getDegrees());
-        // SmartDashboard.putNumber("Swerve/Gyro Pitch", getGyroPitch().getDegrees());
-        // SmartDashboard.putNumber("Swerve/Gyro Roll", getGyroRoll().getDegrees());
+        SmartDashboard.putNumber("Swerve/Gyro Angle", getGyroAngle().getDegrees());
+        SmartDashboard.putNumber("Swerve/Gyro Pitch", getGyroPitch().getDegrees());
+        SmartDashboard.putNumber("Swerve/Gyro Roll", getGyroRoll().getDegrees());
     }
 
 }
