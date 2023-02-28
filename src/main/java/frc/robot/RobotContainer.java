@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 // import frc.robot.commands.swerve.SwerveDriveDrive;
 // import frc.robot.subsystems.swerve.SwerveSubsystem;
 import frc.robot.commands.grabber.CloseGrabber;
+import frc.robot.commands.grabber.OffGrabber;
 import frc.robot.commands.grabber.OpenGrabber;
 import frc.robot.subsystems.GrabberSubsystem;
 
@@ -42,6 +43,7 @@ public class RobotContainer {
 
   private void configureDefaultCommands() {
     // m_SwerveSubsystem.setDefaultCommand(new SwerveDriveDrive());
+	// grabber.setDefaultCommand(new OffGrabber());
   }
 
   /***************/
@@ -55,6 +57,7 @@ public class RobotContainer {
 	// Inputs.getBalanceButton().onTrue(new SwerveDriveAutoBalance());
 	Inputs.getCloseGrabber().onTrue(new CloseGrabber());
 	Inputs.getOpenGrabber().onTrue(new OpenGrabber());
+	Inputs.getOffGrabber().onTrue(new OffGrabber());
   }
 
   /**

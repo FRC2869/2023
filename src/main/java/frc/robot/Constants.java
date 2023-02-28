@@ -119,8 +119,10 @@ public final class Constants {
   }
 
   public static class PneumaticsConstants{
-	public static int solenoidPortForwards = 0;
-	public static int solenoidPortBackwards = 0;
+	public static final int solenoidPortForwardsTwo = 1;
+	public static final int solenoidPortBackwardsTwo = 0;
+	public static int solenoidPortForwards = 3;
+	public static int solenoidPortBackwards = 2;
   }
 
 public static final double DT = 0.02;

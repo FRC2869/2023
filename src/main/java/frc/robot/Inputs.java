@@ -44,4 +44,7 @@ public class Inputs {
 	public static Trigger getOpenGrabber(){
 		return drivercmd.x();
 	}
+	public static Trigger getOffGrabber(){
+		return drivercmd.y();
+	}
 }
