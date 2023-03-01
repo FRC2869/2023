@@ -9,7 +9,6 @@ import com.revrobotics.CANSparkMax.IdleMode;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.util.Units;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
@@ -163,8 +162,6 @@ public final class Constants {
       }
     }
   }
-  public static final double DT = 0.02;
-public static final int pidTimer = 0; 
 
   public static class PivotConstants{
     public static final double startingPosition = -60.0;
@@ -188,5 +185,14 @@ public static final int pidTimer = 0;
 	public static final double midCubeAngle = 0;
 	public static final double lowCubeAngle = 0;
   }
+  public static class PneumaticsConstants{
+	public static final int solenoidPortForwardsTwo = 1;
+	public static final int solenoidPortBackwardsTwo = 0;
+	public static int solenoidPortForwards = 3;
+	public static int solenoidPortBackwards = 2;
+  }
+
+public static final double DT = 0.02;
+public static final int pidCounter = 0; 
 }
 
