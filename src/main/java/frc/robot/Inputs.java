@@ -9,7 +9,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 public class Inputs {
 	
     private static final XboxController driver = new XboxController(OperatorConstants.kDriverControllerPort);
-    private static final CommandXboxController drivercmd = new CommandXboxController(OperatorConstants.kDriverControllerPort);
+	private static final CommandXboxController driverCmd = new CommandXboxController(OperatorConstants.kDriverControllerPort);
     public static double getTranslationX(){
 		// return 0.01;
 		double speed = -driver.getLeftX();

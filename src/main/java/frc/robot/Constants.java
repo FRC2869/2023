@@ -162,6 +162,7 @@ public final class Constants {
       }
     }
   }
+public static final int pidTimer = 0; 
 
   public static class PivotConstants{
     public static final double startingPosition = -60.0;
