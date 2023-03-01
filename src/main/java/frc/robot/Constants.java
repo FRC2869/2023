@@ -50,6 +50,9 @@ public final class Constants {
     public interface Encoder {
       public interface Turn {
 
+        double POSITION_CONVERSION = 1;
+        double VELOCITY_CONVERSION = POSITION_CONVERSION / 60.0;
+
         double MIN_PID_INPUT = 0;
         double MAX_PID_INPUT = 1;
 
@@ -117,8 +120,73 @@ public final class Constants {
         double openLoopRampRate = 0;
       }
     }
+    public interface Arm{
+      public interface Extension{
+        boolean kInverted = true;
+        IdleMode idlemode = IdleMode.kBrake;
+        int currentLimit = 40;
+        double openLoopRampRate = 0;
+      }
+    }
+    public interface Pivot{
+      boolean kInverted = false;
+      IdleMode idlemode = IdleMode.kBrake;
+      int currentLimit = 40;
+      double openLoopRampRate = 0;
+    }
   }
+  
 
-public static final double DT = 0.02;
-public static final int pidCounter = 0; 
+  public static class ArmConstants{
+    public interface Extension{
+
+      public static final double kMaxSpeed = .4; //40% speed
+      public static final double kMaxDistance = 35;
+      public static final double kMinDistance = 5;
+      public static final double startingPosition = 5;
+      public static final int extensionMotorID = 15;
+      public static final double kP = 0;
+      public static final double kI = 0;
+      public static final double kD = 0;
+	public static final double lowConeDistance = 0;
+	public static final double tolerance = 0;
+	public static final double midConeDistance = 0;
+	public static final double highConeDistance = 0;
+	public static final double highCubeDistance = 0;
+	public static final double midCubeDistance = 0;
+	public static final double lowCubeDistance = 0;
+      public interface Encoder{
+        
+        double POSITION_CONVERSION = 1;
+        double VELOCITY_CONVERSION = 1/60.0;
+        
+      }
+    }
+  }
+  public static final double DT = 0.02;
+public static final int pidTimer = 0; 
+
+  public static class PivotConstants{
+    public static final double startingPosition = -60.0;
+    public static final double kP = 1.0;
+    public static final double kI = 0;
+    public static final double kD = 0;
+    public static final double VELOCITY_CONVERSION = 1/60.0;
+    public static final double kMaxPower = .2;
+    public static final double kMinAngle = -50;
+    public static final double kMaxAngle = 200;
+    public static final double kS = 1.0;
+    public static final double kV = 0;
+    public static final double kG = 1.0;
+    public static final int pivotMotorId = 14;
+    public static final double GEAR_RATIO = ((4.62/1.09)/.85);
+	public static final double lowConeAngle = 0;
+	public static final double tolerance = 0;
+	public static final double midConeAngle = 0;
+	public static final double highConeAngle = 0;
+	public static final double highCubeAngle = 0;
+	public static final double midCubeAngle = 0;
+	public static final double lowCubeAngle = 0;
+  }
 }
+
