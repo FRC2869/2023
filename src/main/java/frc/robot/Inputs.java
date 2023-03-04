@@ -36,7 +36,7 @@ public class Inputs {
     }
 
 	public static Trigger getBalanceButton() {
-		return drivercmd.a();
+		return driverCmd.a();
 	}
 
     //Arm
@@ -95,14 +95,15 @@ public class Inputs {
 	}
 	public static Trigger getArmCubeHigh(){
 		return driverCmd.y();
+	}
 	public static Trigger getCloseGrabber(){
-		return drivercmd.b();
+		return driverCmd.b();
 	}
 
 	public static Trigger getOpenGrabber(){
-		return drivercmd.x();
+		return driverCmd.x();
 	}
 	public static Trigger getOffGrabber(){
-		return drivercmd.y();
+		return driverCmd.y();
 	}
 }

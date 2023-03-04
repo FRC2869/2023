@@ -37,6 +37,7 @@ public class SwerveSubsystem extends SubsystemBase {
             );
         }
         return instance;
+		// return null;
     }
     
 
@@ -52,16 +53,18 @@ public class SwerveSubsystem extends SubsystemBase {
         this.modules = modules;
 
         gyro = new AHRS(SPI.Port.kMXP);
-
+		// gyro = null;
         kinematics = new SwerveDriveKinematics(getModuleOffsets());
 
+		// kinematics = null;
         module2ds = new FieldObject2d[modules.length];
+		// module2ds = null;
     }
 
     public void initFieldObjects(Field2d field) {
-        for (int i = 0; i < modules.length; i++) {
-            module2ds[i] = field.getObject(modules[i].getID()+"-2d");
-        }
+        // for (int i = 0; i < modules.length; i++) {
+        //     module2ds[i] = field.getObject(modules[i].getID()+"-2d");
+        // }
     }
 
     private Translation2d[] getModuleOffsets() {
@@ -175,18 +178,18 @@ public class SwerveSubsystem extends SubsystemBase {
     @Override
     public void periodic() {
         Odometry odometry = Odometry.getInstance();
-        Pose2d pose = odometry.getPose();
-        Rotation2d angle = odometry.getRotation();
-        for (int i = 0; i < modules.length; ++i) {
-            module2ds[i].setPose(new Pose2d(
-                pose.getTranslation().plus(modules[i].getOffset().rotateBy(angle)),
-                modules[i].getState().angle.plus(angle)
-            ));
-        }
+        // Pose2d pose = odometry.getPose();
+        // Rotation2d angle = odometry.getRotation();
+        // for (int i = 0; i < modules.length; ++i) {
+        //     module2ds[i].setPose(new Pose2d(
+        //         pose.getTranslation().plus(modules[i].getOffset().rotateBy(angle)),
+        //         modules[i].getState().angle.plus(angle)
+        //     ));
+        // }
 
-        SmartDashboard.putNumber("Swerve/Gyro Angle", getGyroAngle().getDegrees());
-        SmartDashboard.putNumber("Swerve/Gyro Pitch", getGyroPitch().getDegrees());
-        SmartDashboard.putNumber("Swerve/Gyro Roll", getGyroRoll().getDegrees());
+        // SmartDashboard.putNumber("Swerve/Gyro Angle", getGyroAngle().getDegrees());
+        // SmartDashboard.putNumber("Swerve/Gyro Pitch", getGyroPitch().getDegrees());
+        // SmartDashboard.putNumber("Swerve/Gyro Roll", getGyroRoll().getDegrees());
     }
 
 }

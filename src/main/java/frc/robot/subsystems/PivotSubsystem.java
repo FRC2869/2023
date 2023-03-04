@@ -100,7 +100,7 @@ public class PivotSubsystem extends SubsystemBase {
 		if(isPositionControl){
 			pivotPID.setReference(pos, ControlType.kPosition, 0, pivotFF.calculate(getAngle(), getVelocity()));
 		}else{
-			System.out.println(pivotEncoder.getPosition());
+			// System.out.println(pivotEncoder.getPosition());
 			if(speed<0 && pivotEncoder.getPosition()<=PivotConstants.kMinAngle)
 				speed = 0;
 			if(speed>0 && pivotEncoder.getPosition()>=PivotConstants.kMaxAngle)

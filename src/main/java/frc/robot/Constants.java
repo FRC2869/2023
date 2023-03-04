@@ -133,6 +133,18 @@ public final class Constants {
       int currentLimit = 40;
       double openLoopRampRate = 0;
     }
+	public interface Grabber1{
+		boolean kInverted = false;
+      IdleMode idlemode = IdleMode.kCoast;
+      int currentLimit = 20;
+      double openLoopRampRate = 0;
+	}
+	public interface Grabber2{
+		boolean kInverted = false;
+      IdleMode idlemode = IdleMode.kCoast;
+      int currentLimit = 20;
+      double openLoopRampRate = 0;
+	}
   }
   
 
