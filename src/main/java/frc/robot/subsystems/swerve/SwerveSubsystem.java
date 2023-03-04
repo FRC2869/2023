@@ -115,7 +115,9 @@ public class SwerveSubsystem extends SubsystemBase {
 		ChassisSpeeds speeds2 = new ChassisSpeeds(-x*SwerveConstants.kMaxSpeed, y, -omega);
 		var fieldRelative = false;
 
-		System.out.println(speeds);
+		//TODO: Replace println with log calls. Do not use println except for temporary checking and
+		//be sure to immediaely remove them so they do not remain in the code.
+		//System.out.println(speeds);
 		// var swerveModuleStates = kinematics.toSwerveModuleStates(
 		// 		fieldRelative
 		// 				? ChassisSpeeds.fromFieldRelativeSpeeds(x, y, omega, gyro.getRotation2d())

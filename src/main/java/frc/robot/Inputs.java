@@ -6,6 +6,10 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
+/**
+ * Inputs class handles all operator inputs from the controllers.
+ * 
+ */
 public class Inputs {
 	
     private static final XboxController driver = new XboxController(OperatorConstants.kDriverControllerPort);
@@ -16,7 +20,11 @@ public class Inputs {
 		if(Math.abs(speed) < .1){
 			speed = 0;
 		}
-        return speed;
+		//The A button pressed means "slow" mode for accurate driving.
+		if(driver.getAButton()) {
+			speed *= .5;
+		}
+		return speed;
     }
     public static double getTranslationY(){
         // return 0.0;
@@ -24,7 +32,13 @@ public class Inputs {
 		if(Math.abs(speed) < .1){
 			speed = 0;
 		}
-        return speed;
+		//The Y button pressed means "slow" mode for accurate driving.
+		if(driver.getAButton()) {
+			return speed / 2;
+		}
+		else {
+			return speed;
+		}
     }
     public static double getRotation(){
         // return	 0.0;
