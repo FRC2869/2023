@@ -13,16 +13,23 @@ public class Inputs {
     public static double getTranslationX(){
 		// return 0.01;
 		double speed = -driver.getLeftX();
-		if(Math.abs(speed) < .1){
+		if(Math.abs(speed) < .05){
 			speed = 0;
+		}
+
+		if(driver.getAButton()){
+			speed *= .5;
 		}
         return speed;
     }
     public static double getTranslationY(){
-        // return 0.0;
+		// return 0.0;
 		double speed = driver.getLeftY();
-		if(Math.abs(speed) < .1){
+		if(Math.abs(speed) < .05){
 			speed = 0;
+		}
+		if(driver.getAButton()){
+			speed *= .5;
 		}
         return speed;
     }
@@ -32,11 +39,17 @@ public class Inputs {
 		if(Math.abs(speed) < .1){
 			speed = 0;
 		}
+		if(driver.getAButton()){
+			speed *= .5;
+		}
         return speed;
     }
 
 	public static Trigger getBalanceButton() {
 		return driverCmd.a();
+	}
+	public static Trigger getResetGyroButton() {
+		return driverCmd.start();
 	}
 
     //Arm

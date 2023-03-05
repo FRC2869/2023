@@ -77,7 +77,7 @@ public final class Constants {
       public static final int encoderId = 12;
     }
     public interface FrontRight {
-      public static final Rotation2d offset = new  Rotation2d(Units.degreesToRadians(325.1-180));
+      public static final Rotation2d offset = new  Rotation2d(Units.degreesToRadians(325.1-90));
       public static final Translation2d location =  new Translation2d(trackWidth_meter / 2.0, -trackLength_meter / 2.0);
       public static final String name = "FR";
       public static final int driveMotorId = 5;
@@ -182,14 +182,14 @@ public static final int pidTimer = 0;
     public static final double kI = 0;
     public static final double kD = 0;
     public static final double VELOCITY_CONVERSION = 1/60.0;
-    public static final double kMaxPower = .2;
+    public static final double kMaxPower = .4;
     public static final double kMinAngle = -50;
     public static final double kMaxAngle = 200;
     public static final double kS = 1.0;
     public static final double kV = 0;
     public static final double kG = 1.0;
     public static final int pivotMotorId = 14;
-    public static final double GEAR_RATIO = ((4.62/1.09)/.85);
+    public static final double GEAR_RATIO = ((4.62/1.09)/.85)/5;
 	public static final double lowConeAngle = 0;
 	public static final double tolerance = 0;
 	public static final double midConeAngle = 0;

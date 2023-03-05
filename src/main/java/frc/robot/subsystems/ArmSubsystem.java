@@ -109,9 +109,9 @@ public class ArmSubsystem extends SubsystemBase{
             speed = 0;
         
 		if(isPositionControl){
-			extensionPID.setReference(pos, ControlType.kPosition);
+			// extensionPID.setReference(pos, ControlType.kPosition);
 		}else{
-			extensionMotor.set(speed);
+			// extensionMotor.set(speed);
 		}
     }
 }

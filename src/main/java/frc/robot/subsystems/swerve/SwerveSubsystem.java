@@ -108,14 +108,14 @@ public class SwerveSubsystem extends SubsystemBase {
     /** MODULE STATES API **/
     public void drive(double y, double x, double omega) {
         ChassisSpeeds speeds = ChassisSpeeds.fromFieldRelativeSpeeds(
-                x, -y,
-                -omega,
+                -x*SwerveConstants.kMaxSpeed, y*SwerveConstants.kMaxSpeed,
+                -omega*SwerveConstants.kMaxAngularSpeed,
                 getGyroAngle());
 
-		ChassisSpeeds speeds2 = new ChassisSpeeds(-x*SwerveConstants.kMaxSpeed, y, -omega);
-		var fieldRelative = false;
+		ChassisSpeeds speeds2 = new ChassisSpeeds(-x*SwerveConstants.kMaxSpeed, y*SwerveConstants.kMaxSpeed, -omega*SwerveConstants.kMaxAngularSpeed);
+		// var fieldRelative = false;
 
-		System.out.println(speeds);
+		// System.out.println(speeds);
 		// var swerveModuleStates = kinematics.toSwerveModuleStates(
 		// 		fieldRelative
 		// 				? ChassisSpeeds.fromFieldRelativeSpeeds(x, y, omega, gyro.getRotation2d())
@@ -133,10 +133,13 @@ public class SwerveSubsystem extends SubsystemBase {
         //     twistVel.dy / Constants.DT,
         //     twistVel.dtheta / Constants.DT
         // ));
-		setChassisSpeeds(speeds2);
+		setChassisSpeeds(speeds);
 		// setModuleStates(swerveModuleStates);
     }
     
+	public void resetGyro(){
+		gyro.reset();
+	}
     public void setChassisSpeeds(ChassisSpeeds robotSpeed) {
         setModuleStates(kinematics.toSwerveModuleStates(robotSpeed));
     }
@@ -177,7 +180,7 @@ public class SwerveSubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
-        Odometry odometry = Odometry.getInstance();
+        // Odometry odometry = Odometry.getInstance();
         // Pose2d pose = odometry.getPose();
         // Rotation2d angle = odometry.getRotation();
         // for (int i = 0; i < modules.length; ++i) {
