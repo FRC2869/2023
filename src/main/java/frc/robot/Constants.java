@@ -21,9 +21,10 @@ import edu.wpi.first.math.util.Units;
 public final class Constants {
   public static class OperatorConstants {
     public static final int kDriverControllerPort = 0;
+    public static final int kOperatorControllerPort = 1;
   }
   public static class SwerveConstants {
-    public static final double kMaxSpeed = 3; // 2 meters per second
+    public static final double kMaxSpeed = 2; // 2 meters per second
     public static final double kMaxAngularSpeed = Math.PI * 2; // 2 rotations per second
 
     public static final double trackWidth_meter = Units.inchesToMeters(15.8);
@@ -40,7 +41,7 @@ public final class Constants {
     }
     
     public interface Turn {
-      double kP = 2;
+      double kP = 3;
 	  double kI = 0.0;
 	  double kD = 0.12;
 	  
@@ -178,6 +179,7 @@ public static final int pidTimer = 0;
 
   public static class PivotConstants{
     public static final double startingPosition = -60.0;
+    public static final double basePosition = -50.0;
     public static final double kP = 1.0;
     public static final double kI = 0;
     public static final double kD = 0;
@@ -192,11 +194,12 @@ public static final int pidTimer = 0;
     public static final double GEAR_RATIO = ((4.62/1.09)/.85)/5;
 	public static final double tolerance = 0;
 	public static final double lowConeAngle = 0;
-	public static final double midConeAngle = 0;
+	public static final double midConeAngle = 200;
 	public static final double highConeAngle = 0;
 	public static final double highCubeAngle = 0;
 	public static final double midCubeAngle = 0;
 	public static final double lowCubeAngle = 0;
+	public static final double doubleSubstationAngle = 190;
   }
   public static class PneumaticsConstants{
 	public static final int solenoidPortForwardsTwo = 1;

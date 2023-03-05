@@ -10,8 +10,8 @@ public class Inputs {
 	
     private static final XboxController driver = new XboxController(OperatorConstants.kDriverControllerPort);
 	private static final CommandXboxController driverCmd = new CommandXboxController(OperatorConstants.kDriverControllerPort);
-    private static final XboxController operator = new XboxController(OperatorConstants.kDriverControllerPort);
-	private static final CommandXboxController operatorCmd = new CommandXboxController(OperatorConstants.kDriverControllerPort);
+    private static final XboxController operator = new XboxController(OperatorConstants.kOperatorControllerPort);
+	private static final CommandXboxController operatorCmd = new CommandXboxController(OperatorConstants.kOperatorControllerPort);
     
 	
 	public static double getTranslationX(){
@@ -65,14 +65,14 @@ public class Inputs {
 
 	//Pivot
 	public static double getPivotPower() {
-		var speed = -operator.getRightY();
-		if(Math.abs(speed)<.1){
+		var speed = -operator.getLeftY();
+		if(Math.abs(speed)<.3){
 			speed = 0;
 		}
 		return speed;
 	}
 	public static double getPivotPosition() {
-		double pos = operator.getRightY(); // [-1, 1]
+		double pos = operator.getLeftY(); // [-1, 1]
 		pos = pos + 1; // [0, 2]
 		pos = pos/2.0; // [0, 1]
 		pos = pos * (PivotConstants.kMaxAngle-PivotConstants.kMinAngle); // [0, (kMaxAngle-kMinAngle)]
@@ -114,7 +114,10 @@ public class Inputs {
 	public static Trigger getArmCubeHigh(){
 		return driverCmd.y();
 	}
-
+	public static Trigger getArmDoubleSubStation(){
+		return operatorCmd.a();
+	}
+	
 	public static Trigger getCloseGrabber(){
 		return operatorCmd.b();
 	}

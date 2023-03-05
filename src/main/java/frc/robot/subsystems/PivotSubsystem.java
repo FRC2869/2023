@@ -48,7 +48,7 @@ public class PivotSubsystem extends SubsystemBase {
         pivotPID.setP(PivotConstants.kP);
         pivotPID.setI(PivotConstants.kI);
         pivotPID.setD(PivotConstants.kD);
-        pivotPID.setOutputRange(-1, 1);
+        pivotPID.setOutputRange(-.4, .4);
 
         pivotMotor.enableVoltageCompensation(12.0);
 		pivotMotor.setInverted(Motors.Pivot.kInverted);
@@ -100,7 +100,7 @@ public class PivotSubsystem extends SubsystemBase {
 		if(isPositionControl){
 			pivotPID.setReference(pos, ControlType.kPosition, 0, pivotFF.calculate(getAngle(), getVelocity()));
 		}else{
-			// System.out.println(pivotEncoder.getPosition());
+			System.out.println(pivotEncoder.getPosition());
 			if(speed<0 && pivotEncoder.getPosition()<=PivotConstants.kMinAngle)
 				speed = 0;
 			if(speed>0 && pivotEncoder.getPosition()>=PivotConstants.kMaxAngle)

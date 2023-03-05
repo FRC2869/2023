@@ -102,6 +102,12 @@ public class SwerveSubsystem extends SubsystemBase {
     }
 
     /** MODULE STATES API **/
+	/**
+	 * 
+	 * @param y left/right [-1, 1]
+	 * @param x forwards/backwards [-1, 1]
+	 * @param omega turn [-1, 1]
+	 */
     public void drive(double y, double x, double omega) {
         ChassisSpeeds speeds = ChassisSpeeds.fromFieldRelativeSpeeds(
                 -x*SwerveConstants.kMaxSpeed, y*SwerveConstants.kMaxSpeed,
