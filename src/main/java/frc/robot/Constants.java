@@ -159,13 +159,13 @@ public final class Constants {
       public static final double kP = 0;
       public static final double kI = 0;
       public static final double kD = 0;
-	public static final double lowConeDistance = 0;
-	public static final double tolerance = 0;
-	public static final double midConeDistance = 0;
-	public static final double highConeDistance = 0;
-	public static final double highCubeDistance = 0;
-	public static final double midCubeDistance = 0;
-	public static final double lowCubeDistance = 0;
+	// public static final double lowConeDistance = 0;
+	// public static final double tolerance = 0;
+	// public static final double midConeDistance = 0;
+	// public static final double highConeDistance = 0;
+	// public static final double highCubeDistance = 0;
+	// public static final double midCubeDistance = 0;
+	// public static final double lowCubeDistance = 0;
       public interface Encoder{
         
         double POSITION_CONVERSION = 1;
@@ -190,8 +190,8 @@ public static final int pidTimer = 0;
     public static final double kG = 1.0;
     public static final int pivotMotorId = 14;
     public static final double GEAR_RATIO = ((4.62/1.09)/.85)/5;
-	public static final double lowConeAngle = 0;
 	public static final double tolerance = 0;
+	public static final double lowConeAngle = 0;
 	public static final double midConeAngle = 0;
 	public static final double highConeAngle = 0;
 	public static final double highCubeAngle = 0;

@@ -4,9 +4,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
-import com.revrobotics.CANSparkMax.ControlType;
 
-import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.filter.SlewRateLimiter;
@@ -14,9 +12,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
-import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.Constants;
 import frc.robot.Constants.Motors;
 import frc.robot.Constants.SwerveConstants;
 import frc.robot.Constants.SwerveConstants.Drive;
@@ -39,16 +35,10 @@ public class SDSMK4i_SwerveModule extends SwerveModule {
 
     // controller
     private SparkMaxPIDController drivePID;
-    private SimpleMotorFeedforward driveFF;
     private PIDController turnPID;
     
-    private final SlewRateLimiter turnRateLimit;
-
-    private double prevVelocity;
-	private Rotation2d angleOffset;
-	private PIDController drivePID2;
-    
-    public SDSMK4i_SwerveModule(String id, Translation2d location, int turnMotorId, Rotation2d angleOffset, int driveMotorId, int encoderId){
+    private Rotation2d angleOffset;
+	public SDSMK4i_SwerveModule(String id, Translation2d location, int turnMotorId, Rotation2d angleOffset, int driveMotorId, int encoderId){
         
         //module data
         this.id = id;
@@ -59,13 +49,13 @@ public class SDSMK4i_SwerveModule extends SwerveModule {
         absoluteEncoder = new CANCoderWrapper(encoderId);
         configureTurnMotor(angleOffset);
 
-        turnRateLimit = new SlewRateLimiter(SwerveConstants.kMaxAngularSpeed);
+        new SlewRateLimiter(SwerveConstants.kMaxAngularSpeed);
         
         // drive
         driveMotor = new CANSparkMax(driveMotorId, MotorType.kBrushless);
         configureDriveMotor();
         
-        driveFF = new SimpleMotorFeedforward(Drive.kS, Drive.kV, Drive.kA);
+        new SimpleMotorFeedforward(Drive.kS, Drive.kV, Drive.kA);
 
         targetState = new SwerveModuleState();
 
@@ -222,8 +212,8 @@ public class SDSMK4i_SwerveModule extends SwerveModule {
 				// SwerveModuleState state = targetState;
 				// Calculate the drive output with our own arbitrary feed-forward,
 				// but use the onboard PID control for the motor.
-				final double driveFeedforward = driveFF.calculate(state.speedMetersPerSecond);
-				var velCmd_radPerSec = state.speedMetersPerSecond / (Units.inchesToMeters(Constants.SwerveConstants.Encoder.Drive.WHEEL_DIAMETER)/2.0) * Constants.SwerveConstants.Encoder.Drive.GEAR_RATIO;
+				// final double driveFeedforward = driveFF.calculate(state.speedMetersPerSecond);
+				// var velCmd_radPerSec = state.speedMetersPerSecond / (Units.inchesToMeters(Constants.SwerveConstants.Encoder.Drive.WHEEL_DIAMETER)/2.0) * Constants.SwerveConstants.Encoder.Drive.GEAR_RATIO;
 				// driveMotor.setClosedLoopCmd(velCmd_radPerSec, driveFeedforward);
 				drivePID.setReference(targetState.speedMetersPerSecond, 
 					CANSparkMax.ControlType.kVelocity);
@@ -233,7 +223,7 @@ public class SDSMK4i_SwerveModule extends SwerveModule {
 				// 	driveFeedforward,
 				// 	SparkMaxPIDController.ArbFFUnits.kVoltage);
 				// drivePID.setReference(1, ControlType.kVelocity);
-				var speed_radPerSec = vel / (Units.inchesToMeters(Constants.SwerveConstants.Encoder.Drive.WHEEL_DIAMETER)/2.0) * Constants.SwerveConstants.Encoder.Drive.GEAR_RATIO;
+				// var speed_radPerSec = vel / (Units.inchesToMeters(Constants.SwerveConstants.Encoder.Drive.WHEEL_DIAMETER)/2.0) * Constants.SwerveConstants.Encoder.Drive.GEAR_RATIO;
 				// final double driveOutput = drivePID2.calculate(Units.radiansPerSecondToRotationsPerMinute(speed_radPerSec), Units.radiansPerSecondToRotationsPerMinute(velCmd_radPerSec));
 				
 				// Calculate the turning motor output from the turning PID controller.

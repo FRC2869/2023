@@ -2,7 +2,6 @@ package frc.robot.subsystems.swerve;
 
 import com.kauailabs.navx.frc.AHRS;
 
-import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
@@ -12,15 +11,12 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.FieldObject2d;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import frc.robot.Constants.SwerveConstants;
 import frc.robot.Constants.SwerveConstants.BackLeft;
 import frc.robot.Constants.SwerveConstants.BackRight;
 import frc.robot.Constants.SwerveConstants.FrontLeft;
 import frc.robot.Constants.SwerveConstants.FrontRight;
-import frc.robot.subsystems.odometry.Odometry;
 import frc.robot.subsystems.swerve.modules.SDSMK4i_SwerveModule;
 import frc.robot.subsystems.swerve.modules.SwerveModule;
 public class SwerveSubsystem extends SubsystemBase {
@@ -112,7 +108,7 @@ public class SwerveSubsystem extends SubsystemBase {
                 -omega*SwerveConstants.kMaxAngularSpeed,
                 getGyroAngle());
 
-		ChassisSpeeds speeds2 = new ChassisSpeeds(-x*SwerveConstants.kMaxSpeed, y*SwerveConstants.kMaxSpeed, -omega*SwerveConstants.kMaxAngularSpeed);
+		// ChassisSpeeds speeds2 = new ChassisSpeeds(-x*SwerveConstants.kMaxSpeed, y*SwerveConstants.kMaxSpeed, -omega*SwerveConstants.kMaxAngularSpeed);
 		// var fieldRelative = false;
 
 		// System.out.println(speeds);
