@@ -43,8 +43,9 @@ public class ArmConeMid extends CommandBase{
 		}else{
 			pivotCounter=0;
 		}
-
+		System.out.println(pivotCounter);
 		if(pivotCounter>Constants.pidTimer){
+			pivot.setPositionControl(false);
 			return true;
 		}else{
 			return false;

@@ -15,15 +15,15 @@ public class Inputs {
     
 	
 	public static double getTranslationX(){
-		// return 0.01;
-		double speed = -driver.getLeftX();
+		// return 0.0;
+		double speed = driver.getLeftX();
 		if(Math.abs(speed) < .05){
 			speed = 0;
 		}
 
-		if(driver.getAButton()){
+		// if(driver.getAButton()){
 			speed *= .5;
-		}
+		// }
         return speed;
     }
     public static double getTranslationY(){
@@ -32,9 +32,9 @@ public class Inputs {
 		if(Math.abs(speed) < .05){
 			speed = 0;
 		}
-		if(driver.getAButton()){
+		// if(driver.getAButton()){
 			speed *= .5;
-		}
+		// }
         return speed;
     }
     public static double getRotation(){
@@ -43,14 +43,14 @@ public class Inputs {
 		if(Math.abs(speed) < .1){
 			speed = 0;
 		}
-		if(driver.getAButton()){
+		// if(driver.getAButton()){
 			speed *= .5;
-		}
+		// }
         return speed;
     }
 
 	public static Trigger getBalanceButton() {
-		return driverCmd.a();
+		return driverCmd.b();
 	}
 	public static Trigger getResetGyroButton() {
 		return driverCmd.start();
@@ -72,7 +72,7 @@ public class Inputs {
 		return speed;
 	}
 	public static double getPivotPosition() {
-		double pos = operator.getLeftY(); // [-1, 1]
+		double pos = -operator.getLeftY(); // [-1, 1]
 		pos = pos + 1; // [0, 2]
 		pos = pos/2.0; // [0, 1]
 		pos = pos * (PivotConstants.kMaxAngle-PivotConstants.kMinAngle); // [0, (kMaxAngle-kMinAngle)]
@@ -94,6 +94,12 @@ public class Inputs {
 	 */
 	public static Trigger getPivotPwr(){
 		return operatorCmd.b();
+	}
+/**
+ * Says hello to ankur for being such a good programmer :)
+ */
+	public void hello() {
+		System.out.println("Hello Ankur! How is your day?");
 	}
 
 	public static Trigger getArmConeLow(){
@@ -126,5 +132,11 @@ public class Inputs {
 	}
 	public static Trigger getOffGrabber(){
 		return operatorCmd.y();
+	}
+    public static boolean getOverrideButton() {
+        return operator.getBackButton();
+    }
+	public static boolean getSwerveReset() {
+		return driver.getStartButton();
 	}
 }
