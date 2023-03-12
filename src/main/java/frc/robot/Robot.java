@@ -4,11 +4,11 @@
 
 package frc.robot;
 
-import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.commands.autonomous.GoToApril;
 import frc.robot.subsystems.Limelight;
 
 /**
@@ -25,9 +25,9 @@ public class Robot extends TimedRobot {
 
 	private RobotContainer m_robotContainer;
 
-	private Limelight limelight = new Limelight();
+	private Limelight limelight = Limelight.getInstance();
 	
-	private Trajectory trajectory = new Trajectory();
+	// private Trajectory trajectory = new Trajectory();
 
 	/**
 	 * This function is run when the robot is first started up and should be used
@@ -107,6 +107,7 @@ public class Robot extends TimedRobot {
 	/** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
+	  SmartDashboard.putString("Limelight", limelight.getValuesString());
     
   }
 
@@ -115,13 +116,14 @@ public class Robot extends TimedRobot {
 	public void testInit() {
 		// Cancels all running commands at the start of test mode.
 		CommandScheduler.getInstance().cancelAll();
-		limelight.goToTarget();
+		// new GoToApril().schedule();
 	}
 
 	/** This function is called periodically during test mode. */
 	@Override
 	public void testPeriodic() {
-		SmartDashboard.putString("Limelight", limelight.getValuesString());
+		
+		
 	}
 
 	/** This function is called once when the robot is first started up. */

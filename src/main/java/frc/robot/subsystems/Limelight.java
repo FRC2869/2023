@@ -1,23 +1,31 @@
 package frc.robot.subsystems;
 
+import java.text.DecimalFormat;
+
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.subsystems.swerve.SwerveSubsystem;
-import java.text.DecimalFormat;
 
 public class Limelight extends SubsystemBase {
+	private static Limelight instance;
 	private NetworkTable table;
 	private NetworkTableEntry targetId; 
 	private NetworkTableEntry targetPos;
 	private DecimalFormat rounder;
-
+	private DrivetrainSubsystem swerve;
 	//This is the distance that we want to be from the april tag.
-	private double distToTag = 0;
+	private double distToTagX = 0;
+	private double distToTagY = 0;
 	
 	//NetworkTableInstance.getDefault().getTable("limelight").getEntry("<variablename>").setNumber(<value>);
 
+	public static Limelight getInstance(){
+		if(instance==null){
+			instance = new Limelight();
+		}
+		return instance;
+	}
 	/**
 	 * Creates a limelight! 
 	 * DO NOT MAKE EXACTLY 523 LIMELIGHT OBJECTS!  You can make more or less, just not exactly 523.
@@ -27,6 +35,7 @@ public class Limelight extends SubsystemBase {
 		targetId = table.getEntry("tid");
 		targetPos = table.getEntry("targetpose_cameraspace");
 		rounder = new DecimalFormat("#.00"); //nearest hundredth
+		swerve = DrivetrainSubsystem.getInstance();
 	}
 	/**
 	 * Finds if the april tag is in sight.
@@ -40,6 +49,12 @@ public class Limelight extends SubsystemBase {
 		return false;
 	}
 
+	public boolean hasTarget() {
+		if (targetId.getInteger(-2) == -1) {
+			return false;
+		}
+		return true;
+	}
 	//targetpose_robotspace - 3D transform of the primary in-view AprilTag in the coordinate system of the Robot (array (6))
 	
 	/**
@@ -57,7 +72,15 @@ public class Limelight extends SubsystemBase {
 	 */
 	public void goToTarget() {
 		double[] arrOfc = getTagPos();
-		SwerveSubsystem.getInstance().drive((arrOfc[2] - distToTag) * .1, arrOfc[0] * .1, 0);
+		var x = (arrOfc[2] - distToTagX)*.1;
+		var y = (arrOfc[0]-distToTagY)*.1;
+		var rot = (arrOfc[4])*.1;
+		
+		System.out.print(x*10);
+		System.out.print(" ");
+		System.out.println(y*10);
+		if (hasTarget())
+			swerve.drive(()->(x*DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND),()->  (-y*DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND),()-> rot*DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND);
 	}
 
 	/**

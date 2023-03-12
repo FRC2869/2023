@@ -13,7 +13,7 @@ public class AutoChargeStationOn extends CommandBase{
 
 	@Override
 	public void execute(){
-		swerve.drive(()->0,()->-.5,()->0);
+		swerve.drive(()->.5*DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,()->0,()->0);
 	}
 
 	@Override

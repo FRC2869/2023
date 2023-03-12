@@ -2,6 +2,7 @@ package frc.robot.commands.swerve;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
+import frc.robot.Constants.Motors.Swerve.Drive;
 import frc.robot.subsystems.DrivetrainSubsystem;
 
 public class SwerveDriveAutoBalance extends CommandBase {
@@ -17,9 +18,9 @@ public class SwerveDriveAutoBalance extends CommandBase {
 	public void execute(){
 		var pitch = swerve.getGyroPitch().getDegrees();
 		if(pitch>2.5){
-			swerve.drive(() -> 0,() ->  -.25, () -> 0);
+			swerve.drive(() -> 0,() ->  -.1*DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND, () -> 0);
 		}else if(pitch<-2.5){
-			swerve.drive(() -> 0	,() ->  .25, () -> 0);
+			swerve.drive(() -> 0	,() ->  .1*DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND, () -> 0);
 		}
 	}
 

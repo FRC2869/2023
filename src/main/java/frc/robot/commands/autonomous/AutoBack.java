@@ -14,13 +14,13 @@ public class AutoBack extends CommandBase {
 
 	@Override
 	public void execute(){
-		swerve.drive(()->0,()-> .1,()-> 0);
+		swerve.drive(()-> -.25*DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,()->0,()-> 0);
 		counter++;
 	}
 
 	@Override
 	public boolean isFinished(){
-		if (counter>200){
+		if (counter>(200/(.25/.1))){
 			swerve.drive(()->0,()->0,()->0);
 			return true;
 		}else{
