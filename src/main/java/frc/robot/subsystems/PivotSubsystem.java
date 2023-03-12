@@ -9,6 +9,7 @@ import com.revrobotics.SparkMaxPIDController;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Inputs;
 import frc.robot.Constants.Motors;
 import frc.robot.Constants.PivotConstants;
 
@@ -48,7 +49,7 @@ public class PivotSubsystem extends SubsystemBase {
         pivotPID.setP(PivotConstants.kP);
         pivotPID.setI(PivotConstants.kI);
         pivotPID.setD(PivotConstants.kD);
-        pivotPID.setOutputRange(-1, 1);
+        pivotPID.setOutputRange(-.4, .4);
 
         pivotMotor.enableVoltageCompensation(12.0);
 		pivotMotor.setInverted(Motors.Pivot.kInverted);
@@ -101,9 +102,9 @@ public class PivotSubsystem extends SubsystemBase {
 			pivotPID.setReference(pos, ControlType.kPosition, 0, pivotFF.calculate(getAngle(), getVelocity()));
 		}else{
 			// System.out.println(pivotEncoder.getPosition());
-			if(speed<0 && pivotEncoder.getPosition()<=PivotConstants.kMinAngle)
+			if((Inputs.getOverrideButton()) && speed<0 && pivotEncoder.getPosition()<=PivotConstants.kMinAngle)
 				speed = 0;
-			if(speed>0 && pivotEncoder.getPosition()>=PivotConstants.kMaxAngle)
+			if((Inputs.getOverrideButton()) && speed>0 && pivotEncoder.getPosition()>=PivotConstants.kMaxAngle)
 				speed = 0;
 			pivotMotor.set(speed);
 		}

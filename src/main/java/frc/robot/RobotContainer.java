@@ -27,10 +27,15 @@ import frc.robot.subsystems.swerve.SwerveSubsystem;
 // import frc.robot.commands.swerve.SwerveDriveAutoBalance;
 // import frc.robot.commands.swerve.SwerveDriveDrive;
 // import frc.robot.subsystems.swerve.SwerveSubsystem;
+import frc.robot.commands.ArmDoubleSubStation;
+import frc.robot.commands.DefaultDriveCommand;
 import frc.robot.commands.grabber.CloseGrabber;
 import frc.robot.commands.grabber.OffGrabber;
 import frc.robot.commands.grabber.OpenGrabber;
-import frc.robot.subsystems.GrabberSubsystem;
+import frc.robot.commands.pivot.PivotDefault;
+import frc.robot.commands.swerve.SwerveDriveAutoBalance;
+import frc.robot.subsystems.DrivetrainSubsystem;
+import frc.robot.subsystems.PivotSubsystem;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -43,10 +48,10 @@ import frc.robot.subsystems.GrabberSubsystem;
  */
 public class RobotContainer {
 	// The robot's subsystems and commands are defined here...
-	private final SwerveSubsystem m_SwerveSubsystem = SwerveSubsystem.getInstance();
-
+	// private final SwerveSubsystem swerve = SwerveSubsystem.getInstance();
+	private DrivetrainSubsystem swerve = DrivetrainSubsystem.getInstance();
 	// private final ArmSubsystem arm = ArmSubsystem.getInstance();
-	// private final PivotSubsystem pivot = PivotSubsystem.getInstance();
+	private final PivotSubsystem pivot = PivotSubsystem.getInstance();
 	// private final GrabberSubsystem grabber = GrabberSubsystem.getInstance();
 
 	/**
@@ -56,6 +61,7 @@ public class RobotContainer {
 		CommandScheduler.getInstance().cancelAll();
 		configureDefaultCommands();
 		configureBindings();
+		resetSwerve();
 		// grabber.compressorOn();
 	}
 
@@ -64,11 +70,20 @@ public class RobotContainer {
 	/****************/
 
 	private void configureDefaultCommands() {
-		m_SwerveSubsystem.setDefaultCommand(new SwerveDriveDrive());
-		m_SwerveSubsystem.setDefaultCommand(new SwerveDriveDrive());
-		// pivot.setDefaultCommand(new PivotDefault());
+		// m_SwerveSubsystem.setDefaultCommand(new SwerveDriveDrive());
+		swerve.setDefaultCommand(new DefaultDriveCommand(
+            () -> -modifyAxis(Inputs.getTranslationY()) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
+            () -> -modifyAxis(Inputs.getTranslationX()) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
+            () -> -modifyAxis(Inputs.getRotation()) * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND
+    ));
+		pivot.setDefaultCommand(new PivotDefault());
 		// arm.setDefaultCommand(new ArmDefault());
 		// grabber.setDefaultCommand(new OffGrabber());
+	}
+
+	public void resetSwerve(){
+		swerve.zeroGyroscope();
+
 	}
 
 	/***************/
@@ -78,8 +93,11 @@ public class RobotContainer {
 		configureDriverBindings();
 	}
 
+	/**
+	 * 
+	 */
 	private void configureDriverBindings() {
-		// Inputs.getBalanceButton().onTrue(new SwerveDriveAutoBalance());
+		Inputs.getBalanceButton().onTrue(new SwerveDriveAutoBalance());
 		// Inputs.getPivotPos().onTrue(new PivotPosPwrSwitch(true));
 		// Inputs.getPivotPwr().onTrue(new PivotPosPwrSwitch(false));
 		// Inputs.getArmConeLow().onTrue(new ArmConeLow());
@@ -92,6 +110,11 @@ public class RobotContainer {
 		// Inputs.getCloseGrabber().onTrue(new CloseGrabber());
 		// Inputs.getOpenGrabber().onTrue(new OpenGrabber());
 		// Inputs.getOffGrabber().onTrue(new OffGrabber());
+		Inputs.getCloseGrabber().whileTrue(new CloseGrabber());
+		Inputs.getOpenGrabber().whileTrue(new OpenGrabber());
+		Inputs.getOffGrabber().onTrue(new OffGrabber());
+		// Inputs.getResetGyroButton().onTrue(new SwerveDriveResetGyro());
+		Inputs.getArmDoubleSubStation().onTrue(new ArmDoubleSubStation());
 	}
 
 	/**
@@ -102,5 +125,28 @@ public class RobotContainer {
 	public Command getAutonomousCommand() {
 		// An example command will be run in autonomous
 		return null;
+		// return new SequentialCommandGroup(new AutoForwards(), new AutoBack(), new AutoRight(), new AutoChargeStationOn(), new SwerveDriveAutoBalance());
+		// return new SequentialCommandGroup(new AutoChargeStationOn(), new SwerveDriveAutoBalance());
+		// return new SequentialCommandGroup(new ArmConeMid(), new ParallelRaceGroup(new OpenGrabber(), new WaitCommand(1)), new ParallelRaceGroup(new OffGrabber(), new WaitCommand(1)),  new ArmBasePos(), new AutoForwards(), new WaitCommand(500));
 	}
+	private static double deadband(double value, double deadband) {
+		if (Math.abs(value) > deadband) {
+		  if (value > 0.0) {
+			return (value - deadband) / (1.0 - deadband);
+		  } else {
+			return (value + deadband) / (1.0 - deadband);
+		  }
+		} else {
+		  return 0.0;
+		}
+	  }
+	  private static double modifyAxis(double value) {
+		// Deadband
+		value = deadband(value, 0.05);
+	
+		// Square the axis
+		value = Math.copySign(value * value, value);
+	
+		return value;
+	  }
 }

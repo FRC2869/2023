@@ -2,14 +2,14 @@ package frc.robot.commands.swerve;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
-import frc.robot.subsystems.swerve.SwerveSubsystem;
+import frc.robot.subsystems.DrivetrainSubsystem;
 
 public class SwerveDriveAutoBalance extends CommandBase {
-	private SwerveSubsystem swerve;
+	private DrivetrainSubsystem swerve;
 
 	private int counter = 0;
 	public SwerveDriveAutoBalance(){
-		swerve = SwerveSubsystem.getInstance();
+		swerve = DrivetrainSubsystem.getInstance();
 		addRequirements(swerve);
 	}
 
@@ -17,9 +17,9 @@ public class SwerveDriveAutoBalance extends CommandBase {
 	public void execute(){
 		var pitch = swerve.getGyroPitch().getDegrees();
 		if(pitch>2.5){
-			swerve.drive(0, -.25, 0);
+			swerve.drive(() -> 0,() ->  -.25, () -> 0);
 		}else if(pitch<-2.5){
-			swerve.drive(0	, .25, 0);
+			swerve.drive(() -> 0	,() ->  .25, () -> 0);
 		}
 	}
 

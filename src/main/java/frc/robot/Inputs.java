@@ -14,31 +14,36 @@ public class Inputs {
 	
     private static final XboxController driver = new XboxController(OperatorConstants.kDriverControllerPort);
 	private static final CommandXboxController driverCmd = new CommandXboxController(OperatorConstants.kDriverControllerPort);
-    public static double getTranslationX(){
-		// return 0.01;
-		double speed = -driver.getLeftX();
-		if(Math.abs(speed) < .1){
+    private static final XboxController operator = new XboxController(OperatorConstants.kOperatorControllerPort);
+	private static final CommandXboxController operatorCmd = new CommandXboxController(OperatorConstants.kOperatorControllerPort);
+    
+	
+	public static double getTranslationX(){
+		// return 0.0;
+		double speed = driver.getLeftX();
+		if(Math.abs(speed) < .05){
 			speed = 0;
 		}
-		//The A button pressed means "slow" mode for accurate driving.
-		if(driver.getAButton()) {
+
+		if(driver.getRightBumper()){
 			speed *= .5;
+		}else{
+			speed *= .75;
 		}
-		return speed;
+        return speed;
     }
     public static double getTranslationY(){
-        // return 0.0;
+		// return 0.0;
 		double speed = driver.getLeftY();
-		if(Math.abs(speed) < .1){
+		if(Math.abs(speed) < .05){
 			speed = 0;
 		}
-		//The Y button pressed means "slow" mode for accurate driving.
-		if(driver.getAButton()) {
-			return speed / 2;
+		if(driver.getRightBumper()){
+			speed *= .5;
+		}else{
+			speed *= .75;
 		}
-		else {
-			return speed;
-		}
+        return speed;
     }
     public static double getRotation(){
         // return	 0.0;
@@ -46,29 +51,38 @@ public class Inputs {
 		if(Math.abs(speed) < .1){
 			speed = 0;
 		}
+		if(driver.getRightBumper()){
+			speed *= .25;
+		}else{
+			speed *= .5;
+		}
         return speed;
     }
 
 	public static Trigger getBalanceButton() {
-		return driverCmd.a();
+		return driverCmd.b();
+	}
+	public static Trigger getResetGyroButton() {
+		return driverCmd.start();
 	}
 
     //Arm
     public static double getExtension(){
         //right trigger goes out, left trigger goes in
-        return (driver.getRightTriggerAxis()-driver.getLeftTriggerAxis());
-    }
+        // return (driver.getRightTriggerAxis()-driver.getLeftTriggerAxis());
+		return 0.0;
+	}
 
 	//Pivot
 	public static double getPivotPower() {
-		var speed = -driver.getRightY();
-		if(Math.abs(speed)<.1){
+		var speed = -operator.getLeftY();
+		if(Math.abs(speed)<.3){
 			speed = 0;
 		}
 		return speed;
 	}
 	public static double getPivotPosition() {
-		double pos = driver.getRightY(); // [-1, 1]
+		double pos = -operator.getLeftY(); // [-1, 1]
 		pos = pos + 1; // [0, 2]
 		pos = pos/2.0; // [0, 1]
 		pos = pos * (PivotConstants.kMaxAngle-PivotConstants.kMinAngle); // [0, (kMaxAngle-kMinAngle)]
@@ -81,7 +95,7 @@ public class Inputs {
 	 * @return the button that switches to position control on the pivot
 	 */
 	public static Trigger getPivotPos(){
-		return driverCmd.a();
+		return operatorCmd.a();
 	}
 
 	/**
@@ -89,7 +103,13 @@ public class Inputs {
 	 * @return the button that switches to position control on the pivot
 	 */
 	public static Trigger getPivotPwr(){
-		return driverCmd.b();
+		return operatorCmd.b();
+	}
+/**
+ * Says hello to ankur for being such a good programmer :)
+ */
+	public void hello() {
+		System.out.println("Hello Ankur! How is your day?");
 	}
 
 	public static Trigger getArmConeLow(){
@@ -110,14 +130,23 @@ public class Inputs {
 	public static Trigger getArmCubeHigh(){
 		return driverCmd.y();
 	}
-	public static Trigger getCloseGrabber(){
-		return driverCmd.b();
+	public static Trigger getArmDoubleSubStation(){
+		return operatorCmd.a();
 	}
-
+	
+	public static Trigger getCloseGrabber(){
+		return operatorCmd.b();
+	}
 	public static Trigger getOpenGrabber(){
-		return driverCmd.x();
+		return operatorCmd.x();
 	}
 	public static Trigger getOffGrabber(){
-		return driverCmd.y();
+		return operatorCmd.y();
+	}
+    public static boolean getOverrideButton() {
+        return operator.getBackButton();
+    }
+	public static boolean getSwerveReset() {
+		return driver.getStartButton();
 	}
 }

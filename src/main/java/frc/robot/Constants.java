@@ -21,6 +21,7 @@ import edu.wpi.first.math.util.Units;
 public final class Constants {
   public static class OperatorConstants {
     public static final int kDriverControllerPort = 0;
+    public static final int kOperatorControllerPort = 1;
   }
   public static class SwerveConstants {
     public static final double kMaxSpeed = 3; // 2 meters per second
@@ -40,9 +41,9 @@ public final class Constants {
     }
     
     public interface Turn {
-      double kP = 2;
+      double kP = 3;
 	  double kI = 0.0;
-	  double kD = 0.12;
+	  double kD = 0.1;
 	  
     }
 
@@ -69,31 +70,32 @@ public final class Constants {
     }
 
     public interface FrontLeft {
-      public static final Rotation2d offset = new Rotation2d(Units.degreesToRadians(286.2-180));
+      public static final Rotation2d offset = new Rotation2d(-Units.degreesToRadians(286.523));
       public static final Translation2d location =  new Translation2d(trackWidth_meter / 2.0, trackLength_meter / 2.0);
       public static final String name = "FL";
-      public static final int driveMotorId = 7;
-      public static final int turnMotorId = 8;
+      public static final int driveMotorId = 8;
+      public static final int turnMotorId = 7;
       public static final int encoderId = 12;
     }
     public interface FrontRight {
-      public static final Rotation2d offset = new  Rotation2d(Units.degreesToRadians(325.1-180));
+      public static final Rotation2d offset = new  Rotation2d(-Units.degreesToRadians(323.87));
       public static final Translation2d location =  new Translation2d(trackWidth_meter / 2.0, -trackLength_meter / 2.0);
       public static final String name = "FR";
-      public static final int driveMotorId = 5;
-      public static final int turnMotorId = 6;
+      public static final int driveMotorId = 6;
+      public static final int turnMotorId = 5;
       public static final int encoderId = 11;
     }
     public interface BackLeft {
-      public static final Rotation2d offset = new Rotation2d(Units.degreesToRadians(124.8));
+      public static final Rotation2d offset = new Rotation2d(-Units.degreesToRadians(309.287));
       public static final Translation2d location =  new Translation2d(-trackWidth_meter / 2.0, trackLength_meter / 2.0);
       public static final String name = "BL";
-      public static final int driveMotorId = 9;
-      public static final int turnMotorId = 2;
+      public static final int driveMotorId = 2;
+      public static final int turnMotorId = 9;
       public static final int encoderId = 13;
     }
     public interface BackRight {
-      public static final Rotation2d offset = new Rotation2d(Units.degreesToRadians(234.8+180));
+      public static final Rotation2d offset = new Rotation2d(-Units.degreesToRadians(238.095));
+    
       public static final Translation2d location =  new Translation2d(-trackWidth_meter / 2.0, -trackLength_meter / 2.0);
       public static final String name = "BR";
       public static final int driveMotorId = 3;
@@ -159,13 +161,13 @@ public final class Constants {
       public static final double kP = 0;
       public static final double kI = 0;
       public static final double kD = 0;
-	public static final double lowConeDistance = 0;
-	public static final double tolerance = 0;
-	public static final double midConeDistance = 0;
-	public static final double highConeDistance = 0;
-	public static final double highCubeDistance = 0;
-	public static final double midCubeDistance = 0;
-	public static final double lowCubeDistance = 0;
+	// public static final double lowConeDistance = 0;
+	// public static final double tolerance = 0;
+	// public static final double midConeDistance = 0;
+	// public static final double highConeDistance = 0;
+	// public static final double highCubeDistance = 0;
+	// public static final double midCubeDistance = 0;
+	// public static final double lowCubeDistance = 0;
       public interface Encoder{
         
         double POSITION_CONVERSION = 1;
@@ -178,25 +180,27 @@ public static final int pidTimer = 0;
 
   public static class PivotConstants{
     public static final double startingPosition = -60.0;
+    public static final double basePosition = -50.0;
     public static final double kP = 1.0;
     public static final double kI = 0;
     public static final double kD = 0;
     public static final double VELOCITY_CONVERSION = 1/60.0;
-    public static final double kMaxPower = .2;
+    public static final double kMaxPower = .4;
     public static final double kMinAngle = -50;
     public static final double kMaxAngle = 200;
     public static final double kS = 1.0;
     public static final double kV = 0;
     public static final double kG = 1.0;
     public static final int pivotMotorId = 14;
-    public static final double GEAR_RATIO = ((4.62/1.09)/.85);
+    public static final double GEAR_RATIO = ((4.62/1.09)/.85)/5;
+	public static final double tolerance = 10;
 	public static final double lowConeAngle = 0;
-	public static final double tolerance = 0;
-	public static final double midConeAngle = 0;
+	public static final double midConeAngle = 210;
 	public static final double highConeAngle = 0;
 	public static final double highCubeAngle = 0;
 	public static final double midCubeAngle = 0;
 	public static final double lowCubeAngle = 0;
+	public static final double doubleSubstationAngle = 190;
   }
   public static class PneumaticsConstants{
 	public static final int solenoidPortForwardsTwo = 1;
