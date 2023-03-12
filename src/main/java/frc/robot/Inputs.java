@@ -21,9 +21,11 @@ public class Inputs {
 			speed = 0;
 		}
 
-		// if(driver.getAButton()){
+		if(driver.getRightBumper()){
 			speed *= .5;
-		// }
+		}else{
+			speed *= .75;
+		}
         return speed;
     }
     public static double getTranslationY(){
@@ -32,9 +34,11 @@ public class Inputs {
 		if(Math.abs(speed) < .05){
 			speed = 0;
 		}
-		// if(driver.getAButton()){
+		if(driver.getRightBumper()){
 			speed *= .5;
-		// }
+		}else{
+			speed *= .75;
+		}
         return speed;
     }
     public static double getRotation(){
@@ -43,9 +47,11 @@ public class Inputs {
 		if(Math.abs(speed) < .1){
 			speed = 0;
 		}
-		// if(driver.getAButton()){
+		if(driver.getRightBumper()){
+			speed *= .25;
+		}else{
 			speed *= .5;
-		// }
+		}
         return speed;
     }
 
