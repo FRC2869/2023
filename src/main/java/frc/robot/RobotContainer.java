@@ -18,6 +18,7 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.commands.arm.ArmDefault;
 // import frc.robot.subsystems.swerve.SwerveSubsystem;
 import frc.robot.commands.pivot.PivotDefault;
+import frc.robot.commands.swerve.SwerveDriveDrive;
 // import frc.robot.commands.pivot.PivotPosPwrSwitch;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.PivotSubsystem;
@@ -44,9 +45,9 @@ public class RobotContainer {
 	// The robot's subsystems and commands are defined here...
 	private final SwerveSubsystem m_SwerveSubsystem = SwerveSubsystem.getInstance();
 
-	private final ArmSubsystem arm = ArmSubsystem.getInstance();
-	private final PivotSubsystem pivot = PivotSubsystem.getInstance();
-	private final GrabberSubsystem grabber = GrabberSubsystem.getInstance();
+	// private final ArmSubsystem arm = ArmSubsystem.getInstance();
+	// private final PivotSubsystem pivot = PivotSubsystem.getInstance();
+	// private final GrabberSubsystem grabber = GrabberSubsystem.getInstance();
 
 	/**
 	 * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -63,11 +64,11 @@ public class RobotContainer {
 	/****************/
 
 	private void configureDefaultCommands() {
-		// m_SwerveSubsystem.setDefaultCommand(new SwerveDriveDrive());
-		// m_SwerveSubsystem.setDefaultCommand(new SwerveDriveDrive());
-		pivot.setDefaultCommand(new PivotDefault());
-		arm.setDefaultCommand(new ArmDefault());
-		grabber.setDefaultCommand(new OffGrabber());
+		m_SwerveSubsystem.setDefaultCommand(new SwerveDriveDrive());
+		m_SwerveSubsystem.setDefaultCommand(new SwerveDriveDrive());
+		// pivot.setDefaultCommand(new PivotDefault());
+		// arm.setDefaultCommand(new ArmDefault());
+		// grabber.setDefaultCommand(new OffGrabber());
 	}
 
 	/***************/
@@ -88,9 +89,9 @@ public class RobotContainer {
 		// Inputs.getArmCubeMid().onTrue(new ArmCubeMid());
 		// Inputs.getArmCubeHigh().onTrue(new ArmCubeHigh());
 		// Inputs.getBalanceButton().onTrue(new SwerveDriveAutoBalance());
-		Inputs.getCloseGrabber().onTrue(new CloseGrabber());
-		Inputs.getOpenGrabber().onTrue(new OpenGrabber());
-		Inputs.getOffGrabber().onTrue(new OffGrabber());
+		// Inputs.getCloseGrabber().onTrue(new CloseGrabber());
+		// Inputs.getOpenGrabber().onTrue(new OpenGrabber());
+		// Inputs.getOffGrabber().onTrue(new OffGrabber());
 	}
 
 	/**
