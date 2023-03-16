@@ -20,6 +20,8 @@ public class SwerveDriveAutoBalance extends CommandBase {
 			swerve.drive(() -> 0,() ->  -.25, () -> 0);
 		}else if(pitch<-2.5){
 			swerve.drive(() -> 0	,() ->  .25, () -> 0);
+		}else{
+			swerve.drive(() -> 0	,() ->  0, () -> 0);
 		}
 	}
 

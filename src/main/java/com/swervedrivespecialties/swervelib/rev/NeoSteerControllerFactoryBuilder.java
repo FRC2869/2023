@@ -5,6 +5,8 @@ import com.swervedrivespecialties.swervelib.*;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardContainer;
+import frc.robot.Constants;
+
 import com.swervedrivespecialties.swervelib.AbsoluteEncoder;
 
 import static com.swervedrivespecialties.swervelib.rev.RevUtils.checkNeoError;
@@ -100,7 +102,7 @@ public final class NeoSteerControllerFactoryBuilder {
     }
 
     public static class ControllerImplementation implements SteerController {
-        private static final int ENCODER_RESET_ITERATIONS = 10;
+        private static final int ENCODER_RESET_ITERATIONS = 100;
         private static final double ENCODER_RESET_MAX_ANGULAR_VELOCITY = Math.toRadians(0.5);
 
         @SuppressWarnings({"FieldCanBeLocal", "unused"})
@@ -130,14 +132,14 @@ public final class NeoSteerControllerFactoryBuilder {
         int counter = 0;
         @Override
         public void setReferenceAngle(double referenceAngleRadians) {
-            // double currentAngleRadians = motorEncoder.getPosition();
-            double currentAngleRadians = absoluteEncoder.getAbsoluteAngle();
+            double currentAngleRadians = motorEncoder.getPosition();
+            // double currentAngleRadians = absoluteEncoder.getAbsoluteAngle();
             // motorEncoder.setPosition(currentAngleRadians);
             // Reset the NEO's encoder periodically when the module is not rotating.
             // Sometimes (~5% of the time) when we initialize, the absolute encoder isn't fully set up, and we don't
             // end up getting a good reading. If we reset periodically this won't matter anymore.
             if (Math.abs(motorEncoder.getVelocity()) < ENCODER_RESET_MAX_ANGULAR_VELOCITY) {
-                if (false && ++resetIteration >= ENCODER_RESET_ITERATIONS && false) {
+                if (!Constants.isEnabled && ++resetIteration >= ENCODER_RESET_ITERATIONS) {
                     resetIteration = 0;
                     System.out.println(motorEncoder.getVelocity());
                     double absoluteAngle = absoluteEncoder.getAbsoluteAngle();
@@ -164,14 +166,16 @@ public final class NeoSteerControllerFactoryBuilder {
             }
 
             this.referenceAngleRadians = referenceAngleRadians;
-            motor.set(-pid.calculate(currentAngleRadiansMod, adjustedReferenceAngleRadians));
-            // controller.setReference(adjustedReferenceAngleRadians, CANSparkMax.ControlType.kPosition);
+            // motor.set(pid.calculate(currentAngleRadiansMod, adjustedReferenceAngleRadians));
+            
+            // controller.setFeedbackDevice(absoluteEncoder)
+            controller.setReference(adjustedReferenceAngleRadians, CANSparkMax.ControlType.kPosition);
         }
 
         @Override
         public double getStateAngle() {
-            // double motorAngleRadians = motorEncoder.getPosition();
-            double motorAngleRadians = absoluteEncoder.getAbsoluteAngle();
+            double motorAngleRadians = motorEncoder.getPosition();
+            // double motorAngleRadians = absoluteEncoder.getAbsoluteAngle();
             // motorAngleRadians %= 2.0 * Math.PI;
             if (motorAngleRadians < 0.0) {
                 motorAngleRadians += 2.0 * Math.PI;
@@ -179,5 +183,6 @@ public final class NeoSteerControllerFactoryBuilder {
 
             return motorAngleRadians;
         }
+        
     }
 }

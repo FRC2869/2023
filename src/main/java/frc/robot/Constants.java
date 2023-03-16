@@ -19,6 +19,7 @@ import edu.wpi.first.math.util.Units;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
+  public static boolean isEnabled = false;
   public static class OperatorConstants {
     public static final int kDriverControllerPort = 0;
     public static final int kOperatorControllerPort = 1;
@@ -29,6 +30,8 @@ public final class Constants {
 
     public static final double trackWidth_meter = Units.inchesToMeters(15.8);
     public static final double trackLength_meter = Units.inchesToMeters(20.8);
+    public static final double kMaxAutoSpeed = 0;
+    public static final double kMaxAutoAcceration = 0;
 
     public interface Drive {
       double kP = .5;
@@ -94,7 +97,7 @@ public final class Constants {
       public static final int encoderId = 13;
     }
     public interface BackRight {
-      public static final Rotation2d offset = new Rotation2d(-Units.degreesToRadians(238.095));
+      public static final Rotation2d offset = new Rotation2d(-Units.degreesToRadians(2400.87890625));
     
       public static final Translation2d location =  new Translation2d(-trackWidth_meter / 2.0, -trackLength_meter / 2.0);
       public static final String name = "BR";

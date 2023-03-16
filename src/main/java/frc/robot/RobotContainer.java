@@ -4,10 +4,20 @@
 
 package frc.robot;
 
+import com.pathplanner.lib.PathConstraints;
+import com.pathplanner.lib.PathPlanner;
+import com.pathplanner.lib.PathPlannerTrajectory;
+
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.Constants.SwerveConstants;
 import frc.robot.commands.ArmDoubleSubStation;
 import frc.robot.commands.DefaultDriveCommand;
+import frc.robot.commands.autonomous.AutoBack;
+import frc.robot.commands.autonomous.AutoChargeStationOn;
+import frc.robot.commands.autonomous.AutoForwards;
+import frc.robot.commands.autonomous.AutoRight;
 import frc.robot.commands.grabber.CloseGrabber;
 import frc.robot.commands.grabber.OffGrabber;
 import frc.robot.commands.grabber.OpenGrabber;
@@ -32,6 +42,13 @@ public class RobotContainer {
 	// private final ArmSubsystem arm = ArmSubsystem.getInstance();
 	private final PivotSubsystem pivot = PivotSubsystem.getInstance();
 	// private final GrabberSubsystem grabber = GrabberSubsystem.getInstance();
+	private PathPlannerTrajectory floorPickup;
+	private PathPlannerTrajectory forward1m;
+	private enum Autos {
+		Nothing, Forward, ScoreMidCone, ScoreMidConeAndMove, ScoreMidConeAndPickupCube, ScoreMidConeAndScoreCube, ScoreMidConeAndChargeStation, ChargeStation, ScoreMidConeAndScoreCubeAndChargeStation
+	}
+	Autos currentAuto = Autos.Nothing;
+	private PathPlannerTrajectory scoreFromPickup; 
 
 	/**
 	 * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -42,6 +59,13 @@ public class RobotContainer {
 		configureBindings();
 		resetSwerve();
 		// grabber.compressorOn();
+		loadTrajectories();
+	}
+
+	private void loadTrajectories() {
+		floorPickup = PathPlanner.loadPath("getFloorPickup", new PathConstraints(SwerveConstants.kMaxAutoSpeed, SwerveConstants.kMaxAutoAcceration));
+		forward1m = PathPlanner.loadPath("forward1m", new PathConstraints(SwerveConstants.kMaxAutoSpeed, SwerveConstants.kMaxAutoAcceration));
+		scoreFromPickup = PathPlanner.loadPath("scoreFromPickup", new PathConstraints(SwerveConstants.kMaxAutoSpeed, SwerveConstants.kMaxAutoAcceration));
 	}
 
 	/****************/
@@ -98,11 +122,35 @@ public class RobotContainer {
 	 * @return the command to run in autonomous
 	 */
 	public Command getAutonomousCommand() {
+		switch(currentAuto){
+			case ChargeStation:
+				break;
+			case Forward:
+				break;
+			case Nothing:
+				break;
+			case ScoreMidCone:
+				break;
+			case ScoreMidConeAndChargeStation:
+				break;
+			case ScoreMidConeAndMove:
+				break;
+			case ScoreMidConeAndPickupCube:
+				break;
+			case ScoreMidConeAndScoreCube:
+				break;
+			case ScoreMidConeAndScoreCubeAndChargeStation:
+				break;
+			default:
+				return null;			
+		}
 		// An example command will be run in autonomous
-		return null;
+		// return swerve.followTrajectoryCommand(floorPickup, true);
+		return swerve.followTrajectoryCommand(forward1m, true);
 		// return new SequentialCommandGroup(new AutoForwards(), new AutoBack(), new AutoRight(), new AutoChargeStationOn(), new SwerveDriveAutoBalance());
 		// return new SequentialCommandGroup(new AutoChargeStationOn(), new SwerveDriveAutoBalance());
 		// return new SequentialCommandGroup(new ArmConeMid(), new ParallelRaceGroup(new OpenGrabber(), new WaitCommand(1)), new ParallelRaceGroup(new OffGrabber(), new WaitCommand(1)),  new ArmBasePos(), new AutoForwards(), new WaitCommand(500));
+		// return new SequentialCommandGroup(new ArmConeMid(), new ParallelRaceGroup(new OpenGrabber(), new WaitCommand(1)), new ParallelRaceGroup(new OffGrabber(), new WaitCommand(1)),  new ArmBasePos(), swerve.followTrajectoryCommand(floorPickup, true), new WaitCommand(500));
 	}
 	private static double deadband(double value, double deadband) {
 		if (Math.abs(value) > deadband) {
