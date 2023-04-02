@@ -5,16 +5,16 @@ import frc.robot.Constants;
 import frc.robot.Constants.PivotConstants;
 import frc.robot.subsystems.PivotSubsystem;
 
-public class ArmConeLow extends CommandBase{
+public class ArmDoubleSubStation extends CommandBase{
 	// private ArmSubsystem arm;
 	private PivotSubsystem pivot;
 	// private int armCounter;
 	private int pivotCounter;
 
-	public ArmConeLow(){
+	public ArmDoubleSubStation(){
 		// arm = ArmSubsystem.getInstance();
 		pivot = PivotSubsystem.getInstance();
-		System.out.println("Low");
+		System.out.println("Double and High");
 		// addRequirements(arm);
 		addRequirements(pivot);
 	}
@@ -22,16 +22,16 @@ public class ArmConeLow extends CommandBase{
 	@Override
 	public void execute(){
 		// arm.setPositionControl(true);
-		// arm.position(ArmConstants.Extension.lowConeDistance);
+		// arm.position(ArmConstants.Extension.midCubeDistance);
 		pivot.setPositionControl(true);
-		pivot.position(PivotConstants.lowConeAngle);
+		pivot.position(PivotConstants.doubleSubstationAngle);
 	}
 
 	@Override
 	public boolean isFinished(){
 		
-		// boolean armDone = Math.abs(arm.getPosition()-ArmConstants.Extension.lowConeDistance) < ArmConstants.Extension.tolerance;
-		boolean pivotDone = Math.abs(pivot.getAngle()-PivotConstants.lowConeAngle) < PivotConstants.tolerance;
+		// boolean armDone = Math.abs(arm.getPosition()-ArmConstants.Extension.midCubeDistance) < ArmConstants.Extension.tolerance;
+		boolean pivotDone = Math.abs(pivot.getAngle()-PivotConstants.doubleSubstationAngle) < PivotConstants.tolerance;
 
 		// if(armDone){
 		// 	armCounter++;

@@ -1,9 +1,10 @@
 package frc.robot.commands.grabber;
 
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import frc.robot.Constants;
 import frc.robot.subsystems.GrabberSubsystem;
 
-public class OffGrabber extends CommandBase {
+public class OffGrabber extends InstantCommand {
 	GrabberSubsystem grabber;
 	public OffGrabber (){
 		grabber = GrabberSubsystem.getInstance();
@@ -12,6 +13,9 @@ public class OffGrabber extends CommandBase {
 
 	@Override
 	public void execute(){
+		System.out.println(Constants.autoTimer.get()+": Off Grabber Start");
 		grabber.offGrabber();
 	}
+
+
 }

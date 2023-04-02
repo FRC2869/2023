@@ -1,23 +1,20 @@
-package frc.robot.commands.swerve;
+package frc.robot.commands.autonomous;
 
-import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.subsystems.DrivetrainSubsystem;
 
-public class SwerveDriveAutoBalance extends CommandBase {
+public class NaiveBalance extends CommandBase {
 	private DrivetrainSubsystem swerve;
-	private PIDController pid;
+	// private PIDController pid;
 
 	private int counter = 0;
-	public SwerveDriveAutoBalance(){
+	public NaiveBalance(){
 		swerve = DrivetrainSubsystem.getInstance();
 		addRequirements(swerve);
-		var kP = SmartDashboard.getNumber("Balance kP", 0.25);
-		var kD = SmartDashboard.getNumber("Balance kD", 0.1);
-		pid = new PIDController(kP, 0, kD);
-		
+		// var kP = SmartDashboard.getNumber("Balance kP", 0.15);
+		// var kD = SmartDashboard.getNumber("Balance kD", 0.0);
+		// pid = new PIDController(kP, 0, kD);
 	}
 
 	@Override
@@ -37,15 +34,19 @@ public class SwerveDriveAutoBalance extends CommandBase {
 	// 	//rotate a bit.
 	// 	swerve.drive(0,0,-.1*SwerveConstants.kMaxAngularSpeed);
 	// }else 
-	if(Math.abs(pitch)>2.5){
+	if(pitch>2.5){
 		// 	angleDiff = pitch/15.0;
 		// 	if(angleDiff>0)
 		// 		swerve.drive(() -> .15*Math.sqrt(angleDiff)* DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND, ()->0, () -> 0);
 		// 	else {
 		// 		swerve.drive(() -> -.15*Math.sqrt(-angleDiff)* DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND, ()->0, () -> 0);
 		// 	}
-			swerve.driveDirect(.05*-pid.calculate(pitch, 0)* DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND, 0, 0);
+		if(pitch<5){
+			swerve.driveDirect(.05* DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND, 0, 0);
 
+		}else{
+			swerve.driveDirect(.2* DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND, 0, 0);
+		}
 		// }else if(pitch<-2.5){
 		// 	swerve.drive(() -> RobotContainer.modifyAxis(-.3)* DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND, ()->0, () -> 0);
 		}else{
@@ -69,5 +70,4 @@ public class SwerveDriveAutoBalance extends CommandBase {
 			return false;
 		}
 	}
-
 }

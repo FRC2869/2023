@@ -5,33 +5,38 @@ import frc.robot.Constants;
 import frc.robot.Constants.PivotConstants;
 import frc.robot.subsystems.PivotSubsystem;
 
-public class ArmConeLow extends CommandBase{
+public class ArmBasePos extends CommandBase{
 	// private ArmSubsystem arm;
 	private PivotSubsystem pivot;
 	// private int armCounter;
 	private int pivotCounter;
+	private boolean hasRun;
 
-	public ArmConeLow(){
+	public ArmBasePos(){
 		// arm = ArmSubsystem.getInstance();
 		pivot = PivotSubsystem.getInstance();
-		System.out.println("Low");
+
 		// addRequirements(arm);
 		addRequirements(pivot);
 	}
 
 	@Override
 	public void execute(){
+		if(!hasRun){
+			hasRun = true;
+			System.out.println(Constants.autoTimer.get()+": Arm Base Pos Start");
+		}
 		// arm.setPositionControl(true);
-		// arm.position(ArmConstants.Extension.lowConeDistance);
+		// arm.position(ArmConstants.Extension.highConeDistance);
 		pivot.setPositionControl(true);
-		pivot.position(PivotConstants.lowConeAngle);
+		pivot.position(PivotConstants.basePosition);
 	}
 
 	@Override
 	public boolean isFinished(){
 		
-		// boolean armDone = Math.abs(arm.getPosition()-ArmConstants.Extension.lowConeDistance) < ArmConstants.Extension.tolerance;
-		boolean pivotDone = Math.abs(pivot.getAngle()-PivotConstants.lowConeAngle) < PivotConstants.tolerance;
+		// boolean armDone = Math.abs(arm.getPosition()-ArmConstants.Extension.highConeDistance) < ArmConstants.Extension.tolerance;
+		boolean pivotDone = Math.abs(pivot.getAngle()-PivotConstants.basePosition) < PivotConstants.tolerance;
 
 		// if(armDone){
 		// 	armCounter++;
@@ -45,6 +50,7 @@ public class ArmConeLow extends CommandBase{
 		}
 
 		if(pivotCounter>Constants.pidTimer){
+			System.out.println(Constants.autoTimer.get()+": Arm Base Pos End");
 			pivot.setPositionControl(false);
 			return true;
 		}else{

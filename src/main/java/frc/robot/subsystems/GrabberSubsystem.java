@@ -3,13 +3,9 @@ package frc.robot.subsystems;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
-import edu.wpi.first.wpilibj.Compressor;
-import edu.wpi.first.wpilibj.DoubleSolenoid;
-// import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
-import edu.wpi.first.wpilibj.PneumaticsModuleType;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.Motors;
-import frc.robot.Constants.PneumaticsConstants;
 
 public class GrabberSubsystem extends SubsystemBase{
 	private static GrabberSubsystem instance;
@@ -70,11 +66,18 @@ public class GrabberSubsystem extends SubsystemBase{
 		// solenoid1.set(Value.kForward);
 		// solenoid2.set(Value.kForward);
 		
-		grabber1.set(.3);
-		grabber2.set(-.3);
+		grabber1.set(.15);
+		grabber2.set(-.15);
 		// System.out.println("in");
 	}
-
+	public void closeGrabberFast(){
+		// solenoid1.set(Value.kForward);
+		// solenoid2.set(Value.kForward);
+		
+		grabber1.set(.4);
+		grabber2.set(-.4);
+		// System.out.println("in");
+	}
 	public void openGrabber(){
 		// solenoid1.set(Value.kReverse);
 		// solenoid2.set(Value.kReverse);
@@ -101,6 +104,7 @@ public class GrabberSubsystem extends SubsystemBase{
 
 	@Override
 	public void periodic(){
+		SmartDashboard.putBoolean("Intaked?", grabber1.getOutputCurrent()>20);
 		// System.out.print(grabber1.get());
 		// System.out.println(grabber2.get());
 	}
