@@ -40,15 +40,16 @@ public final class NeoDriveControllerFactoryBuilder {
         public ControllerImplementation create(Integer id, ModuleConfiguration moduleConfiguration) {
             CANSparkMax motor = new CANSparkMax(id, CANSparkMaxLowLevel.MotorType.kBrushless);
             motor.setInverted(moduleConfiguration.isDriveInverted());
-
+			// motor.setSmartCurrentLimit(40);
             // Setup voltage compensation
             if (hasVoltageCompensation()) {
                 checkNeoError(motor.enableVoltageCompensation(nominalVoltage), "Failed to enable voltage compensation");
             }
 
             if (hasCurrentLimit()) {
-                checkNeoError(motor.setSmartCurrentLimit((int) currentLimit), "Failed to set current limit for NEO");
-            }
+				System.out.println("Set Current Limit");
+                checkNeoError(motor.setSmartCurrentLimit((int) 40), "Failed to set current limit for NEO");
+			}
 
             checkNeoError(motor.setPeriodicFramePeriod(CANSparkMaxLowLevel.PeriodicFrame.kStatus0, 100), "Failed to set periodic status frame 0 rate");
             checkNeoError(motor.setPeriodicFramePeriod(CANSparkMaxLowLevel.PeriodicFrame.kStatus1, 20), "Failed to set periodic status frame 1 rate");
@@ -61,7 +62,7 @@ public final class NeoDriveControllerFactoryBuilder {
             double positionConversionFactor = Math.PI * moduleConfiguration.getWheelDiameter() * moduleConfiguration.getDriveReduction();
             encoder.setPositionConversionFactor(positionConversionFactor);
             encoder.setVelocityConversionFactor(positionConversionFactor / 60.0);
-
+			motor.burnFlash();
             return new ControllerImplementation(motor, encoder);
         }
     }

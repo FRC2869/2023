@@ -39,6 +39,11 @@ public class AutoSidewaysDistRampUp extends CommandBase {
         this.rampDownY = this.timeDown / maxSpeedY;
 	}
 
+	@Override
+	public void initialize(){
+		DrivetrainSubsystem.enable();
+	}
+
     /**
      * Will accelerate, stay at max, and then deccelerate.
      */

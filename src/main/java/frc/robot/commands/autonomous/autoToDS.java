@@ -3,6 +3,7 @@ package frc.robot.commands.autonomous;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.subsystems.DrivetrainSubsystem;
 
 public class autoToDS extends CommandBase{
 	NetworkTableEntry aprilPos = NetworkTableInstance.getDefault().getTable("limelight").getEntry("targetpose_robotspace");
@@ -14,6 +15,11 @@ public class autoToDS extends CommandBase{
 		this.timeUp = timeUp;
 		this.timeDown = timeDown;
 		this.maxSpeed = maxSpeed;
+	}
+
+	@Override
+	public void initialize(){
+		DrivetrainSubsystem.enable();
 	}
 
 	@Override

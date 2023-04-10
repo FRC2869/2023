@@ -6,7 +6,7 @@ import frc.robot.Constants;
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.DrivetrainSubsystem;
 
-public class AutoDriveAndTurn extends CommandBase {
+public class AutoDriveRightAndTurn extends CommandBase {
 	double theta;
 	double distance;
 	DrivetrainSubsystem swerve;
@@ -20,7 +20,7 @@ public class AutoDriveAndTurn extends CommandBase {
 	 * @param theta field relative angle (0 away form drivers station)
 	 * @param dist timer to drive (seconds)
 	 */
-	public AutoDriveAndTurn(double theta, double dist){
+	public AutoDriveRightAndTurn(double theta, double dist){
 		this.theta = theta;
 		this.distance = dist;
 		swerve = DrivetrainSubsystem.getInstance();
@@ -28,6 +28,11 @@ public class AutoDriveAndTurn extends CommandBase {
 		time.reset();
 		time.start();
 		addRequirements(swerve);
+	}
+
+	@Override
+	public void initialize(){
+		DrivetrainSubsystem.enable();
 	}
 
 	@Override
@@ -43,7 +48,7 @@ public class AutoDriveAndTurn extends CommandBase {
 		if(time.get()>distance && Math.abs(error)<5){
 			return;
 		}
-		double drive = RobotContainer.modifyAxis(.45)* DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND;
+		double drive = RobotContainer.modifyAxis(-.45)* DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND;
 		double turn = Math.copySign(Math.sqrt(Math.sqrt(Math.abs(error/180.0))), error)*.2 * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND;
 		// double turn = -.075 * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND;
 		if(time.get()>distance)
@@ -51,7 +56,7 @@ public class AutoDriveAndTurn extends CommandBase {
 		if(Math.abs(error)<5)
 			turn = 0;
 
-		swerve.driveDirect(drive, 0,turn);
+		swerve.driveDirect(0, drive,turn);
 
 	}
 

@@ -64,7 +64,8 @@ public final class NeoSteerControllerFactoryBuilder {
         public void addDashboardEntries(ShuffleboardContainer container, ControllerImplementation controller) {
             SteerControllerFactory.super.addDashboardEntries(container, controller);
             container.addNumber("Absolute Encoder Angle", () -> Math.toDegrees(controller.absoluteEncoder.getAbsoluteAngle()));
-        }
+			container.addBoolean("Good?", ()-> Math.abs((controller.getStateAngle()%360)-controller.absoluteEncoder.getAbsoluteAngle())<.2);
+		}
 
         @Override
         public ControllerImplementation create(NeoSteerConfiguration<T> steerConfiguration, ModuleConfiguration moduleConfiguration) {
@@ -109,7 +110,7 @@ public final class NeoSteerControllerFactoryBuilder {
         private final CANSparkMax motor;
         private final SparkMaxPIDController controller;
         private final RelativeEncoder motorEncoder;
-        private final AbsoluteEncoder absoluteEncoder;
+        public final AbsoluteEncoder absoluteEncoder;
 
         private double referenceAngleRadians = 0;
 

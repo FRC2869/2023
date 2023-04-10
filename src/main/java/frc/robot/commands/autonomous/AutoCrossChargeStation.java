@@ -17,6 +17,11 @@ public class AutoCrossChargeStation extends CommandBase{
 	}
 
 	@Override
+	public void initialize(){
+		DrivetrainSubsystem.enable();
+	}
+
+	@Override
 	public void execute(){
         if(swerve.getGyroscopeRotation().getDegrees() > 5) {
             //rotate a bit.

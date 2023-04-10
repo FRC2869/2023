@@ -19,6 +19,10 @@ public class AutoLeftDist extends CommandBase {
         startPose = swerve.getPose();
         this.dist = dist;
 	}
+	@Override
+	public void initialize(){
+		DrivetrainSubsystem.enable();
+	}
 
 	@Override
 	public void execute(){

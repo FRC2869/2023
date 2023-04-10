@@ -21,6 +21,11 @@ public class SwerveDriveAutoBalance extends CommandBase {
 	}
 
 	@Override
+	public void initialize(){
+		DrivetrainSubsystem.enable();
+	}
+
+	@Override
 	public void execute(){
 		// System.out.println("Balancing");
 		var pitch = swerve.getAdjustedGyroPitch().getDegrees();

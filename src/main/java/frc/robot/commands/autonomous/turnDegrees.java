@@ -25,6 +25,11 @@ public class turnDegrees extends CommandBase{
 	}
 
 	@Override
+	public void initialize(){
+		DrivetrainSubsystem.enable();
+	}
+
+	@Override
 	public void execute() {
 		buildUp++;
 		driveSub.drive(0, 0, speed);

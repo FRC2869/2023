@@ -32,6 +32,10 @@ public class AutoForwardsDistRampUp extends CommandBase {
         this.rampDown = this.timeDown / maxSpeed;
         this.distance = distance;
 	}
+	@Override
+	public void initialize(){
+		DrivetrainSubsystem.enable();
+	}
 
     /**
      * Will accelerate, stay at max, and then deccelerate.

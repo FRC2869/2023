@@ -4,12 +4,18 @@
 
 package frc.robot;
 
+import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.hal.HALUtil;
+import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.AddressableLED;
+import edu.wpi.first.wpilibj.AddressableLEDBuffer;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.commands.pivot.PivotPosPwrSwitch;
 import frc.robot.commands.swerve.SwerveStop;
+import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.PivotSubsystem;
 
 /**
@@ -23,6 +29,12 @@ public class Robot extends TimedRobot {
 
   private RobotContainer m_robotContainer;
 
+private AddressableLED led;
+
+private AddressableLEDBuffer led_buffer;
+// private CameraServer cam;
+
+
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
@@ -31,8 +43,18 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
-    
+    led = new AddressableLED(0);
+	led_buffer = new AddressableLEDBuffer(120);
+	led.setLength(led_buffer.getLength());
+
     m_robotContainer = new RobotContainer();
+	// for(int i=0;i<led_buffer.getLength();i++){
+	// 	led_buffer.setRGB(i, 255, 255, 255);
+	// }
+	led.setData(led_buffer);
+	led.start();
+	CameraServer.startAutomaticCapture("cam0",0);
+	SmartDashboard.putNumber("Charge Station Dist", 2.2);
   }
 
   /**
@@ -44,6 +66,11 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
+	// double id = NetworkTableInstance.getDefault().getTable("limelight").getEntry("id").getDouble(-1);
+	// if(id!=-1){
+		double target = NetworkTableInstance.getDefault().getTable("limelight").getEntry("targetpose_robotspace").getDoubleArray(new double[6])[2];
+			SmartDashboard.putNumber("Distance To April Tags", target);
+	// }
     // Runs the Scheduler.  This is responsible for polling buttons, adding newly-scheduled
     // commands, running already-scheduled commands, removing finished or interrupted commands,
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
@@ -54,6 +81,19 @@ public class Robot extends TimedRobot {
     }
 	if(HALUtil.getFPGAButton()){
 		PivotSubsystem.getInstance().toggleCoast();
+	}
+	rainbow();
+	led.setData(led_buffer);
+	led.start();
+
+  }
+  public void rainbow(){
+	int firstPixel = 0;
+	for(var i=0; i<led_buffer.getLength();i++){
+		final var hue = (firstPixel + (i+180 / led_buffer.getLength())) %180;
+		led_buffer.setHSV(i, hue, 255, 128);
+		firstPixel += 3;
+		firstPixel %= 180;
 	}
   }
 
@@ -70,6 +110,7 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
     // Shuffleboard.selectTab("Auto");
+	DrivetrainSubsystem.disable();
 	PivotSubsystem.getInstance().toggleCoast();
     Constants.isAuto = true;
     // Constants.isEnabled = true;
@@ -83,8 +124,8 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.schedule();
     }
-  }
-  
+}
+
   /** This function is called periodically during autonomous. */
   @Override
   public void autonomousPeriodic() {
@@ -94,7 +135,7 @@ public class Robot extends TimedRobot {
   public void teleopInit() {
     // Shuffleboard.selectTab("Teleop");
 	PivotSubsystem.getInstance().toggleCoast();
-
+	DrivetrainSubsystem.enable();
     Constants.isAuto = false;
     // This makes sure that the autonomous stops running when
     // teleop starts running. If you want the autonomous to
@@ -110,6 +151,10 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
+	Constants.locked = Inputs.getSwerveLock();
+	if(Inputs.cancelDriveButton().getAsBoolean()){
+		DrivetrainSubsystem.getInstance().getCurrentCommand().cancel();
+	}
   }
 
   @Override

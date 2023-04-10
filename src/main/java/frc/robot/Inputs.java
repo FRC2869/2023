@@ -69,18 +69,23 @@ public class Inputs {
 		}
         return speed;
     }
-
+	public static Trigger getRobotRelative() {
+		return driverCmd.y();
+	}
 	public static Trigger getBalanceButton() {
 		return driverCmd.b();
 	}
-	public static Trigger getRobotRelative() {
-		return driverCmd.x();
+	public static Trigger cancelDriveButton() {
+		return driverCmd.a();
 	}
 	public static Trigger getResetGyroButton() {
 		return driverCmd.start();
 	}
 	public static boolean getSwerveReset() {
 		return driver.getStartButton();
+	}
+	public static boolean getSwerveLock() {
+		return driver.getXButton();
 	}
 
 	/*
@@ -91,7 +96,7 @@ public class Inputs {
 
 	public static double getPivotPower() {
 		var speed = operator.getLeftY();
-		if(Math.abs(speed)<.3){
+		if(Math.abs(speed)<.05){
 			speed = 0;
 		}
 		return speed;

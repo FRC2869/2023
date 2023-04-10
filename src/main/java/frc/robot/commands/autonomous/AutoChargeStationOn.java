@@ -11,6 +11,11 @@ public class AutoChargeStationOn extends CommandBase{
 		swerve = DrivetrainSubsystem.getInstance();
 		addRequirements(swerve);
 	}
+	
+	@Override
+	public void initialize(){
+		DrivetrainSubsystem.enable();
+	}
 
 	@Override
 	public void execute(){

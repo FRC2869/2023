@@ -32,6 +32,11 @@ public class AutoRight extends CommandBase {
 	}
 
 	@Override
+	public void initialize(){
+		DrivetrainSubsystem.enable();
+	}
+
+	@Override
 	public void execute(){
 		if(!hasRun){
 			System.out.println(Constants.autoTimer.get()+": Auto Forwards Start");

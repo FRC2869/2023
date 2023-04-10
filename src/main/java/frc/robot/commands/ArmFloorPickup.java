@@ -46,7 +46,7 @@ public class ArmFloorPickup extends CommandBase{
 
 		if(pivotCounter>Constants.pidTimer){
 			pivot.setPositionControl(false);
-			return true;
+			return false;
 		}else{
 			return false;
 		}

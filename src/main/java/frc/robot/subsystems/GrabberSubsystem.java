@@ -47,10 +47,10 @@ public class GrabberSubsystem extends SubsystemBase{
 		grabber2.restoreFactoryDefaults();
 
         grabber2.enableVoltageCompensation(12.0);
-		grabber2.setInverted(Motors.Grabber1.kInverted);
-		grabber2.setIdleMode(Motors.Grabber1.idlemode);
-		grabber2.setSmartCurrentLimit(Motors.Grabber1.currentLimit);
-		grabber2.setOpenLoopRampRate(Motors.Grabber1.openLoopRampRate);
+		grabber2.setInverted(Motors.Grabber2.kInverted);
+		grabber2.setIdleMode(Motors.Grabber2.idlemode);
+		grabber2.setSmartCurrentLimit(Motors.Grabber2.currentLimit);
+		grabber2.setOpenLoopRampRate(Motors.Grabber2.openLoopRampRate);
 		grabber2.burnFlash();
 	}
 
@@ -67,7 +67,7 @@ public class GrabberSubsystem extends SubsystemBase{
 		// solenoid2.set(Value.kForward);
 		
 		grabber1.set(.15);
-		grabber2.set(-.15);
+		grabber2.set(.15);
 		// System.out.println("in");
 	}
 	public void closeGrabberFast(){
@@ -75,14 +75,14 @@ public class GrabberSubsystem extends SubsystemBase{
 		// solenoid2.set(Value.kForward);
 		
 		grabber1.set(.4);
-		grabber2.set(-.4);
+		grabber2.set(.4);
 		// System.out.println("in");
 	}
 	public void openGrabber(){
 		// solenoid1.set(Value.kReverse);
 		// solenoid2.set(Value.kReverse);
-		grabber1.set(-.3);
-		grabber2.set(.3);
+		grabber1.set(-.5);
+		grabber2.set(-.5);
 		// System.out.println("out");
 	}
 

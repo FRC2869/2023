@@ -18,8 +18,27 @@ public class NaiveBalance extends CommandBase {
 	}
 
 	@Override
+	public void initialize(){
+		DrivetrainSubsystem.enable();
+	}
+
+	@Override
 	public void execute(){
-		// System.out.println("Balancing");
+		var pitch = swerve.getAdjustedGyroPitch().getDegrees();
+		if(pitch>2.5){
+			swerve.driveDirect(.1* DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND, 0, 0);
+		}else if(pitch <-2.5){
+			swerve.driveDirect(-.1* DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND, 0, 0);
+		}
+		else{
+			swerve.driveDirect(0, 0, 0);
+			// Constants.locked = true;
+		}
+	}
+
+	// @Override
+	public void executeOld() {
+		System.out.println("Balancing");
 		var pitch = swerve.getAdjustedGyroPitch().getDegrees();
 		//hold straight code:
 	// double angle = swerve.getGyroscopeRotation().getDegrees();
@@ -34,30 +53,34 @@ public class NaiveBalance extends CommandBase {
 	// 	//rotate a bit.
 	// 	swerve.drive(0,0,-.1*SwerveConstants.kMaxAngularSpeed);
 	// }else 
-	if(pitch>2.5){
+	if(pitch>5){
+		counter++;
 		// 	angleDiff = pitch/15.0;
 		// 	if(angleDiff>0)
 		// 		swerve.drive(() -> .15*Math.sqrt(angleDiff)* DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND, ()->0, () -> 0);
 		// 	else {
 		// 		swerve.drive(() -> -.15*Math.sqrt(-angleDiff)* DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND, ()->0, () -> 0);
 		// 	}
-		if(pitch<5){
-			swerve.driveDirect(.05* DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND, 0, 0);
-
+		if(counter>60){
+			// swerve.driveDirect(.025* DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND, 0, 0);
+			Constants.locked = true;
 		}else{
-			swerve.driveDirect(.2* DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND, 0, 0);
+			swerve.driveDirect(.1* DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND, 0, 0);
 		}
-		// }else if(pitch<-2.5){
-		// 	swerve.drive(() -> RobotContainer.modifyAxis(-.3)* DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND, ()->0, () -> 0);
-		}else{
-			swerve.driveDirect(0	, 0, 0);
-		}
+	}else if(pitch<-2.5){
+		swerve.driveDirect(-.1* DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND, 0, 0);
+	}else if(pitch>2.5 && pitch<5){
+		swerve.driveDirect(.05* DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND, 0, 0);
+	}
+	else{
+		swerve.driveDirect(0	, 0, 0);
+	}
 	}
 
 	@Override
 	public boolean isFinished(){
 		// System.out.println(swerve.getGyroPitch());
-		if(Math.abs(swerve.getGyroPitch().getDegrees())<2.5){
+		if(Math.abs(swerve.getAdjustedGyroPitch().getDegrees())<2.5){
 			counter++;
 		}else{
 			counter = 0;
@@ -65,6 +88,7 @@ public class NaiveBalance extends CommandBase {
 
 		if (counter > Constants.pidCounter) {
 			System.out.println("Balanced");
+			Constants.locked = true;
 			return true;
 		} else {
 			return false;

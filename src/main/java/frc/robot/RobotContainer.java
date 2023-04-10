@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
@@ -21,13 +22,13 @@ import frc.robot.commands.ArmDoubleSubStation;
 import frc.robot.commands.ArmFloorPickup;
 import frc.robot.commands.DefaultDriveCommand;
 import frc.robot.commands.DefaultDriveRobotCommand;
-import frc.robot.commands.autonomous.AutoBack;
 import frc.robot.commands.autonomous.AutoChargeStationOn;
 import frc.robot.commands.autonomous.AutoChargeStationOnBack;
 import frc.robot.commands.autonomous.AutoCrossChargeStation;
-import frc.robot.commands.autonomous.AutoDriveAndTurn;
+import frc.robot.commands.autonomous.AutoDriveLeftAndTurn;
+import frc.robot.commands.autonomous.AutoDriveRightAndTurn;
 import frc.robot.commands.autonomous.AutoForwards;
-import frc.robot.commands.autonomous.AutoRight;
+import frc.robot.commands.autonomous.AutoForwardsDist;
 import frc.robot.commands.autonomous.NaiveBalance;
 import frc.robot.commands.grabber.CloseGrabber;
 import frc.robot.commands.grabber.CloseGrabberFast;
@@ -62,7 +63,7 @@ public class RobotContainer {
 	ShuffleboardTab test = Shuffleboard.getTab("test");
 
 	private enum Autos {
-		Nothing, Forward, ScoreMidCone, ScoreMidConeAndMove, ScoreMidConeAndPickupCube, ScoreMidConeAndScoreCube, ScoreMidConeAndChargeStation, ChargeStation, ScoreMidConeAndScoreCubeAndChargeStation, ScoreMidConeAndCrossChargeStation, HumanPlayerSideScoreAndMove, EdgeSideScoreAndMove
+		Nothing, Forward, ScoreMidCone, ScoreMidConeAndMove, ScoreMidConeAndPickupCube, ScoreMidConeAndScoreCube, ScoreMidConeAndChargeStation, ChargeStation, ScoreMidConeAndScoreCubeAndChargeStation, ScoreMidConeAndCrossChargeStation, HumanPlayerSideScoreAndMove, EdgeSideScoreAndMove, REDHumanPlayerSideScoreAndMove, BLUEHumanPlayerSideScoreAndMove
 	}
 	Autos currentAuto = Autos.Nothing;
 	private SendableChooser<Autos> newautopick; 
@@ -81,7 +82,8 @@ public class RobotContainer {
 		newautopick.addOption("ScoreMidConeAndChargeStation", Autos.ScoreMidConeAndChargeStation);
 		newautopick.addOption("ScoreMidConeAndCrossChargeStation", Autos.ScoreMidConeAndCrossChargeStation);
 		newautopick.addOption("ChargeStation", Autos.ChargeStation);
-			newautopick.addOption("HumanPlayerSideScoreAndMove", Autos.HumanPlayerSideScoreAndMove);
+			newautopick.addOption("REDHumanPlayerSideScoreAndMove", Autos.REDHumanPlayerSideScoreAndMove);
+			newautopick.addOption("BLUEHumanPlayerSideScoreAndMove", Autos.BLUEHumanPlayerSideScoreAndMove);
 			newautopick.addOption("EdgeSideScoreAndMove", Autos.EdgeSideScoreAndMove);
 		// newautopick.addOption("ScoreMidConeAndScoreCubeAndChargeStation", Autos.ScoreMidConeAndScoreCubeAndChargeStation);
 
@@ -133,21 +135,22 @@ public class RobotContainer {
 		() -> -modifyAxis(Inputs.getRotation()) * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND
 ));
 		Inputs.getBalanceButton().onTrue(getAutonomousCommand());
+		
 		// Inputs.getPivotPos().onTrue(new PivotPosPwrSwitch(true));
 		Inputs.getPivotPowerButton().onTrue(new PivotPosPwrSwitch(false));
 		// Inputs.getArmConeLow().onTrue(new ArmConeLow());
 		// Inputs.getArmConeMid().onTrue(new ArmConeMid());
 		// Inputs.getArmConeHigh().onTrue(new ArmConeHigh());
 		// Inputs.getArmConeLow().onTrue(new ArmConeLow());
-		Inputs.getArmFloorPickup().onTrue(new ArmFloorPickup());
+		Inputs.getArmFloorPickup().whileTrue(new ArmFloorPickup());
 		Inputs.getArmCubeMid().onTrue(new ArmCubeMid());
 		Inputs.getArmBase().onTrue(new ArmBasePos());
 		Inputs.getArmCubeHigh().onTrue(new ArmCubeHigh());
 		Inputs.getCloseGrabber().whileTrue(new CloseGrabber());
-		Inputs.getCloseGrabberAlt().whileTrue(new CloseGrabber());
+		// Inputs.getCloseGrabberAlt().whileTrue(new CloseGrabber());
 		Inputs.getCloseGrabberFast().whileTrue(new CloseGrabberFast());
 		Inputs.getOpenGrabber().whileTrue(new OpenGrabber());
-		Inputs.getOpenGrabberAlt().whileTrue(new OpenGrabber());
+		// Inputs.getOpenGrabberAlt().whileTrue(new OpenGrabber());
 		Inputs.getOffGrabber().onTrue(new OffGrabber());
 		// Inputs.getResetGyroButton().onTrue(new SwerveDriveResetGyro());
 		Inputs.getArmDoubleSubStation().onTrue(new ArmDoubleSubStation());
@@ -163,30 +166,52 @@ public class RobotContainer {
 		switch(newautopick.getSelected()){
 			case ChargeStation:
 			return new SequentialCommandGroup(
-				new AutoChargeStationOn(), 
-				new ParallelRaceGroup(new SwerveDriveAutoBalance(), new WaitCommand(3)),
+				// new AutoChargeStationOn(), 
+				new AutoForwardsDist(SmartDashboard.getNumber("Charge Station Dist", 2.2), .6),
+				// new ParallelRaceGroup(new SwerveDriveAutoBalance(), new WaitCommand(3)),
+				new NaiveBalance(),
+				// new AutoForwards(SmartDashboard.getNumber("Charge Station Dist", 2.2)),
 				new WaitCommand(500));
 			case Forward:
 			// return new Print();
-			// return new AutoForwardsDist(.25);
-				return new AutoForwards();
-			case HumanPlayerSideScoreAndMove:
+			return new SequentialCommandGroup(
+				new AutoForwardsDist(5.2),
+				new WaitCommand(500));
+				// return new AutoForwards();
+			case REDHumanPlayerSideScoreAndMove:
 			return new SequentialCommandGroup(
 					new ParallelRaceGroup(new ArmConeMid(), new WaitCommand(3)),
 					// new WaitCommand(.5), 
 					new OpenGrabber1sec(),
 					new OffGrabber(),  
-					new ArmBasePos(),
-					new AutoForwards(3),
-					new AutoDriveAndTurn(180, 3.25),
-					new AutoRight(1),
-					new ParallelRaceGroup(new CloseGrabberFast(), new ArmFloorPickup(), new WaitCommand(5)),
-					new AutoDriveAndTurn(180, .75),
-					new ParallelRaceGroup(new CloseGrabber(), new ArmBasePos()),
-					new ParallelRaceGroup(new AutoBack(5), new CloseGrabber()),
-					new ArmCubeMid(),
-					new OpenGrabber(),
+
+					new ParallelRaceGroup(new AutoForwardsDist(4.8), new ArmFloorPickup()),
+					new AutoDriveLeftAndTurn(180, .8),
+					new ParallelRaceGroup(new CloseGrabberFast(), new ArmFloorPickup(), new WaitCommand(1)),
+					// new AutoDriveAndTurn(180, .75),
+					new ParallelDeadlineGroup(new AutoForwardsDist(.5), new ArmFloorPickup()),
+					// new ParallelRaceGroup(new CloseGrabber(), new ArmBasePos()),
+					// new ParallelRaceGroup(new AutoBack(5), new CloseGrabber(), new ArmCubeMid()),
+					// new ArmCubeMid(),
+					// new OpenGrabber(),
 					new WaitCommand(500));
+			case BLUEHumanPlayerSideScoreAndMove:
+					return new SequentialCommandGroup(
+							new ParallelRaceGroup(new ArmConeMid(), new WaitCommand(3)),
+							// new WaitCommand(.5), 
+							new OpenGrabber1sec(),
+							new OffGrabber(),  
+		
+							new ParallelRaceGroup(new AutoForwardsDist(4.8), new ArmFloorPickup()),
+							new AutoDriveRightAndTurn(180, .8),
+							new ParallelRaceGroup(new CloseGrabberFast(), new ArmFloorPickup(), new WaitCommand(5)),
+							// new AutoDriveAndTurn(180, .75),
+							new ParallelDeadlineGroup(new AutoForwardsDist(.5), new ArmFloorPickup()),
+							// new ParallelRaceGroup(new CloseGrabber(), new ArmBasePos()),
+							// new ParallelRaceGroup(new AutoBack(5), new CloseGrabber(), new ArmCubeMid()),
+							// new ArmCubeMid(),
+							// new OpenGrabber(),
+							new WaitCommand(500));
 			case Nothing:
 				return new WaitCommand(5000);
 			case ScoreMidCone:

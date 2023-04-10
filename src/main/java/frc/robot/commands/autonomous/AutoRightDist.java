@@ -21,6 +21,11 @@ public class AutoRightDist extends CommandBase {
 	}
 
 	@Override
+	public void initialize(){
+		DrivetrainSubsystem.enable();
+	}
+
+	@Override
 	public void execute(){
         double deltaY = swerve.getPose().getY() - startPose.getY();
         if (dist - deltaY < 0.1){

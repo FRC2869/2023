@@ -32,6 +32,10 @@ public class AutoBack extends CommandBase {
 	}
 
 	@Override
+	public void initialize(){
+		DrivetrainSubsystem.enable();
+	}
+	@Override
 	public void execute(){
 		if(!hasRun){
 			System.out.println(Constants.autoTimer.get()+": Auto Forwards Start");
@@ -41,7 +45,7 @@ public class AutoBack extends CommandBase {
 		System.out.println(time.get());
 		if (time.get()<dist){
 		// System.out.println("Driving");
-			swerve.driveDirect(RobotContainer.modifyAxis(-.45)* DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND, 0,0);
+			swerve.driveDirect(RobotContainer.modifyAxis(-.75)* DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND, 0,0);
 		}
 	}
 

@@ -21,6 +21,11 @@ public class AutoBackwardsDist extends CommandBase {
 	}
 
 	@Override
+	public void initialize(){
+		DrivetrainSubsystem.enable();
+	}
+	
+	@Override
 	public void execute(){
         double deltaX = swerve.getPose().getX() + startPose.getX();
         if (dist - deltaX < 0.1){

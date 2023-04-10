@@ -8,6 +8,10 @@ public class AutoForwardsDist extends CommandBase {
 	private DrivetrainSubsystem swerve;
     private double startPose;
     private double dist;
+	private double wait;
+	private final double speedPercent;
+	private final double slowSpeed = .3;
+	private double deltaX;
 
     /**
      * 
@@ -16,19 +20,36 @@ public class AutoForwardsDist extends CommandBase {
 	public AutoForwardsDist(double dist){
 		swerve = DrivetrainSubsystem.getInstance();
 		addRequirements(swerve);
-        startPose = swerve.getDriveEncoder();
+		this.speedPercent = .75;
+        this.dist = dist;
+	}
+
+	public AutoForwardsDist(double dist, double speedPercent){
+		swerve = DrivetrainSubsystem.getInstance();
+		addRequirements(swerve);
+		this.speedPercent = speedPercent;
         this.dist = dist;
 	}
 
 	@Override
+	public void initialize(){
+        startPose = swerve.getDriveEncoder();
+		DrivetrainSubsystem.enable();
+	}
+	@Override
 	public void execute(){
-        double deltaX = swerve.getDriveEncoder() - startPose;
-        System.out.println(deltaX);
-        if (dist - deltaX < 0.1){
-            swerve.drive(RobotContainer.modifyAxis(.3)* DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND, 0, 0);
+		 deltaX = Math.abs(swerve.getDriveEncoder() - startPose);
+		if(wait==15){
+			startPose = swerve.getDriveEncoder();
+			deltaX = 0;
+		}
+		wait++;
+        System.out.println(dist-deltaX);
+        if (dist - deltaX < 0.75){
+            swerve.driveDirect(RobotContainer.modifyAxis(slowSpeed)* DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND, 0, 0);
         }   
         else
-		    swerve.drive(RobotContainer.modifyAxis(.5)* DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND, 0, 0);
+		    swerve.driveDirect(RobotContainer.modifyAxis(speedPercent)* DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND, 0, 0);
 	}
 
     /**
@@ -40,7 +61,8 @@ public class AutoForwardsDist extends CommandBase {
      */
 	@Override
 	public boolean isFinished(){
-		if (swerve.getDriveEncoder()>=startPose+dist){
+		deltaX = Math.abs(swerve.getDriveEncoder() - startPose);
+		if (deltaX>dist){
 			System.out.println("DONE");
             swerve.drive(0, 0, 0);
 			return true;
