@@ -5,6 +5,7 @@
 package frc.robot;
 
 import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.hal.HALUtil;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.AddressableLED;
@@ -14,7 +15,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.commands.pivot.PivotPosPwrSwitch;
-import frc.robot.commands.swerve.SwerveStop;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.PivotSubsystem;
 
@@ -33,6 +33,10 @@ private AddressableLED led;
 
 private AddressableLEDBuffer led_buffer;
 // private CameraServer cam;
+
+public static UsbCamera camera;
+
+
 
 
   /**
@@ -53,7 +57,10 @@ private AddressableLEDBuffer led_buffer;
 	// }
 	led.setData(led_buffer);
 	led.start();
-	CameraServer.startAutomaticCapture("cam0",0);
+	camera = CameraServer.startAutomaticCapture("cam0",0);
+    camera.setResolution(160, 120);
+	
+    
 	SmartDashboard.putNumber("Charge Station Dist", 2.2);
   }
 
@@ -85,6 +92,11 @@ private AddressableLEDBuffer led_buffer;
 	rainbow();
 	led.setData(led_buffer);
 	led.start();
+	// double centerX;
+    // synchronized (imgLock) {
+    //     centerX = this.centerX;
+    // }
+	// SmartDashboard.putNumber("Center X", centerX);
 
   }
   public void rainbow(){
@@ -119,7 +131,7 @@ private AddressableLEDBuffer led_buffer;
     Constants.autoTimer.start();
 	
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
-	new SwerveStop().schedule();
+	// new SwerveStop().schedule();
     // schedule the autonomous command (example)
     if (m_autonomousCommand != null) {
       m_autonomousCommand.schedule();

@@ -109,4 +109,10 @@ public class GrabberSubsystem extends SubsystemBase{
 		// System.out.println(grabber2.get());
 	}
 
+	public boolean isIntaked() {
+		var current1 = grabber1.getOutputCurrent();
+		var current2 = grabber2.getOutputCurrent();
+		return (current1+current2)/2.0 > 15;
+	}
+
 }

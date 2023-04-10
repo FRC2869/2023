@@ -295,6 +295,19 @@ public class DrivetrainSubsystem extends SubsystemBase {
 		m_chassisSpeeds = chassisSpeeds;
 	}
 
+	public void driveDirectRobotRelative(double x, double y, double omega) {
+		// if (Math.abs(omega) < 0.25) {
+		// omega = avglastspeeds(2);
+		// // SmartDashboard.putBoolean("smoothing", true);
+		// }
+
+		var chassisSpeeds = new ChassisSpeeds(
+				x,
+				y,
+				omega);
+		m_chassisSpeeds = chassisSpeeds;
+	}
+
 	private double avglastspeeds(int j) {
 		if (j == 0) {
 			double avg = 0;
@@ -414,7 +427,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
 		SwerveModuleState[] states = m_kinematics.toSwerveModuleStates(m_chassisSpeeds);
 		SwerveDriveKinematics.desaturateWheelSpeeds(states, MAX_VELOCITY_METERS_PER_SECOND);
-		if (isEnabled) {
+		if (isEnabled||!isEnabled) {
 			if (!Constants.locked)
 				setModuleStates(states);
 			else {
@@ -430,7 +443,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
 	}
 
 	public double getDriveEncoder() {
-		return Math.abs(m_frontRightModule.getDrivePosition());
+		return Math.abs(m_frontLeftModule.getDrivePosition());
 		// return
 		// (Math.abs(m_frontLeftModule.getDrivePosition())+Math.abs(m_frontRightModule.getDrivePosition())+Math.abs(m_backLeftModule.getDrivePosition())+Math.abs(m_backRightModule.getDrivePosition()))/4.0;
 	}
@@ -460,9 +473,6 @@ public class DrivetrainSubsystem extends SubsystemBase {
 				y,
 				omega);
 		m_chassisSpeeds = chassisSpeeds;
-	}
-
-	public void drive(Object x, Object y, Object omega) {
 	}
 
 }

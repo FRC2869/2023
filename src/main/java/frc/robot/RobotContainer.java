@@ -29,6 +29,7 @@ import frc.robot.commands.autonomous.AutoDriveLeftAndTurn;
 import frc.robot.commands.autonomous.AutoDriveRightAndTurn;
 import frc.robot.commands.autonomous.AutoForwards;
 import frc.robot.commands.autonomous.AutoForwardsDist;
+import frc.robot.commands.autonomous.AutoGoToCube;
 import frc.robot.commands.autonomous.NaiveBalance;
 import frc.robot.commands.grabber.CloseGrabber;
 import frc.robot.commands.grabber.CloseGrabberFast;
@@ -63,7 +64,7 @@ public class RobotContainer {
 	ShuffleboardTab test = Shuffleboard.getTab("test");
 
 	private enum Autos {
-		Nothing, Forward, ScoreMidCone, ScoreMidConeAndMove, ScoreMidConeAndPickupCube, ScoreMidConeAndScoreCube, ScoreMidConeAndChargeStation, ChargeStation, ScoreMidConeAndScoreCubeAndChargeStation, ScoreMidConeAndCrossChargeStation, HumanPlayerSideScoreAndMove, EdgeSideScoreAndMove, REDHumanPlayerSideScoreAndMove, BLUEHumanPlayerSideScoreAndMove
+		Nothing, Forward, ScoreMidCone, ScoreMidConeAndMove, TurnToCube, ScoreMidConeAndScoreCube, ScoreMidConeAndChargeStation, ChargeStation, ScoreMidConeAndScoreCubeAndChargeStation, ScoreMidConeAndCrossChargeStation, HumanPlayerSideScoreAndMove, EdgeSideScoreAndMove, REDHumanPlayerSideScoreAndMove, BLUEHumanPlayerSideScoreAndMove
 	}
 	Autos currentAuto = Autos.Nothing;
 	private SendableChooser<Autos> newautopick; 
@@ -85,6 +86,7 @@ public class RobotContainer {
 			newautopick.addOption("REDHumanPlayerSideScoreAndMove", Autos.REDHumanPlayerSideScoreAndMove);
 			newautopick.addOption("BLUEHumanPlayerSideScoreAndMove", Autos.BLUEHumanPlayerSideScoreAndMove);
 			newautopick.addOption("EdgeSideScoreAndMove", Autos.EdgeSideScoreAndMove);
+			newautopick.addOption("TurnToCube", Autos.TurnToCube);
 		// newautopick.addOption("ScoreMidConeAndScoreCubeAndChargeStation", Autos.ScoreMidConeAndScoreCubeAndChargeStation);
 
 		auto.add("auto", newautopick).withPosition(0, 0).withSize(3, 1);
@@ -189,7 +191,7 @@ public class RobotContainer {
 					new AutoDriveLeftAndTurn(180, .8),
 					new ParallelRaceGroup(new CloseGrabberFast(), new ArmFloorPickup(), new WaitCommand(1)),
 					// new AutoDriveAndTurn(180, .75),
-					new ParallelDeadlineGroup(new AutoForwardsDist(.5), new ArmFloorPickup()),
+					new ParallelDeadlineGroup(new AutoGoToCube(), new ArmFloorPickup()),
 					// new ParallelRaceGroup(new CloseGrabber(), new ArmBasePos()),
 					// new ParallelRaceGroup(new AutoBack(5), new CloseGrabber(), new ArmCubeMid()),
 					// new ArmCubeMid(),
@@ -206,7 +208,7 @@ public class RobotContainer {
 							new AutoDriveRightAndTurn(180, .8),
 							new ParallelRaceGroup(new CloseGrabberFast(), new ArmFloorPickup(), new WaitCommand(5)),
 							// new AutoDriveAndTurn(180, .75),
-							new ParallelDeadlineGroup(new AutoForwardsDist(.5), new ArmFloorPickup()),
+							new ParallelDeadlineGroup(new AutoGoToCube(), new ArmFloorPickup()),
 							// new ParallelRaceGroup(new CloseGrabber(), new ArmBasePos()),
 							// new ParallelRaceGroup(new AutoBack(5), new CloseGrabber(), new ArmCubeMid()),
 							// new ArmCubeMid(),
@@ -251,8 +253,8 @@ public class RobotContainer {
 					new AutoForwards(), 
 					// new SwerveStop(),
 					new WaitCommand(500));
-			case ScoreMidConeAndPickupCube:
-				break;
+			case TurnToCube:
+				return new AutoGoToCube();
 			case ScoreMidConeAndScoreCube:
 				break;
 			case ScoreMidConeAndScoreCubeAndChargeStation:

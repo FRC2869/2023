@@ -14,7 +14,6 @@ import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Inputs;
 import frc.robot.Constants.Motors;
 import frc.robot.Constants.PivotConstants;
 import frc.robot.Inputs;
