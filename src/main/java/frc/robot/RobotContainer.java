@@ -15,11 +15,14 @@ import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.commands.ArmBasePos;
+import frc.robot.commands.ArmLowFront;
 import frc.robot.commands.ArmConeMid;
 import frc.robot.commands.ArmCubeHigh;
 import frc.robot.commands.ArmCubeMid;
-import frc.robot.commands.ArmDoubleSubStation;
+import frc.robot.commands.ArmDoubleSubStationBack;
+import frc.robot.commands.ArmDoubleSubStationFront;
 import frc.robot.commands.ArmFloorPickup;
+import frc.robot.commands.ArmLowBack;
 import frc.robot.commands.DefaultDriveCommand;
 import frc.robot.commands.DefaultDriveRobotCommand;
 import frc.robot.commands.autonomous.AutoChargeStationOn;
@@ -140,18 +143,22 @@ public class RobotContainer {
 		Inputs.getBalanceButton().onTrue(getAutonomousCommand());
 	}
 	private void configureOperatorBindings(){
-		Inputs.getPivotPowerButton().onTrue(new PivotPosPwrSwitch(false));
-		Inputs.getArmFloorPickup().whileTrue(new ArmFloorPickup());
-		Inputs.getArmCubeMid().onTrue(new ArmCubeMid());
 		Inputs.getArmBase().onTrue(new ArmBasePos());
+		Inputs.getArmLowFront().onTrue(new ArmLowFront());
+		Inputs.getArmCubeMid().onTrue(new ArmCubeMid());
+		Inputs.getArmDoubleSubStationFront().onTrue(new ArmDoubleSubStationFront());
+		Inputs.getArmDoubleSubStationBack().onTrue(new ArmDoubleSubStationBack());
+		Inputs.getArmConeMid().onTrue(new ArmConeMid());
+		Inputs.getArmLowBack().onTrue(new ArmLowBack());
 		Inputs.getArmCubeHigh().onTrue(new ArmCubeHigh());
+		Inputs.getArmFloorPickup().whileTrue(new ArmFloorPickup());
+		Inputs.getPivotCancelButton().onTrue(new PivotCancel());
+		Inputs.getPivotPowerButton().onTrue(new PivotPosPwrSwitch(false));
+
 		Inputs.getCloseGrabber().whileTrue(new CloseGrabber());
 		Inputs.getCloseGrabberFast().whileTrue(new CloseGrabberFast());
 		Inputs.getOpenGrabber().whileTrue(new OpenGrabber());
 		Inputs.getOffGrabber().onTrue(new OffGrabber());
-		// Inputs.getResetGyroButton().onTrue(new SwerveDriveResetGyro());
-		Inputs.getArmDoubleSubStation().onTrue(new ArmDoubleSubStation());
-		Inputs.getPivotCancelButton().onTrue(new PivotCancel());
 	}
 
 	/**

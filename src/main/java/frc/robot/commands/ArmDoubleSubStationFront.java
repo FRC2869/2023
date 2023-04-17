@@ -5,13 +5,13 @@ import frc.robot.Constants;
 import frc.robot.Constants.PivotConstants;
 import frc.robot.subsystems.PivotSubsystem;
 
-public class ArmDoubleSubStation extends CommandBase{
+public class ArmDoubleSubStationFront extends CommandBase{
 	// private ArmSubsystem arm;
 	private PivotSubsystem pivot;
 	// private int armCounter;
 	private int pivotCounter;
 
-	public ArmDoubleSubStation(){
+	public ArmDoubleSubStationFront(){
 		// arm = ArmSubsystem.getInstance();
 		pivot = PivotSubsystem.getInstance();
 		System.out.println("Double and High");
@@ -24,14 +24,14 @@ public class ArmDoubleSubStation extends CommandBase{
 		// arm.setPositionControl(true);
 		// arm.position(ArmConstants.Extension.midCubeDistance);
 		pivot.setPositionControl(true);
-		pivot.position(PivotConstants.doubleSubstationAngle);
+		pivot.position(PivotConstants.doubleSubstationFrontAngle);
 	}
 
 	@Override
 	public boolean isFinished(){
 		
 		// boolean armDone = Math.abs(arm.getPosition()-ArmConstants.Extension.midCubeDistance) < ArmConstants.Extension.tolerance;
-		boolean pivotDone = Math.abs(pivot.getAngle()-PivotConstants.doubleSubstationAngle) < PivotConstants.tolerance;
+		boolean pivotDone = Math.abs(pivot.getAngle()-PivotConstants.doubleSubstationFrontAngle) < PivotConstants.tolerance;
 
 		// if(armDone){
 		// 	armCounter++;

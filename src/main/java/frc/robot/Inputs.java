@@ -15,6 +15,8 @@ public class Inputs {
 	private static final CommandXboxController driverCmd = new CommandXboxController(OperatorConstants.kDriverControllerPort);
     private static final XboxController operator = new XboxController(OperatorConstants.kOperatorControllerPort);
 	private static final CommandXboxController operatorCmd = new CommandXboxController(OperatorConstants.kOperatorControllerPort);
+    // private static final XboxController operator2 = new XboxController(OperatorConstants.kOperatorControllerPort);
+	private static final CommandXboxController operator2Cmd = new CommandXboxController(OperatorConstants.kOperatorControllerPort);
     
 	/*
 	 * 
@@ -31,17 +33,26 @@ public class Inputs {
 	 *  Right Bumper - Slow Mode
 	 * 
 	 * Operator
-	 * 	Left Joystick Y - Move Arm
-	 * 	D-Pad Down - Base Position
-	 * 	D-Pad Left - High Cube Position (back)
-	 * 	D-Pad Right - Mid Cube Position (front)
-	 *  D-Pad Up - Double Substation Position (front)
-	 *  Right Bumper - Floor Pickup (Hold Down)
-	 * 	Left Bumper - Cancel Arm Command
-	 * 	Y Button - Stop Intake
-	 * 	X Button - Outtake
-	 * 	A Button - Fast Intake
-	 * 	B Button - Slow Intake
+	 *  Controller 1
+	 * 	 Left Joystick Y - Move Arm
+	 * 	 D-Pad Down - Base Position
+	 * 	 D-Pad Left - Low Position (front)
+	 * 	 D-Pad Right - Mid Cube Position (front)
+	 *   D-Pad Up - Double Substation Position (front)
+	 *   Y Button - Double Substation Position (back)
+	 *   X Button - Mid Cone Position (back)
+	 *   A Button - Low Position (back)
+	 *   B Button - High Cube Position (back)
+	 *   Right Bumper - Floor Pickup (Hold Down)
+	 * 	 Left Bumper - Cancel Arm Command
+	 * 	 Back Button - Manual Encoder Override
+	 * 	 Start Button - Switch to Power Control	
+	 * 
+	 * 	Controller 2
+	 *   Y Button - Stop Intake
+	 * 	 X Button - Outtake
+	 * 	 A Button - Fast Intake
+	 * 	 B Button - Slow Intake
 	 */
 
 
@@ -135,19 +146,39 @@ public class Inputs {
 		return pos;
 	}
 	public static Trigger getArmBase(){
+		//Down
 		return operatorCmd.pov(180);
 	}
+	public static Trigger getArmLowFront(){
+		//Left
+		return operatorCmd.pov(90);
+	}
 	public static Trigger getArmCubeMid(){
+		//Right
 		return operatorCmd.pov(270);
 	}
-	public static Trigger getArmDoubleSubStation(){
+	public static Trigger getArmDoubleSubStationFront(){
+		//Up
 		return operatorCmd.pov(0);
+	}
+	public static Trigger getArmDoubleSubStationBack(){
+		//Up
+		return operatorCmd.y();
+	}
+	public static Trigger getArmConeMid() {
+		//Left
+		return operatorCmd.x();
+	}
+	public static Trigger getArmLowBack() {
+		//Down
+		return operatorCmd.a();
+	}
+	public static Trigger getArmCubeHigh() {
+		//Right
+		return operatorCmd.b();
 	}
 	public static Trigger getPivotCancelButton(){
 		return operatorCmd.leftBumper();
-	}
-	public static Trigger getArmCubeHigh() {
-		return operatorCmd.pov(90);
 	}
 	public static Trigger getArmFloorPickup() {
 		return operatorCmd.rightBumper();
@@ -162,15 +193,15 @@ public class Inputs {
 	 * Grabber
 	 */
 	public static Trigger getCloseGrabber(){
-		return operatorCmd.b();
+		return operator2Cmd.b();
 	}
 	public static Trigger getOpenGrabber(){
-		return operatorCmd.x();
+		return operator2Cmd.x();
 	}
 	public static Trigger getOffGrabber(){
-		return operatorCmd.y();
+		return operator2Cmd.y();
 	}
 	public static Trigger getCloseGrabberFast() {
-        return operatorCmd.a();
+        return operator2Cmd.a();
     }
 }

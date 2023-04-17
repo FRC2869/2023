@@ -9,6 +9,6 @@ import frc.robot.commands.grabber.OpenGrabber;
 
 public class ArmScoreConeLow extends SequentialCommandGroup {
     public ArmScoreConeLow(){
-        super(new ArmConeLow(), new ParallelRaceGroup(new OpenGrabber(), new WaitCommand(1)), new ParallelRaceGroup(new OffGrabber(), new WaitCommand(.25)), new ArmBasePos(), new AutoForwardsDist(1));
+        super(new ArmLowFront(), new ParallelRaceGroup(new OpenGrabber(), new WaitCommand(1)), new ParallelRaceGroup(new OffGrabber(), new WaitCommand(.25)), new ArmBasePos(), new AutoForwardsDist(1));
     }
 }

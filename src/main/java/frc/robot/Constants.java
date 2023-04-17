@@ -181,15 +181,17 @@ public static final int pidTimer = 20;
     public static final int pivotMotorId = 14;
     public static final double GEAR_RATIO = (1/25.0)*(12.0/54.0);
 	public static final double tolerance = 1;
-	public static final double lowConeAngle = -30;
+	public static final double lowFrontAngle = -30;
 	public static final double midConeAngle = 185;
 	public static final double highConeAngle = 0;
 	public static final double highCubeAngle = 156;
 	public static final double midCubeAngle = 0;
 	public static final double lowCubeAngle = -30;
-	public static final double doubleSubstationAngle = 12;
+	public static final double doubleSubstationFrontAngle = 12;
 	public static final double floorPickupAngle = 240;
 	public static final double basePower = 0.4;
+	public static final double doubleSubstationBackAngle = 178; //TODO: Verify
+	public static final double lowBackAngle = 210;
   }
   public static class PneumaticsConstants{
 	public static final int solenoidPortForwardsTwo = 1;
