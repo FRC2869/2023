@@ -3,6 +3,7 @@ package frc.robot.subsystems;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.Motors;
 
@@ -46,10 +47,10 @@ public class GrabberSubsystem extends SubsystemBase{
 		grabber2.restoreFactoryDefaults();
 
         grabber2.enableVoltageCompensation(12.0);
-		grabber2.setInverted(Motors.Grabber1.kInverted);
-		grabber2.setIdleMode(Motors.Grabber1.idlemode);
-		grabber2.setSmartCurrentLimit(Motors.Grabber1.currentLimit);
-		grabber2.setOpenLoopRampRate(Motors.Grabber1.openLoopRampRate);
+		grabber2.setInverted(Motors.Grabber2.kInverted);
+		grabber2.setIdleMode(Motors.Grabber2.idlemode);
+		grabber2.setSmartCurrentLimit(Motors.Grabber2.currentLimit);
+		grabber2.setOpenLoopRampRate(Motors.Grabber2.openLoopRampRate);
 		grabber2.burnFlash();
 	}
 
@@ -65,16 +66,23 @@ public class GrabberSubsystem extends SubsystemBase{
 		// solenoid1.set(Value.kForward);
 		// solenoid2.set(Value.kForward);
 		
-		grabber1.set(.6);
-		grabber2.set(-.6);
+		grabber1.set(.15);
+		grabber2.set(.15);
 		// System.out.println("in");
 	}
-
+	public void closeGrabberFast(){
+		// solenoid1.set(Value.kForward);
+		// solenoid2.set(Value.kForward);
+		
+		grabber1.set(.4);
+		grabber2.set(.4);
+		// System.out.println("in");
+	}
 	public void openGrabber(){
 		// solenoid1.set(Value.kReverse);
 		// solenoid2.set(Value.kReverse);
-		grabber1.set(-.6);
-		grabber2.set(.6);
+		grabber1.set(-.5);
+		grabber2.set(-.5);
 		// System.out.println("out");
 	}
 
@@ -96,8 +104,15 @@ public class GrabberSubsystem extends SubsystemBase{
 
 	@Override
 	public void periodic(){
-		// System.out.print(grabber1.get());
-		// System.out.println(grabber2.get());
+		SmartDashboard.putBoolean("Intaked?", isIntaked());
+		// System.out.print(grabber1.getOutputCurrent());
+		// System.out.println(grabber2.getOutputCurrent());
+	}
+
+	public boolean isIntaked() {
+		var current1 = grabber1.getOutputCurrent();
+		var current2 = grabber2.getOutputCurrent();
+		return (current1+current2)/2.0 > 15;
 	}
 
 }

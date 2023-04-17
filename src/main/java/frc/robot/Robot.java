@@ -4,9 +4,18 @@
 
 package frc.robot;
 
+import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.cscore.UsbCamera;
+import edu.wpi.first.hal.HALUtil;
+import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.AddressableLEDBuffer;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.commands.pivot.PivotPosPwrSwitch;
+import frc.robot.subsystems.DrivetrainSubsystem;
+import frc.robot.subsystems.PivotSubsystem;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -19,6 +28,16 @@ public class Robot extends TimedRobot {
 
   private RobotContainer m_robotContainer;
 
+// private AddressableLED led;
+
+private AddressableLEDBuffer led_buffer;
+// private CameraServer cam;
+
+public static UsbCamera camera;
+
+
+
+
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
@@ -27,8 +46,21 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
-    
+    // led = new AddressableLED(0);
+	// led_buffer = new AddressableLEDBuffer(120);
+	// led.setLength(led_buffer.getLength());
+
     m_robotContainer = new RobotContainer();
+	// for(int i=0;i<led_buffer.getLength();i++){
+	// 	led_buffer.setRGB(i, 255, 255, 255);
+	// }
+	// led.setData(led_buffer);
+	// led.start();
+	camera = CameraServer.startAutomaticCapture("cam0",0);
+    camera.setResolution(160, 120);
+	
+    
+	SmartDashboard.putNumber("Charge Station Dist", 2.2);
   }
 
   /**
@@ -40,6 +72,11 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
+	// double id = NetworkTableInstance.getDefault().getTable("limelight").getEntry("id").getDouble(-1);
+	// if(id!=-1){
+		double target = NetworkTableInstance.getDefault().getTable("limelight").getEntry("targetpose_robotspace").getDoubleArray(new double[6])[2];
+			SmartDashboard.putNumber("Distance To April Tags", target);
+	// }
     // Runs the Scheduler.  This is responsible for polling buttons, adding newly-scheduled
     // commands, running already-scheduled commands, removing finished or interrupted commands,
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
@@ -48,12 +85,33 @@ public class Robot extends TimedRobot {
     if(Inputs.getSwerveReset()){
       m_robotContainer.resetSwerve();
     }
+	if(HALUtil.getFPGAButton()){
+		PivotSubsystem.getInstance().toggleCoast();
+	}
+	// rainbow();
+	// led.setData(led_buffer);
+	// led.start();
+	// double centerX;
+    // synchronized (imgLock) {
+    //     centerX = this.centerX;
+    // }
+	// SmartDashboard.putNumber("Center X", centerX);
+
+  }
+  public void rainbow(){
+	int firstPixel = 0;
+	for(var i=0; i<led_buffer.getLength();i++){
+		final var hue = (firstPixel + (i+180 / led_buffer.getLength())) %180;
+		led_buffer.setHSV(i, hue, 255, 128);
+		firstPixel += 3;
+		firstPixel %= 180;
+	}
   }
 
   /** This function is called once each time the robot enters Disabled mode. */
   @Override
   public void disabledInit() {
-    Constants.isEnabled = false;
+    Constants.isAuto = false;
   }
 
   @Override
@@ -62,26 +120,39 @@ public class Robot extends TimedRobot {
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
   @Override
   public void autonomousInit() {
-    Constants.isEnabled = true;
+    // Shuffleboard.selectTab("Auto");
+	DrivetrainSubsystem.disable();
+	PivotSubsystem.getInstance().toggleCoast();
+    Constants.isAuto = true;
+    // Constants.isEnabled = true;
+    System.out.println("AUto");
+    Constants.autoTimer.reset();
+    Constants.autoTimer.start();
+	
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
-
+	// new SwerveStop().schedule();
     // schedule the autonomous command (example)
     if (m_autonomousCommand != null) {
       m_autonomousCommand.schedule();
     }
-  }
+}
 
   /** This function is called periodically during autonomous. */
   @Override
-  public void autonomousPeriodic() {}
-
+  public void autonomousPeriodic() {
+  // System.out.println(CommandScheduler.getInstance().isScheduled(m_autonomousCommand));
+  }
   @Override
   public void teleopInit() {
-    Constants.isEnabled = true;
+    // Shuffleboard.selectTab("Teleop");
+	PivotSubsystem.getInstance().toggleCoast();
+	DrivetrainSubsystem.enable();
+    Constants.isAuto = false;
     // This makes sure that the autonomous stops running when
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
     // this line or comment it out.
+    new PivotPosPwrSwitch(false).schedule();
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
@@ -91,12 +162,15 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
-    
+	Constants.locked = Inputs.getSwerveLock();
+	if(Inputs.cancelDriveButton().getAsBoolean()){
+		DrivetrainSubsystem.getInstance().getCurrentCommand().cancel();
+	}
   }
 
   @Override
   public void testInit() {
-    Constants.isEnabled = true;
+    Constants.isAuto = false;
     // Cancels all running commands at the start of test mode.
     CommandScheduler.getInstance().cancelAll();
   }

@@ -31,6 +31,7 @@ public class ArmCubeHigh extends CommandBase{
 	public boolean isFinished(){
 		
 		// boolean armDone = Math.abs(arm.getPosition()-ArmConstants.Extension.highCubeDistance) < ArmConstants.Extension.tolerance;
+		System.out.println(pivot.getAngle());
 		boolean pivotDone = Math.abs(pivot.getAngle()-PivotConstants.highCubeAngle) < PivotConstants.tolerance;
 
 		// if(armDone){
@@ -45,6 +46,7 @@ public class ArmCubeHigh extends CommandBase{
 		}
 
 		if(pivotCounter>Constants.pidTimer){
+			pivot.setPositionControl(false);
 			return true;
 		}else{
 			return false;

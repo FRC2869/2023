@@ -14,7 +14,7 @@ public class ArmCubeMid extends CommandBase{
 	public ArmCubeMid(){
 		// arm = ArmSubsystem.getInstance();
 		pivot = PivotSubsystem.getInstance();
-		
+		System.out.println("Cube Mid");
 		// addRequirements(arm);
 		addRequirements(pivot);
 	}
@@ -45,6 +45,7 @@ public class ArmCubeMid extends CommandBase{
 		}
 
 		if(pivotCounter>Constants.pidTimer){
+			pivot.setPositionControl(false);
 			return true;
 		}else{
 			return false;

@@ -14,7 +14,7 @@ public class ArmDoubleSubStation extends CommandBase{
 	public ArmDoubleSubStation(){
 		// arm = ArmSubsystem.getInstance();
 		pivot = PivotSubsystem.getInstance();
-		
+		System.out.println("Double and High");
 		// addRequirements(arm);
 		addRequirements(pivot);
 	}
@@ -31,7 +31,7 @@ public class ArmDoubleSubStation extends CommandBase{
 	public boolean isFinished(){
 		
 		// boolean armDone = Math.abs(arm.getPosition()-ArmConstants.Extension.midCubeDistance) < ArmConstants.Extension.tolerance;
-		boolean pivotDone = Math.abs(pivot.getAngle()-PivotConstants.midCubeAngle) < PivotConstants.tolerance;
+		boolean pivotDone = Math.abs(pivot.getAngle()-PivotConstants.doubleSubstationAngle) < PivotConstants.tolerance;
 
 		// if(armDone){
 		// 	armCounter++;

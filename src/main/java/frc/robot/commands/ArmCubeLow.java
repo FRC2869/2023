@@ -45,6 +45,7 @@ public class ArmCubeLow extends CommandBase{
 		}
 
 		if(pivotCounter>Constants.pidTimer){
+			pivot.setPositionControl(false);
 			return true;
 		}else{
 			return false;

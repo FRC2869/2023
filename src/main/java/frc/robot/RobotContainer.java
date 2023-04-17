@@ -4,24 +4,41 @@
 
 package frc.robot;
 
-import com.pathplanner.lib.PathConstraints;
-import com.pathplanner.lib.PathPlanner;
-import com.pathplanner.lib.PathPlannerTrajectory;
-
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.Constants.SwerveConstants;
+import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
+import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
+import frc.robot.commands.ArmBasePos;
+import frc.robot.commands.ArmConeMid;
+import frc.robot.commands.ArmCubeHigh;
+import frc.robot.commands.ArmCubeMid;
 import frc.robot.commands.ArmDoubleSubStation;
+import frc.robot.commands.ArmFloorPickup;
 import frc.robot.commands.DefaultDriveCommand;
-import frc.robot.commands.autonomous.AutoBack;
+import frc.robot.commands.DefaultDriveRobotCommand;
 import frc.robot.commands.autonomous.AutoChargeStationOn;
+import frc.robot.commands.autonomous.AutoChargeStationOnBack;
+import frc.robot.commands.autonomous.AutoCrossChargeStation;
+import frc.robot.commands.autonomous.AutoDriveLeftAndTurn;
+import frc.robot.commands.autonomous.AutoDriveRightAndTurn;
 import frc.robot.commands.autonomous.AutoForwards;
-import frc.robot.commands.autonomous.AutoRight;
+import frc.robot.commands.autonomous.AutoForwardsDist;
+import frc.robot.commands.autonomous.AutoGoToCube;
+import frc.robot.commands.autonomous.NaiveBalance;
 import frc.robot.commands.grabber.CloseGrabber;
+import frc.robot.commands.grabber.CloseGrabberFast;
 import frc.robot.commands.grabber.OffGrabber;
 import frc.robot.commands.grabber.OpenGrabber;
+import frc.robot.commands.grabber.OpenGrabber1sec;
+import frc.robot.commands.pivot.PivotCancel;
 import frc.robot.commands.pivot.PivotDefault;
+import frc.robot.commands.pivot.PivotPosPwrSwitch;
 import frc.robot.commands.swerve.SwerveDriveAutoBalance;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.PivotSubsystem;
@@ -42,30 +59,45 @@ public class RobotContainer {
 	// private final ArmSubsystem arm = ArmSubsystem.getInstance();
 	private final PivotSubsystem pivot = PivotSubsystem.getInstance();
 	// private final GrabberSubsystem grabber = GrabberSubsystem.getInstance();
-	private PathPlannerTrajectory floorPickup;
-	private PathPlannerTrajectory forward1m;
+	ShuffleboardTab auto = Shuffleboard.getTab("Auto");
+	ShuffleboardTab teleop = Shuffleboard.getTab("Teleop");
+	ShuffleboardTab test = Shuffleboard.getTab("test");
+
 	private enum Autos {
-		Nothing, Forward, ScoreMidCone, ScoreMidConeAndMove, ScoreMidConeAndPickupCube, ScoreMidConeAndScoreCube, ScoreMidConeAndChargeStation, ChargeStation, ScoreMidConeAndScoreCubeAndChargeStation
+		Nothing, Forward, ScoreMidCone, ScoreMidConeAndMove, TurnToCube, ScoreMidConeAndScoreCube, ScoreMidConeAndChargeStation, ChargeStation, ScoreMidConeAndScoreCubeAndChargeStation, ScoreMidConeAndCrossChargeStation, HumanPlayerSideScoreAndMove, EdgeSideScoreAndMove, REDHumanPlayerSideScoreAndMove, BLUEHumanPlayerSideScoreAndMove
 	}
 	Autos currentAuto = Autos.Nothing;
-	private PathPlannerTrajectory scoreFromPickup; 
+	private SendableChooser<Autos> newautopick; 
 
 	/**
 	 * The container for the robot. Contains subsystems, OI devices, and commands.
 	 */
 	public RobotContainer() {
+		newautopick = new SendableChooser<>();
+		newautopick.addOption("Nothing", Autos.Nothing);
+		newautopick.addOption("Forward", Autos.Forward);
+		newautopick.setDefaultOption("ScoreMidCone", Autos.ScoreMidCone);
+		newautopick.addOption("ScoreMidConeAndMove", Autos.ScoreMidConeAndMove);
+		// newautopick.addOption("ScoreMidConeAndPickupCube", Autos.ScoreMidConeAndPickupCube);
+		// newautopick.addOption("ScoreMidConeAndScoreCube", Autos.ScoreMidConeAndScoreCube);
+		newautopick.addOption("ScoreMidConeAndChargeStation", Autos.ScoreMidConeAndChargeStation);
+		newautopick.addOption("ScoreMidConeAndCrossChargeStation", Autos.ScoreMidConeAndCrossChargeStation);
+		newautopick.addOption("ChargeStation", Autos.ChargeStation);
+			newautopick.addOption("REDHumanPlayerSideScoreAndMove", Autos.REDHumanPlayerSideScoreAndMove);
+			newautopick.addOption("BLUEHumanPlayerSideScoreAndMove", Autos.BLUEHumanPlayerSideScoreAndMove);
+			newautopick.addOption("EdgeSideScoreAndMove", Autos.EdgeSideScoreAndMove);
+			newautopick.addOption("TurnToCube", Autos.TurnToCube);
+		// newautopick.addOption("ScoreMidConeAndScoreCubeAndChargeStation", Autos.ScoreMidConeAndScoreCubeAndChargeStation);
+
+		auto.add("auto", newautopick).withPosition(0, 0).withSize(3, 1);
+		SmartDashboard.putNumber("Balance kP", 0.25);
+		SmartDashboard.putNumber("Balance kD", 0.1);
+
 		CommandScheduler.getInstance().cancelAll();
 		configureDefaultCommands();
 		configureBindings();
 		resetSwerve();
 		// grabber.compressorOn();
-		loadTrajectories();
-	}
-
-	private void loadTrajectories() {
-		floorPickup = PathPlanner.loadPath("getFloorPickup", new PathConstraints(SwerveConstants.kMaxAutoSpeed, SwerveConstants.kMaxAutoAcceration));
-		forward1m = PathPlanner.loadPath("forward1m", new PathConstraints(SwerveConstants.kMaxAutoSpeed, SwerveConstants.kMaxAutoAcceration));
-		scoreFromPickup = PathPlanner.loadPath("scoreFromPickup", new PathConstraints(SwerveConstants.kMaxAutoSpeed, SwerveConstants.kMaxAutoAcceration));
 	}
 
 	/****************/
@@ -94,26 +126,32 @@ public class RobotContainer {
 	/***************/
 	private void configureBindings() {
 		configureDriverBindings();
+		configureOperatorBindings();
 	}
 
 	/**
 	 * 
 	 */
 	private void configureDriverBindings() {
-		Inputs.getBalanceButton().onTrue(new SwerveDriveAutoBalance());
-		// Inputs.getPivotPos().onTrue(new PivotPosPwrSwitch(true));
-		// Inputs.getPivotPwr().onTrue(new PivotPosPwrSwitch(false));
-		// Inputs.getArmConeLow().onTrue(new ArmConeLow());
-		// Inputs.getArmConeMid().onTrue(new ArmConeMid());
-		// Inputs.getArmConeHigh().onTrue(new ArmConeHigh());
-		// Inputs.getArmCubeLow().onTrue(new ArmCubeLow());
-		// Inputs.getArmCubeMid().onTrue(new ArmCubeMid());
-		// Inputs.getArmCubeHigh().onTrue(new ArmCubeHigh());
+		Inputs.getRobotRelative().whileTrue(new DefaultDriveRobotCommand(() -> -modifyAxis(Inputs.getTranslationY()) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
+		() -> -modifyAxis(Inputs.getTranslationX()) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
+		() -> -modifyAxis(Inputs.getRotation()) * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND
+));
+		Inputs.getBalanceButton().onTrue(getAutonomousCommand());
+	}
+	private void configureOperatorBindings(){
+		Inputs.getPivotPowerButton().onTrue(new PivotPosPwrSwitch(false));
+		Inputs.getArmFloorPickup().whileTrue(new ArmFloorPickup());
+		Inputs.getArmCubeMid().onTrue(new ArmCubeMid());
+		Inputs.getArmBase().onTrue(new ArmBasePos());
+		Inputs.getArmCubeHigh().onTrue(new ArmCubeHigh());
 		Inputs.getCloseGrabber().whileTrue(new CloseGrabber());
+		Inputs.getCloseGrabberFast().whileTrue(new CloseGrabberFast());
 		Inputs.getOpenGrabber().whileTrue(new OpenGrabber());
 		Inputs.getOffGrabber().onTrue(new OffGrabber());
 		// Inputs.getResetGyroButton().onTrue(new SwerveDriveResetGyro());
 		Inputs.getArmDoubleSubStation().onTrue(new ArmDoubleSubStation());
+		Inputs.getPivotCancelButton().onTrue(new PivotCancel());
 	}
 
 	/**
@@ -122,35 +160,112 @@ public class RobotContainer {
 	 * @return the command to run in autonomous
 	 */
 	public Command getAutonomousCommand() {
-		switch(currentAuto){
+		switch(newautopick.getSelected()){
 			case ChargeStation:
-				break;
+			return new SequentialCommandGroup(
+				// new AutoChargeStationOn(), 
+				new AutoForwardsDist(SmartDashboard.getNumber("Charge Station Dist", 2.2), .6),
+				// new ParallelRaceGroup(new SwerveDriveAutoBalance(), new WaitCommand(3)),
+				new NaiveBalance(),
+				// new AutoForwards(SmartDashboard.getNumber("Charge Station Dist", 2.2)),
+				new WaitCommand(500));
 			case Forward:
-				break;
+			// return new Print();
+			return new SequentialCommandGroup(
+				new AutoForwardsDist(5.2),
+				new WaitCommand(500));
+				// return new AutoForwards();
+			case REDHumanPlayerSideScoreAndMove:
+			return new SequentialCommandGroup(
+					new ParallelRaceGroup(new ArmConeMid(), new WaitCommand(3)),
+					// new WaitCommand(.5), 
+					new OpenGrabber1sec(),
+					new OffGrabber(),  
+
+					new ParallelRaceGroup(new AutoForwardsDist(4.8), new SequentialCommandGroup(new WaitCommand(1), new ArmFloorPickup())),
+					new AutoDriveLeftAndTurn(180, .8),
+					new ParallelRaceGroup(new CloseGrabberFast(), new ArmFloorPickup(), new WaitCommand(1)),
+					// new AutoDriveAndTurn(180, .75),
+					new ParallelDeadlineGroup(new AutoGoToCube(), new ArmFloorPickup()),
+					// new ParallelRaceGroup(new CloseGrabber(), new ArmBasePos()),
+					// new ParallelRaceGroup(new AutoBack(5), new CloseGrabber(), new ArmCubeMid()),
+					// new ArmCubeMid(),
+					// new OpenGrabber(),
+					new WaitCommand(500));
+			case BLUEHumanPlayerSideScoreAndMove:
+					return new SequentialCommandGroup(
+							new ParallelRaceGroup(new ArmConeMid(), new WaitCommand(3)),
+							// new WaitCommand(.5), 
+							new OpenGrabber1sec(),
+							new OffGrabber(),  
+		
+							new ParallelRaceGroup(new AutoForwardsDist(4.8), new ArmFloorPickup()),
+							new AutoDriveRightAndTurn(180, .8),
+							new ParallelRaceGroup(new CloseGrabberFast(), new ArmFloorPickup(), new WaitCommand(5)),
+							// new AutoDriveAndTurn(180, .75),
+							new ParallelDeadlineGroup(new AutoGoToCube(), new ArmFloorPickup()),
+							// new ParallelRaceGroup(new CloseGrabber(), new ArmBasePos()),
+							// new ParallelRaceGroup(new AutoBack(5), new CloseGrabber(), new ArmCubeMid()),
+							// new ArmCubeMid(),
+							// new OpenGrabber(),
+							new WaitCommand(500));
 			case Nothing:
-				break;
+				return new WaitCommand(5000);
 			case ScoreMidCone:
-				break;
+				return new SequentialCommandGroup(
+					new ParallelRaceGroup(new ArmConeMid(), new WaitCommand(5)),
+					new WaitCommand(.5), 
+					new OpenGrabber1sec(),
+					new OffGrabber(),  
+					new ArmBasePos(), new WaitCommand(500));
+			case ScoreMidConeAndCrossChargeStation:
+				return new SequentialCommandGroup(
+					new ParallelRaceGroup(new ArmConeMid(), new WaitCommand(3)),
+					new OpenGrabber1sec(),
+					new OffGrabber(),  
+					new ArmBasePos(), 
+					new AutoCrossChargeStation(),
+					new AutoChargeStationOnBack(), 
+					new ParallelRaceGroup(new SwerveDriveAutoBalance(), new WaitCommand(3)),
+					new WaitCommand(500));
 			case ScoreMidConeAndChargeStation:
-				break;
+				return new SequentialCommandGroup(
+					new ParallelRaceGroup(new ArmConeMid(), new WaitCommand(3)),
+					new OpenGrabber1sec(),
+					new OffGrabber(),  
+					new ArmBasePos(), 
+					new AutoChargeStationOn(), 
+					new ParallelRaceGroup(new NaiveBalance(), new WaitCommand(8)),
+					new WaitCommand(500));
 			case ScoreMidConeAndMove:
-				break;
-			case ScoreMidConeAndPickupCube:
-				break;
+				System.out.println("AUTO");
+				return new SequentialCommandGroup(
+					new ParallelRaceGroup(new ArmConeMid(), new WaitCommand(4)),
+					new WaitCommand(.25), 
+					new OpenGrabber1sec(),
+					new OffGrabber(),  
+					new ParallelRaceGroup(new ArmBasePos(), new WaitCommand(5)), 
+					new AutoForwards(), 
+					// new SwerveStop(),
+					new WaitCommand(500));
+			case TurnToCube:
+				return new AutoGoToCube();
 			case ScoreMidConeAndScoreCube:
 				break;
 			case ScoreMidConeAndScoreCubeAndChargeStation:
 				break;
 			default:
-				return null;			
+				return new WaitCommand(5000);			
 		}
+		return null;
 		// An example command will be run in autonomous
 		// return swerve.followTrajectoryCommand(floorPickup, true);
-		return swerve.followTrajectoryCommand(forward1m, true);
+	   	// return swerve.followTrajectoryCommand(forward1m, true);
 		// return new SequentialCommandGroup(new AutoForwards(), new AutoBack(), new AutoRight(), new AutoChargeStationOn(), new SwerveDriveAutoBalance());
 		// return new SequentialCommandGroup(new AutoChargeStationOn(), new SwerveDriveAutoBalance());
-		// return new SequentialCommandGroup(new ArmConeMid(), new ParallelRaceGroup(new OpenGrabber(), new WaitCommand(1)), new ParallelRaceGroup(new OffGrabber(), new WaitCommand(1)),  new ArmBasePos(), new AutoForwards(), new WaitCommand(500));
+		// return new SequentialCommandGroup(new ArmConeMid(), new ParallelRaceGroup(new OpenGrabber(), new WaitCommand(1)), new ParallelRaceGroup(new OffGrabber(), new WaitCommand(1)),  new ArmBasePos(), new AutoChargeStationOn(), new SwerveDriveAutoBalance(), new WaitCommand(500));
 		// return new SequentialCommandGroup(new ArmConeMid(), new ParallelRaceGroup(new OpenGrabber(), new WaitCommand(1)), new ParallelRaceGroup(new OffGrabber(), new WaitCommand(1)),  new ArmBasePos(), swerve.followTrajectoryCommand(floorPickup, true), new WaitCommand(500));
+		// return new AutoForwardsDist(1);
 	}
 	private static double deadband(double value, double deadband) {
 		if (Math.abs(value) > deadband) {
@@ -163,7 +278,7 @@ public class RobotContainer {
 		  return 0.0;
 		}
 	  }
-	  private static double modifyAxis(double value) {
+	  public static double modifyAxis(double value) {
 		// Deadband
 		value = deadband(value, 0.05);
 	

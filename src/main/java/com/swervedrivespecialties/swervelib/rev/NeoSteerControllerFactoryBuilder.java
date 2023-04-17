@@ -64,7 +64,8 @@ public final class NeoSteerControllerFactoryBuilder {
         public void addDashboardEntries(ShuffleboardContainer container, ControllerImplementation controller) {
             SteerControllerFactory.super.addDashboardEntries(container, controller);
             container.addNumber("Absolute Encoder Angle", () -> Math.toDegrees(controller.absoluteEncoder.getAbsoluteAngle()));
-        }
+			container.addBoolean("Good?", ()-> Math.abs((controller.getStateAngle()%360)-controller.absoluteEncoder.getAbsoluteAngle())<.2);
+		}
 
         @Override
         public ControllerImplementation create(NeoSteerConfiguration<T> steerConfiguration, ModuleConfiguration moduleConfiguration) {
@@ -109,19 +110,19 @@ public final class NeoSteerControllerFactoryBuilder {
         private final CANSparkMax motor;
         private final SparkMaxPIDController controller;
         private final RelativeEncoder motorEncoder;
-        private final AbsoluteEncoder absoluteEncoder;
+        public final AbsoluteEncoder absoluteEncoder;
 
         private double referenceAngleRadians = 0;
 
         private double resetIteration = 0;
-        private PIDController pid;
+        // private PIDController pid;
 
         public ControllerImplementation(CANSparkMax motor, AbsoluteEncoder absoluteEncoder, PIDController pid) {
             this.motor = motor;
             this.controller = motor.getPIDController();
             this.motorEncoder = motor.getEncoder();
             this.absoluteEncoder = absoluteEncoder;
-            this.pid = pid;
+            // this.pid = pid;
         }
 
         @Override
@@ -139,9 +140,9 @@ public final class NeoSteerControllerFactoryBuilder {
             // Sometimes (~5% of the time) when we initialize, the absolute encoder isn't fully set up, and we don't
             // end up getting a good reading. If we reset periodically this won't matter anymore.
             if (Math.abs(motorEncoder.getVelocity()) < ENCODER_RESET_MAX_ANGULAR_VELOCITY) {
-                if (!Constants.isEnabled && ++resetIteration >= ENCODER_RESET_ITERATIONS) {
+                if (!Constants.isAuto && ++resetIteration >= ENCODER_RESET_ITERATIONS) {
                     resetIteration = 0;
-                    System.out.println(motorEncoder.getVelocity());
+                    // System.out.println(motorEncoder.getVelocity());
                     double absoluteAngle = absoluteEncoder.getAbsoluteAngle();
                     motorEncoder.setPosition(absoluteAngle);
                     currentAngleRadians = absoluteAngle;

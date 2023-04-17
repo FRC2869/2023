@@ -16,7 +16,35 @@ public class Inputs {
     private static final XboxController operator = new XboxController(OperatorConstants.kOperatorControllerPort);
 	private static final CommandXboxController operatorCmd = new CommandXboxController(OperatorConstants.kOperatorControllerPort);
     
-	
+	/*
+	 * 
+	 * Inputs:
+	 * Driver
+	 * 	Left Joystick - Swerve Drive Translation
+	 * 	Right Joystick X - Swerve Drive Rotation
+	 * 	Y Button - Robot Relative
+	 *  X Button - Lock Wheels
+	 * 	A Button - Cancel Any Drivetrain Commands
+	 * 	B Button - Auto Balance
+	 * 	Start - Reset Gyro
+	 * 	Left Bumper - Fast Mode
+	 *  Right Bumper - Slow Mode
+	 * 
+	 * Operator
+	 * 	Left Joystick Y - Move Arm
+	 * 	D-Pad Down - Base Position
+	 * 	D-Pad Left - High Cube Position (back)
+	 * 	D-Pad Right - Mid Cube Position (front)
+	 *  D-Pad Up - Double Substation Position (front)
+	 *  Right Bumper - Floor Pickup (Hold Down)
+	 * 	Left Bumper - Cancel Arm Command
+	 * 	Y Button - Stop Intake
+	 * 	X Button - Outtake
+	 * 	A Button - Fast Intake
+	 * 	B Button - Slow Intake
+	 */
+
+
 	public static double getTranslationX(){
 		// return 0.0;
 		double speed = driver.getLeftX();
@@ -26,8 +54,10 @@ public class Inputs {
 
 		if(driver.getRightBumper()){
 			speed *= .5;
+		}else if(driver.getLeftBumper()){
+			speed *= 1;
 		}else{
-			speed *= .75;
+			speed *= 1;
 		}
         return speed;
     }
@@ -39,8 +69,10 @@ public class Inputs {
 		}
 		if(driver.getRightBumper()){
 			speed *= .5;
+		}else if(driver.getLeftBumper()){
+			speed *= 1;
 		}else{
-			speed *= .75;
+			speed *= 1;
 		}
         return speed;
     }
@@ -52,30 +84,44 @@ public class Inputs {
 		}
 		if(driver.getRightBumper()){
 			speed *= .25;
+		}else if(driver.getLeftBumper()){
+			speed *= .6;
 		}else{
-			speed *= .5;
+			speed *= .65;
 		}
         return speed;
     }
-
+	public static Trigger getRobotRelative() {
+		return driverCmd.y();
+	}
 	public static Trigger getBalanceButton() {
 		return driverCmd.b();
+	}
+	public static Trigger cancelDriveButton() {
+		return driverCmd.a();
 	}
 	public static Trigger getResetGyroButton() {
 		return driverCmd.start();
 	}
-
-    //Arm
-    public static double getExtension(){
-        //right trigger goes out, left trigger goes in
-        // return (driver.getRightTriggerAxis()-driver.getLeftTriggerAxis());
-		return 0.0;
+	public static boolean getSwerveReset() {
+		return driver.getStartButton();
+	}
+	public static boolean getSwerveLock() {
+		return driver.getXButton();
 	}
 
-	//Pivot
+	/*
+	 * 
+	 * OPERATOR CONTROLS
+	 * 
+	 */
+
+	 /*
+	  * Arm
+	  */
 	public static double getPivotPower() {
-		var speed = -operator.getLeftY();
-		if(Math.abs(speed)<.3){
+		var speed = operator.getLeftY();
+		if(Math.abs(speed)<.05){
 			speed = 0;
 		}
 		return speed;
@@ -88,51 +134,33 @@ public class Inputs {
 		pos = pos + PivotConstants.kMinAngle; // [kMinAngle, kMaxAngle]
 		return pos;
 	}
-
-	/**
-	 * 
-	 * @return the button that switches to position control on the pivot
-	 */
-	public static Trigger getPivotPos(){
-		return operatorCmd.a();
-	}
-
-	/**
-	 * 
-	 * @return the button that switches to position control on the pivot
-	 */
-	public static Trigger getPivotPwr(){
-		return operatorCmd.b();
-	}
-/**
- * Says hello to ankur for being such a good programmer :)
- */
-	public void hello() {
-		System.out.println("Hello Ankur! How is your day?");
-	}
-
-	public static Trigger getArmConeLow(){
-		return driverCmd.pov(0);
-	}
-	public static Trigger getArmConeMid(){
-		return driverCmd.pov(90);
-	}
-	public static Trigger getArmConeHigh(){
-		return driverCmd.pov(180);
-	}
-	public static Trigger getArmCubeLow(){
-		return driverCmd.pov(270);
+	public static Trigger getArmBase(){
+		return operatorCmd.pov(180);
 	}
 	public static Trigger getArmCubeMid(){
-		return driverCmd.x();
-	}
-	public static Trigger getArmCubeHigh(){
-		return driverCmd.y();
+		return operatorCmd.pov(270);
 	}
 	public static Trigger getArmDoubleSubStation(){
-		return operatorCmd.a();
+		return operatorCmd.pov(0);
 	}
-	
+	public static Trigger getPivotCancelButton(){
+		return operatorCmd.leftBumper();
+	}
+	public static Trigger getArmCubeHigh() {
+		return operatorCmd.pov(90);
+	}
+	public static Trigger getArmFloorPickup() {
+		return operatorCmd.rightBumper();
+	}
+	public static boolean getOverrideButton() {
+        return operator.getBackButton();
+    }
+	public static Trigger getPivotPowerButton(){
+		return operatorCmd.start();
+	}
+	/*
+	 * Grabber
+	 */
 	public static Trigger getCloseGrabber(){
 		return operatorCmd.b();
 	}
@@ -142,10 +170,7 @@ public class Inputs {
 	public static Trigger getOffGrabber(){
 		return operatorCmd.y();
 	}
-    public static boolean getOverrideButton() {
-        return operator.getBackButton();
+	public static Trigger getCloseGrabberFast() {
+        return operatorCmd.a();
     }
-	public static boolean getSwerveReset() {
-		return driver.getStartButton();
-	}
 }
