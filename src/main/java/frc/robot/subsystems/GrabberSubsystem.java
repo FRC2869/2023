@@ -104,9 +104,9 @@ public class GrabberSubsystem extends SubsystemBase{
 
 	@Override
 	public void periodic(){
-		SmartDashboard.putBoolean("Intaked?", grabber1.getOutputCurrent()>20);
-		// System.out.print(grabber1.get());
-		// System.out.println(grabber2.get());
+		SmartDashboard.putBoolean("Intaked?", isIntaked());
+		// System.out.print(grabber1.getOutputCurrent());
+		// System.out.println(grabber2.getOutputCurrent());
 	}
 
 	public boolean isIntaked() {

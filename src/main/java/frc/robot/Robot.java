@@ -8,7 +8,6 @@ import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.hal.HALUtil;
 import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.wpilibj.AddressableLED;
 import edu.wpi.first.wpilibj.AddressableLEDBuffer;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -29,7 +28,7 @@ public class Robot extends TimedRobot {
 
   private RobotContainer m_robotContainer;
 
-private AddressableLED led;
+// private AddressableLED led;
 
 private AddressableLEDBuffer led_buffer;
 // private CameraServer cam;
@@ -47,16 +46,16 @@ public static UsbCamera camera;
   public void robotInit() {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
-    led = new AddressableLED(0);
-	led_buffer = new AddressableLEDBuffer(120);
-	led.setLength(led_buffer.getLength());
+    // led = new AddressableLED(0);
+	// led_buffer = new AddressableLEDBuffer(120);
+	// led.setLength(led_buffer.getLength());
 
     m_robotContainer = new RobotContainer();
 	// for(int i=0;i<led_buffer.getLength();i++){
 	// 	led_buffer.setRGB(i, 255, 255, 255);
 	// }
-	led.setData(led_buffer);
-	led.start();
+	// led.setData(led_buffer);
+	// led.start();
 	camera = CameraServer.startAutomaticCapture("cam0",0);
     camera.setResolution(160, 120);
 	
@@ -89,9 +88,9 @@ public static UsbCamera camera;
 	if(HALUtil.getFPGAButton()){
 		PivotSubsystem.getInstance().toggleCoast();
 	}
-	rainbow();
-	led.setData(led_buffer);
-	led.start();
+	// rainbow();
+	// led.setData(led_buffer);
+	// led.start();
 	// double centerX;
     // synchronized (imgLock) {
     //     centerX = this.centerX;

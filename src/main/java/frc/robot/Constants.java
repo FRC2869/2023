@@ -82,8 +82,8 @@ public final class Constants {
       public static final Rotation2d offset = new Rotation2d(-Units.degreesToRadians(107.578125+180));
       public static final Translation2d location =  new Translation2d(trackWidth_meter / 2.0, trackLength_meter / 2.0);
       public static final String name = "FL";
-      public static final int driveMotorId = 8;
-      public static final int turnMotorId = 7;
+      public static final int driveMotorId = 7;
+      public static final int turnMotorId = 8;
       public static final int encoderId = 12;
     }
     public interface FrontRight {

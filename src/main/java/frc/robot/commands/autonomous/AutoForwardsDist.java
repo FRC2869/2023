@@ -39,10 +39,10 @@ public class AutoForwardsDist extends CommandBase {
 	@Override
 	public void execute(){
 		 deltaX = Math.abs(swerve.getDriveEncoder() - startPose);
-		if(wait==15){
-			startPose = swerve.getDriveEncoder();
-			deltaX = 0;
-		}
+		// if(wait==15){
+		// 	startPose = swerve.getDriveEncoder();
+		// 	deltaX = 0;
+		// }
 		wait++;
         System.out.println(dist-deltaX);
         if (dist - deltaX < 0.75){

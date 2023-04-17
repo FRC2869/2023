@@ -187,7 +187,7 @@ public class RobotContainer {
 					new OpenGrabber1sec(),
 					new OffGrabber(),  
 
-					new ParallelRaceGroup(new AutoForwardsDist(4.8), new ArmFloorPickup()),
+					new ParallelRaceGroup(new AutoForwardsDist(4.8), new SequentialCommandGroup(new WaitCommand(1), new ArmFloorPickup())),
 					new AutoDriveLeftAndTurn(180, .8),
 					new ParallelRaceGroup(new CloseGrabberFast(), new ArmFloorPickup(), new WaitCommand(1)),
 					// new AutoDriveAndTurn(180, .75),

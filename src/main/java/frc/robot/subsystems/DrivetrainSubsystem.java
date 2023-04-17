@@ -296,11 +296,6 @@ public class DrivetrainSubsystem extends SubsystemBase {
 	}
 
 	public void driveDirectRobotRelative(double x, double y, double omega) {
-		// if (Math.abs(omega) < 0.25) {
-		// omega = avglastspeeds(2);
-		// // SmartDashboard.putBoolean("smoothing", true);
-		// }
-
 		var chassisSpeeds = new ChassisSpeeds(
 				x,
 				y,
