@@ -126,6 +126,7 @@ public class RobotContainer {
 	/***************/
 	private void configureBindings() {
 		configureDriverBindings();
+		configureOperatorBindings();
 	}
 
 	/**
@@ -137,22 +138,16 @@ public class RobotContainer {
 		() -> -modifyAxis(Inputs.getRotation()) * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND
 ));
 		Inputs.getBalanceButton().onTrue(getAutonomousCommand());
-		
-		// Inputs.getPivotPos().onTrue(new PivotPosPwrSwitch(true));
+	}
+	private void configureOperatorBindings(){
 		Inputs.getPivotPowerButton().onTrue(new PivotPosPwrSwitch(false));
-		// Inputs.getArmConeLow().onTrue(new ArmConeLow());
-		// Inputs.getArmConeMid().onTrue(new ArmConeMid());
-		// Inputs.getArmConeHigh().onTrue(new ArmConeHigh());
-		// Inputs.getArmConeLow().onTrue(new ArmConeLow());
 		Inputs.getArmFloorPickup().whileTrue(new ArmFloorPickup());
 		Inputs.getArmCubeMid().onTrue(new ArmCubeMid());
 		Inputs.getArmBase().onTrue(new ArmBasePos());
 		Inputs.getArmCubeHigh().onTrue(new ArmCubeHigh());
 		Inputs.getCloseGrabber().whileTrue(new CloseGrabber());
-		// Inputs.getCloseGrabberAlt().whileTrue(new CloseGrabber());
 		Inputs.getCloseGrabberFast().whileTrue(new CloseGrabberFast());
 		Inputs.getOpenGrabber().whileTrue(new OpenGrabber());
-		// Inputs.getOpenGrabberAlt().whileTrue(new OpenGrabber());
 		Inputs.getOffGrabber().onTrue(new OffGrabber());
 		// Inputs.getResetGyroButton().onTrue(new SwerveDriveResetGyro());
 		Inputs.getArmDoubleSubStation().onTrue(new ArmDoubleSubStation());

@@ -18,8 +18,30 @@ public class Inputs {
     
 	/*
 	 * 
-	 * DRIVER CONTROLS
+	 * Inputs:
+	 * Driver
+	 * 	Left Joystick - Swerve Drive Translation
+	 * 	Right Joystick X - Swerve Drive Rotation
+	 * 	Y Button - Robot Relative
+	 *  X Button - Lock Wheels
+	 * 	A Button - Cancel Any Drivetrain Commands
+	 * 	B Button - Auto Balance
+	 * 	Start - Reset Gyro
+	 * 	Left Bumper - Fast Mode
+	 *  Right Bumper - Slow Mode
 	 * 
+	 * Operator
+	 * 	Left Joystick Y - Move Arm
+	 * 	D-Pad Down - Base Position
+	 * 	D-Pad Left - High Cube Position (back)
+	 * 	D-Pad Right - Mid Cube Position (front)
+	 *  D-Pad Up - Double Substation Position (front)
+	 *  Right Bumper - Floor Pickup (Hold Down)
+	 * 	Left Bumper - Cancel Arm Command
+	 * 	Y Button - Stop Intake
+	 * 	X Button - Outtake
+	 * 	A Button - Fast Intake
+	 * 	B Button - Slow Intake
 	 */
 
 
@@ -94,6 +116,9 @@ public class Inputs {
 	 * 
 	 */
 
+	 /*
+	  * Arm
+	  */
 	public static double getPivotPower() {
 		var speed = operator.getLeftY();
 		if(Math.abs(speed)<.05){
@@ -109,15 +134,8 @@ public class Inputs {
 		pos = pos + PivotConstants.kMinAngle; // [kMinAngle, kMaxAngle]
 		return pos;
 	}
-	public static Trigger getArmConeLow(){
-		// return operatorCmd.pov(90);
-		return null;
-	}
 	public static Trigger getArmBase(){
 		return operatorCmd.pov(180);
-	}
-	public static Trigger getArmConeMid(){
-		return operatorCmd.pov(90);
 	}
 	public static Trigger getArmCubeMid(){
 		return operatorCmd.pov(270);
@@ -125,30 +143,6 @@ public class Inputs {
 	public static Trigger getArmDoubleSubStation(){
 		return operatorCmd.pov(0);
 	}
-	public static Trigger getCloseGrabber(){
-		return operatorCmd.b();
-	}
-	public static Trigger getOpenGrabber(){
-		return operatorCmd.x();
-	}
-	public static Trigger getOpenGrabberAlt(){
-		return operatorCmd.leftBumper();
-	}
-	public static Trigger getCloseGrabberAlt(){
-		return operatorCmd.rightBumper();
-	}
-	public static Trigger getOffGrabber(){
-		return operatorCmd.y();
-	}
-    public static boolean getOverrideButton() {
-        return operator.getBackButton();
-    }
-	public static Trigger getPivotPowerButton(){
-		return operatorCmd.start();
-	}
-    public static Trigger getCloseGrabberFast() {
-        return operatorCmd.a();
-    }
 	public static Trigger getPivotCancelButton(){
 		return operatorCmd.leftBumper();
 	}
@@ -158,5 +152,25 @@ public class Inputs {
 	public static Trigger getArmFloorPickup() {
 		return operatorCmd.rightBumper();
 	}
-
+	public static boolean getOverrideButton() {
+        return operator.getBackButton();
+    }
+	public static Trigger getPivotPowerButton(){
+		return operatorCmd.start();
+	}
+	/*
+	 * Grabber
+	 */
+	public static Trigger getCloseGrabber(){
+		return operatorCmd.b();
+	}
+	public static Trigger getOpenGrabber(){
+		return operatorCmd.x();
+	}
+	public static Trigger getOffGrabber(){
+		return operatorCmd.y();
+	}
+	public static Trigger getCloseGrabberFast() {
+        return operatorCmd.a();
+    }
 }

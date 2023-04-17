@@ -8,7 +8,7 @@ public class AutoForwardsDist extends CommandBase {
 	private DrivetrainSubsystem swerve;
     private double startPose;
     private double dist;
-	private double wait;
+	// private double wait;
 	private final double speedPercent;
 	private final double slowSpeed = .3;
 	private double deltaX;
@@ -43,7 +43,7 @@ public class AutoForwardsDist extends CommandBase {
 		// 	startPose = swerve.getDriveEncoder();
 		// 	deltaX = 0;
 		// }
-		wait++;
+		// wait++;
         System.out.println(dist-deltaX);
         if (dist - deltaX < 0.75){
             swerve.driveDirect(RobotContainer.modifyAxis(slowSpeed)* DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND, 0, 0);
