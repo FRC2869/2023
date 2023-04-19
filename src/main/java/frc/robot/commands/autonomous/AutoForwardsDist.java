@@ -28,7 +28,7 @@ public class AutoForwardsDist extends CommandBase {
 		swerve = DrivetrainSubsystem.getInstance();
 		addRequirements(swerve);
 		this.speedPercent = speedPercent;
-        this.dist = dist;
+        this.dist = -dist;
 	}
 
 	@Override

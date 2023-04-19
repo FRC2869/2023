@@ -74,7 +74,7 @@ public static UsbCamera camera;
   public void robotPeriodic() {
 	// double id = NetworkTableInstance.getDefault().getTable("limelight").getEntry("id").getDouble(-1);
 	// if(id!=-1){
-		double target = NetworkTableInstance.getDefault().getTable("limelight").getEntry("targetpose_robotspace").getDoubleArray(new double[6])[2];
+		double target = NetworkTableInstance.getDefault().getTable("limelight").getEntry("camerapose_targetspace").getDoubleArray(new double[6])[2];
 			SmartDashboard.putNumber("Distance To April Tags", target);
 	// }
     // Runs the Scheduler.  This is responsible for polling buttons, adding newly-scheduled
