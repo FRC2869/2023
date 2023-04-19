@@ -6,6 +6,7 @@ import frc.robot.subsystems.DrivetrainSubsystem;
 
 public class AutoChargeStationOnBack extends CommandBase{
 	private DrivetrainSubsystem swerve;
+	private boolean on;
 
 	public AutoChargeStationOnBack(){
 		swerve = DrivetrainSubsystem.getInstance();
@@ -25,10 +26,12 @@ public class AutoChargeStationOnBack extends CommandBase{
 	@Override
 	public boolean isFinished(){
 		if(swerve.getAdjustedGyroPitch().getDegrees()>10){
+			on = true;
+		}
+		if(on && swerve.getAdjustedGyroPitch().getDegrees()<5){
 			swerve.drive(()->0,()->0,()->0);
 			return true;
-		}else{
-			return false;
 		}
+		return false;
 	}
 }

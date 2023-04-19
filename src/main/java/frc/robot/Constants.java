@@ -164,8 +164,9 @@ public final class Constants {
 public static final int pidTimer = 20; 
 
   public static class PivotConstants{
-    public static final double startingPosition = -55.;
+    public static final double startingPosition = -58;
     public static final double basePosition = -50.0;
+	
     public static final double kP = .05;
     public static final double kI = 0.0002;
     public static final double kD = 10;

@@ -31,6 +31,7 @@ import frc.robot.commands.autonomous.AutoCrossChargeStation;
 import frc.robot.commands.autonomous.AutoDriveLeftAndTurn;
 import frc.robot.commands.autonomous.AutoDriveRightAndTurn;
 import frc.robot.commands.autonomous.AutoForwards;
+import frc.robot.commands.autonomous.AutoForwardsAprilTags;
 import frc.robot.commands.autonomous.AutoForwardsDist;
 import frc.robot.commands.autonomous.AutoGoToCube;
 import frc.robot.commands.autonomous.NaiveBalance;
@@ -170,8 +171,14 @@ public class RobotContainer {
 		switch(newautopick.getSelected()){
 			case ChargeStation:
 			return new SequentialCommandGroup(
+				new AutoCrossChargeStation(),
+				new WaitCommand(.5),
+				new AutoChargeStationOnBack(),
+
 				// new AutoChargeStationOn(), 
-				new AutoForwardsDist(SmartDashboard.getNumber("Charge Station Dist", 2.2), .6),
+				// between 2.9 and 2.65
+				new AutoForwardsAprilTags(2.7),
+				// new AutoForwardsDist(SmartDashboard.getNumber("Charge Station Dist", 2.7), .6),
 				// new ParallelRaceGroup(new SwerveDriveAutoBalance(), new WaitCommand(3)),
 				new NaiveBalance(),
 				// new AutoForwards(SmartDashboard.getNumber("Charge Station Dist", 2.2)),
@@ -206,7 +213,7 @@ public class RobotContainer {
 							new OpenGrabber1sec(),
 							new OffGrabber(),  
 		
-							new ParallelRaceGroup(new AutoForwardsDist(4.8), new ArmFloorPickup()),
+							new ParallelRaceGroup(new AutoForwardsDist(4.8), new SequentialCommandGroup(new WaitCommand(1), new ArmFloorPickup())),
 							new AutoDriveRightAndTurn(180, .8),
 							new ParallelRaceGroup(new CloseGrabberFast(), new ArmFloorPickup(), new WaitCommand(5)),
 							// new AutoDriveAndTurn(180, .75),

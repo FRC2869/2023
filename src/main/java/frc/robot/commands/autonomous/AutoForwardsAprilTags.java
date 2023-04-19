@@ -22,7 +22,7 @@ public class AutoForwardsAprilTags extends CommandBase {
 
 	@Override
 	public void execute(){
-		double target = NetworkTableInstance.getDefault().getTable("limelight").getEntry("targetpose_robotspace").getDoubleArray(new double[6])[2];
+		double target = NetworkTableInstance.getDefault().getTable("limelight").getEntry("robotpose_targetspace").getDoubleArray(new double[6])[2];
 		System.out.println(distance-target);
 		if(distance-target > 0.1)
 			swerve.driveDirect(RobotContainer.modifyAxis(0.1)* DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND, 0, 0);
