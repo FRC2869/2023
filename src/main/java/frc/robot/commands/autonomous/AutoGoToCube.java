@@ -47,18 +47,29 @@ public class AutoGoToCube extends CommandBase{
 		visionThread.start();
 	}
 
+	/**
+	 * Move towards cube or turn towards cube based on OpenCV thread detecting
+	 * center of cube in the camera view.
+	 */
 	@Override
 	public void execute(){
-		double centerX = 0.0;
+		double centerX = 80.0; 
+		//default was 0. Changed to 80 so that if we do not detect cube we just drive straight
 		double area = 0.0;
 		synchronized (imgLock) {
 			centerX = this.centerX;
 			area = this.cubeSize;
 			// System.out.println(centerX);
 		}
-		double turn = centerX - (160 / 2)*.1*SwerveConstants.kMaxAngularSpeed;
-		System.out.println(turn);
-		double drive = -RobotContainer.modifyAxis(.4)* DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND;
+		//double turn = centerX - (160 / 2)*.1*SwerveConstants.kMaxAngularSpeed;
+		double turn = (centerX - (160 / 2))*.15*SwerveConstants.kMaxAngularSpeed;
+		//max is 0.2 rotations / sec or aboud 1.256 radians per second.
+		// System.out.println(turn);
+		double drive = 0.0;
+		//drive defaults to zero.
+		// if(Math.abs(turn)<1)  //changed from 0.2 to 0.5
+			drive = -RobotContainer.modifyAxis(.3)* DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND;
+		//drive forward only if we are not turning at all.	
 		SmartDashboard.putNumber("Cube Size", area);
 		SmartDashboard.putNumber("Center X", centerX);
 		swerve.driveDirectRobotRelative(drive,0,-turn);

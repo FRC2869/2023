@@ -26,6 +26,7 @@ public final class Constants {
   public static class OperatorConstants {
     public static final int kDriverControllerPort = 0;
     public static final int kOperatorControllerPort = 1;
+	public static final int kOperatorController2Port = 2;
   }
   public static class SwerveConstants {
     public static final double kMaxSpeed = 3; // 2 meters per second
@@ -164,7 +165,7 @@ public final class Constants {
 public static final int pidTimer = 20; 
 
   public static class PivotConstants{
-    public static final double startingPosition = -58;
+    public static final double startingPosition = -62;
     public static final double basePosition = -50.0;
 	
     public static final double kP = .05;
@@ -188,10 +189,10 @@ public static final int pidTimer = 20;
 	public static final double highCubeAngle = 156;
 	public static final double midCubeAngle = 0;
 	public static final double lowCubeAngle = -30;
-	public static final double doubleSubstationFrontAngle = 12;
-	public static final double floorPickupAngle = 240;
+	public static final double doubleSubstationFrontAngle = 0;
+	public static final double floorPickupAngle = 230;
 	public static final double basePower = 0.4;
-	public static final double doubleSubstationBackAngle = 178; //TODO: Verify
+	public static final double doubleSubstationBackAngle = 170; 
 	public static final double lowBackAngle = 210;
   }
   public static class PneumaticsConstants{

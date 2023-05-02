@@ -3,9 +3,9 @@ package frc.robot.subsystems;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.Motors;
+import frc.robot.RobotContainer;
 
 public class GrabberSubsystem extends SubsystemBase{
 	private static GrabberSubsystem instance;
@@ -29,7 +29,8 @@ public class GrabberSubsystem extends SubsystemBase{
 		// solenoid2 = new DoubleSolenoid(16, PneumaticsModuleType.CTREPCM, PneumaticsConstants.solenoidPortForwardsTwo, PneumaticsConstants.solenoidPortBackwardsTwo);
 		grabber1 = new CANSparkMax(17, MotorType.kBrushless);
 		grabber2 = new CANSparkMax(18, MotorType.kBrushless);
-		
+		RobotContainer.auto.addBoolean("Intaked?", ()->isIntaked()).withPosition(6, 1).withSize(1, 5);
+
 		configureGrabberMotors();
 
 	}
@@ -104,7 +105,8 @@ public class GrabberSubsystem extends SubsystemBase{
 
 	@Override
 	public void periodic(){
-		SmartDashboard.putBoolean("Intaked?", isIntaked());
+		// SmartDashboard.putBoolean("Intaked?", isIntaked());
+		
 		// System.out.print(grabber1.getOutputCurrent());
 		// System.out.println(grabber2.getOutputCurrent());
 	}

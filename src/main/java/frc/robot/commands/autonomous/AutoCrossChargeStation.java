@@ -25,13 +25,13 @@ public class AutoCrossChargeStation extends CommandBase{
 	public void execute(){
         if(swerve.getGyroscopeRotation().getDegrees() > 5) {
             //rotate a bit.
-            swerve.drive(0,0,.1*SwerveConstants.kMaxAngularSpeed);
+            swerve.drive(0,0,.2*SwerveConstants.kMaxAngularSpeed);
         }
         if (swerve.getGyroscopeRotation().getDegrees() < -5) {
             //rotate a bit.
-            swerve.drive(0,0,-.1*SwerveConstants.kMaxAngularSpeed);
+            swerve.drive(0,0,-.2*SwerveConstants.kMaxAngularSpeed);
         }else{
-		swerve.drive(RobotContainer.modifyAxis(.7)* DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,0,0);
+		swerve.drive(RobotContainer.modifyAxis(.8)* DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,0,0);
         }
     }
 

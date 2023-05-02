@@ -40,6 +40,9 @@ public class PivotSubsystem extends SubsystemBase {
 		configurePivotMotor();
 		new ArmFeedforward(PivotConstants.kS, PivotConstants.kG, PivotConstants.kV);
 	}
+	public void resetPivot(){
+		collection.setIntegratedSensorPosition(0, 0);
+	}
 
 	private void configurePivotMotor() {
 		// pivotMotor.restoreFactoryDefaults();
@@ -59,7 +62,8 @@ public class PivotSubsystem extends SubsystemBase {
 		pivotMotor.configOpenloopRamp(Motors.Pivot.openLoopRampRate);
 		
 		collection = pivotMotor.getSensorCollection();
-		collection.setIntegratedSensorPosition(0, 0);
+		resetPivot();
+		// collection.setIntegratedSensorPosition(0, 0);
 		// collection.setIntegratedSensorPosition(PivotConstants.startingPosition,0);
 		// feedForward = new ArmFeedforward(0.5, .9	, 0);
 	}
@@ -105,6 +109,8 @@ public class PivotSubsystem extends SubsystemBase {
 		String angleString = rounder.format(getAngle());
 		
 		SmartDashboard.putString("Pivot Angle",angleString);
+		// Supplier<String> angleStringSupp = () -> angleString;
+		// RobotContainer.auto.addString("Pivot Angle", angleStringSupp).withPosition(3, 0);
 		//SmartDashboard.putNumber("Pivot Angle", getAngle());
 		// System.out.println(getAngle());
 		if(isPositionControl){

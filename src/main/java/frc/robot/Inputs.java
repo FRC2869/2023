@@ -3,6 +3,7 @@ package frc.robot;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.Constants.PivotConstants;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
@@ -16,7 +17,7 @@ public class Inputs {
     private static final XboxController operator = new XboxController(OperatorConstants.kOperatorControllerPort);
 	private static final CommandXboxController operatorCmd = new CommandXboxController(OperatorConstants.kOperatorControllerPort);
     // private static final XboxController operator2 = new XboxController(OperatorConstants.kOperatorControllerPort);
-	private static final CommandXboxController operator2Cmd = new CommandXboxController(OperatorConstants.kOperatorControllerPort);
+	private static final CommandXboxController operator2Cmd = new CommandXboxController(OperatorConstants.kOperatorController2Port);
     
 	/*
 	 * 
@@ -70,6 +71,7 @@ public class Inputs {
 		}else{
 			speed *= 1;
 		}
+		SmartDashboard.putNumber("X", speed);
         return speed;
     }
     public static double getTranslationY(){
@@ -85,6 +87,7 @@ public class Inputs {
 		}else{
 			speed *= 1;
 		}
+		SmartDashboard.putNumber("Y", speed);
         return speed;
     }
     public static double getRotation(){
@@ -203,5 +206,8 @@ public class Inputs {
 	}
 	public static Trigger getCloseGrabberFast() {
         return operator2Cmd.a();
+    }
+	public static Trigger getAutoTrigger() {
+        return operator2Cmd.leftBumper();
     }
 }

@@ -13,7 +13,10 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.commands.pivot.PivotPosPwrSwitch;
+import frc.robot.commands.pivot.PivotReset;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.PivotSubsystem;
 
@@ -58,8 +61,12 @@ public static UsbCamera camera;
 	// led.start();
 	camera = CameraServer.startAutomaticCapture("cam0",0);
     camera.setResolution(160, 120);
+	camera.setFPS(10);
 	
-    
+	RobotContainer.auto.add(camera).withPosition(7, 1).withSize(6, 5);
+    // RobotContainer.auto.addCamera("Floor Pickup", "cam", camera.getPath()).withPosition(7, 1).withSize(6, 5);
+    // RobotContainer.auto.addCamera("Floor Pickup", "cam", camera.getPath()).withPosition(7, 1).withSize(6, 5);
+    // RobotContainer.auto.addCamera("LimeLight", "limelight", "10.28.69.87");
 	SmartDashboard.putNumber("Charge Station Dist", 2.2);
   }
 
@@ -133,7 +140,7 @@ public static UsbCamera camera;
 	// new SwerveStop().schedule();
     // schedule the autonomous command (example)
     if (m_autonomousCommand != null) {
-      m_autonomousCommand.schedule();
+		new SequentialCommandGroup(new PivotReset(), new WaitCommand(.25), m_autonomousCommand).schedule();
     }
 }
 

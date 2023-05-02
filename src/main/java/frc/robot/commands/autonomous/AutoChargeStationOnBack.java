@@ -20,7 +20,7 @@ public class AutoChargeStationOnBack extends CommandBase{
 
 	@Override
 	public void execute(){
-		swerve.drive(RobotContainer.modifyAxis(-.7)* DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,0,0);
+		swerve.drive(RobotContainer.modifyAxis(-.8)* DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,0,0);
 	}
 
 	@Override

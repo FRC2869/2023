@@ -33,6 +33,7 @@ import frc.robot.Constants.SwerveConstants.BackLeft;
 import frc.robot.Constants.SwerveConstants.BackRight;
 import frc.robot.Constants.SwerveConstants.FrontLeft;
 import frc.robot.Constants.SwerveConstants.FrontRight;
+import frc.robot.RobotContainer;
 
 public class DrivetrainSubsystem extends SubsystemBase {
 	private static DrivetrainSubsystem instance;
@@ -125,7 +126,9 @@ public class DrivetrainSubsystem extends SubsystemBase {
 	public DrivetrainSubsystem() {
 		initSpeedList();
 		ShuffleboardTab tab = Shuffleboard.getTab("Drivetrain");
-
+		RobotContainer.auto.addNumber("Drive Angle", ()->getGyroscopeRotation().getDegrees()).withPosition(4, 0);
+		RobotContainer.auto.addNumber("Adjusted Pitch", ()->getAdjustedGyroPitch().getDegrees()).withPosition(5, 0);
+		
 		// There are 4 methods you can call to create your swerve modules.
 		// The method you use depends on what motors you are using.
 		//
@@ -414,10 +417,10 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
 	@Override
 	public void periodic() {
-		SmartDashboard.putNumber("Angle", getGyroscopeRotation().getDegrees());
+		// SmartDashboard.putNumber("Angle", getGyroscopeRotation().getDegrees());
 		SmartDashboard.putNumber("Pitch", getGyroPitch().getDegrees());
 		SmartDashboard.putNumber("Roll", getGyroRoll().getDegrees());
-		SmartDashboard.putNumber("Adjusted Pitch", getAdjustedGyroPitch().getDegrees());
+		// SmartDashboard.putNumber("Adjusted Pitch", getAdjustedGyroPitch().getDegrees());
 		SmartDashboard.putNumber("Yaw", getGyroYaw().getDegrees());
 
 		SwerveModuleState[] states = m_kinematics.toSwerveModuleStates(m_chassisSpeeds);
