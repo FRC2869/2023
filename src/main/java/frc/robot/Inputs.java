@@ -1,11 +1,10 @@
 package frc.robot;
 
-import frc.robot.Constants.OperatorConstants;
-import frc.robot.Constants.PivotConstants;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.Constants.OperatorConstants;
 
 /**
  * Gathers inputs for the controllers so they can be passed to subsystems
@@ -16,8 +15,10 @@ public class Inputs {
 	private static final CommandXboxController driverCmd = new CommandXboxController(OperatorConstants.kDriverControllerPort);
     // private static final XboxController operator = new XboxController(OperatorConstants.kOperatorControllerPort);
 	// private static final CommandXboxController operatorCmd = new CommandXboxController(OperatorConstants.kOperatorControllerPort);
-    // // private static final XboxController operator2 = new XboxController(OperatorConstants.kOperatorControllerPort);
+    // // private static final XboxController operator2 = new XboxController(OperatorConstants.kOperatorController2Port);
 	// private static final CommandXboxController operator2Cmd = new CommandXboxController(OperatorConstants.kOperatorController2Port);
+    private static final XboxController demo = new XboxController(OperatorConstants.kOperatorControllerPort);
+	// private static final CommandXboxController demoCmd = new CommandXboxController(OperatorConstants.kOperatorControllerPort);
     
 	/*
 	 * 
@@ -57,72 +58,83 @@ public class Inputs {
 	 */
 
 
+	public static boolean getDemoDrive(){
+		return driver.getLeftBumper();
+	}
 	public static double getTranslationX(){
 		// return 0.0;
 		double speed = driver.getLeftX();
+		if(getDemoDrive()){
+			speed = demo.getLeftX()*.3;
+		}
 		if(Math.abs(speed) < .05){
 			speed = 0;
 		}
-
-		if(driver.getRightBumper()){
-			speed *= .5;
-		}else if(driver.getLeftBumper()){
-			speed *= 1;
-		}else{
-			speed *= 1;
-		}
+		// if(driver.getRightBumper()){
+		// 	speed *= .5;
+		// }else if(driver.getLeftBumper()){
+		// 	speed *= 1;
+		// }else{
+		// 	speed *= 1;
+		// }
 		SmartDashboard.putNumber("X", speed);
         return speed;
     }
     public static double getTranslationY(){
 		// return 0.0;
 		double speed = driver.getLeftY();
+		if(getDemoDrive()){
+			speed = demo.getLeftY()*.3;
+		}
 		if(Math.abs(speed) < .05){
 			speed = 0;
 		}
-		if(driver.getRightBumper()){
-			speed *= .5;
-		}else if(driver.getLeftBumper()){
-			speed *= 1;
-		}else{
-			speed *= 1;
-		}
+		// if(driver.getRightBumper()){
+		// 	speed *= .5;
+		// }else if(driver.getLeftBumper()){
+		// 	speed *= 1;
+		// }else{
+		// 	speed *= 1;
+		// }
 		SmartDashboard.putNumber("Y", speed);
         return speed;
     }
     public static double getRotation(){
         // return	 0.0;
 		double speed = driver.getRightX();
+		if(getDemoDrive()){
+			speed = demo.getRightX()*.5;
+		}
 		if(Math.abs(speed) < .1){
 			speed = 0;
 		}
-		if(driver.getRightBumper()){
-			speed *= .25;
-		}else if(driver.getLeftBumper()){
-			speed *= .6;
-		}else{
-			speed *= .65;
-		}
+		// if(driver.getRightBumper()){
+		// 	speed *= .25;
+		// }else if(driver.getLeftBumper()){
+		// 	speed *= .6;
+		// }else{
+		// 	speed *= .65;
+		// }
         return speed;
     }
-	public static Trigger getRobotRelative() {
-		return driverCmd.y();
-	}
-	public static Trigger getBalanceButton() {
-		return driverCmd.b();
-	}
-	public static Trigger cancelDriveButton() {
-		return driverCmd.a();
-	}
+	// public static Trigger getRobotRelative() {
+	// 	return driverCmd.y();
+	// }
+	// public static Trigger getBalanceButton() {
+	// 	return driverCmd.b();
+	// }
+	// public static Trigger cancelDriveButton() {
+	// 	return driverCmd.a();
+	// }
 	public static Trigger getResetGyroButton() {
 		return driverCmd.start();
 	}
 	public static boolean getSwerveReset() {
 		return driver.getStartButton();
 	}
-	public static boolean getSwerveLock() {
-		return driver.getXButton();
-	}
+	// public static boolean getSwerveLock() {
+	// 	return driver.getXButton();
+	// }
 
 	/*
 	 * 
@@ -133,13 +145,13 @@ public class Inputs {
 	 /*
 	  * Arm
 	  */
-	// public static double getPivotPower() {
-	// 	var speed = operator.getLeftY();
-	// 	if(Math.abs(speed)<.05){
-	// 		speed = 0;
-	// 	}
-	// 	return speed;
-	// }
+	public static double getPivotPower() {
+		var speed = driver.getRightTriggerAxis()-driver.getLeftTriggerAxis();
+		if(Math.abs(speed)<.05){
+			speed = 0;
+		}
+		return speed;
+	}
 	// public static double getPivotPosition() {
 	// 	double pos = -operator.getLeftY(); // [-1, 1]
 	// 	pos = pos + 1; // [0, 2]
@@ -148,10 +160,10 @@ public class Inputs {
 	// 	pos = pos + PivotConstants.kMinAngle; // [kMinAngle, kMaxAngle]
 	// 	return pos;
 	// }
-	// public static Trigger getArmBase(){
-	// 	//Down
-	// 	return operatorCmd.pov(180);
-	// }
+	public static Trigger getArmBase(){
+		//Down
+		return driverCmd.pov(180);
+	}
 	// public static Trigger getArmLowFront(){
 	// 	//Left
 	// 	return operatorCmd.pov(90);
@@ -183,9 +195,9 @@ public class Inputs {
 	// public static Trigger getPivotCancelButton(){
 	// 	return operatorCmd.leftBumper();
 	// }
-	// public static Trigger getArmFloorPickup() {
-	// 	return operatorCmd.rightBumper();
-	// }
+	public static Trigger getArmFloorPickup() {
+		return driverCmd.rightBumper();
+	}
 	// public static boolean getOverrideButton() {
     //     return operator.getBackButton();
     // }
@@ -195,15 +207,15 @@ public class Inputs {
 	// /*
 	//  * Grabber
 	//  */
-	// public static Trigger getCloseGrabber(){
-	// 	return operator2Cmd.b();
-	// }
-	// public static Trigger getOpenGrabber(){
-	// 	return operator2Cmd.x();
-	// }
-	// public static Trigger getOffGrabber(){
-	// 	return operator2Cmd.y();
-	// }
+	public static Trigger getCloseGrabber(){
+		return driverCmd.b();
+	}
+	public static Trigger getOpenGrabber(){
+		return driverCmd.x();
+	}
+	public static Trigger getOffGrabber(){
+		return driverCmd.y();
+	}
 	// public static Trigger getCloseGrabberFast() {
     //     return operator2Cmd.a();
     // }

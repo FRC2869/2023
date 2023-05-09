@@ -12,9 +12,9 @@ public class PivotDefault extends CommandBase{
 		addRequirements(pivot);
 	}
 
-	// @Override
-	// public void execute(){
-	// 	pivot.power(Inputs.getPivotPower());
-	// 	pivot.position(Inputs.getPivotPosition());
-	// }
+	@Override
+	public void execute(){
+		pivot.power(Inputs.getPivotPower());
+		// pivot.position(Inputs.getPivotPosition());
+	}
 }

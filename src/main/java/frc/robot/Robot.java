@@ -169,10 +169,10 @@ public static UsbCamera camera;
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
-	Constants.locked = Inputs.getSwerveLock();
-	if(Inputs.cancelDriveButton().getAsBoolean()){
-		DrivetrainSubsystem.getInstance().getCurrentCommand().cancel();
-	}
+	// Constants.locked = Inputs.getSwerveLock();
+	// if(Inputs.cancelDriveButton().getAsBoolean()){
+	// 	DrivetrainSubsystem.getInstance().getCurrentCommand().cancel();
+	// }
   }
 
   @Override

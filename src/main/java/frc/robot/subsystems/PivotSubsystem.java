@@ -16,7 +16,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.Motors;
 import frc.robot.Constants.PivotConstants;
-import frc.robot.Inputs;
 
 public class PivotSubsystem extends SubsystemBase {
 	private static PivotSubsystem instance;
@@ -127,14 +126,14 @@ public class PivotSubsystem extends SubsystemBase {
 			// System.out.println(pos);
 			pivotMotor.set(TalonFXControlMode.Position, pos);
 		}else{
-			// if((!Inputs.getOverrideButton()) && speed>0 && getAngle()<=PivotConstants.kMinAngle){
-			// 	// System.out.println("Too Low");
-			// 	speed = 0;
-			// }
-			// if((!Inputs.getOverrideButton()) && speed<0 && getAngle()>=PivotConstants.kMaxAngle){
-			// 	// System.out.println("Too High");
-			// 	speed = 0;
-			// }
+			if(speed>0 && getAngle()<=PivotConstants.kMinAngle){
+				// System.out.println("Too Low");
+				speed = 0;
+			}
+			if(speed<0 && getAngle()>=PivotConstants.kMaxAngle){
+				// System.out.println("Too High");
+				speed = 0;
+			}
 			
 			double feedforward = Math.cos(Units.degreesToRadians(getAngle()))*-.075;
 			if(getAngle()>210){

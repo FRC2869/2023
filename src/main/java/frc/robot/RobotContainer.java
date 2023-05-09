@@ -15,16 +15,9 @@ import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.commands.ArmBasePos;
-import frc.robot.commands.ArmLowFront;
 import frc.robot.commands.ArmConeMid;
-import frc.robot.commands.ArmCubeHigh;
-import frc.robot.commands.ArmCubeMid;
-import frc.robot.commands.ArmDoubleSubStationBack;
-import frc.robot.commands.ArmDoubleSubStationFront;
 import frc.robot.commands.ArmFloorPickup;
-import frc.robot.commands.ArmLowBack;
 import frc.robot.commands.DefaultDriveCommand;
-import frc.robot.commands.DefaultDriveRobotCommand;
 import frc.robot.commands.autonomous.AutoChargeStationOn;
 import frc.robot.commands.autonomous.AutoChargeStationOnBack;
 import frc.robot.commands.autonomous.AutoCrossChargeStation;
@@ -35,14 +28,10 @@ import frc.robot.commands.autonomous.AutoForwardsAprilTags;
 import frc.robot.commands.autonomous.AutoForwardsDist;
 import frc.robot.commands.autonomous.AutoGoToCube;
 import frc.robot.commands.autonomous.NaiveBalance;
-import frc.robot.commands.grabber.CloseGrabber;
 import frc.robot.commands.grabber.CloseGrabberFast;
 import frc.robot.commands.grabber.OffGrabber;
-import frc.robot.commands.grabber.OpenGrabber;
 import frc.robot.commands.grabber.OpenGrabber1sec;
-import frc.robot.commands.pivot.PivotCancel;
 import frc.robot.commands.pivot.PivotDefault;
-import frc.robot.commands.pivot.PivotPosPwrSwitch;
 import frc.robot.commands.swerve.SwerveDriveAutoBalance;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.PivotSubsystem;
@@ -141,14 +130,14 @@ public class RobotContainer {
 	 * 
 	 */
 	private void configureDriverBindings() {
-		Inputs.getRobotRelative().whileTrue(new DefaultDriveRobotCommand(() -> -modifyAxis(Inputs.getTranslationY()) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
-		() -> -modifyAxis(Inputs.getTranslationX()) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
-		() -> -modifyAxis(Inputs.getRotation()) * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND
-));
+// 		Inputs.getRobotRelative().whileTrue(new DefaultDriveRobotCommand(() -> -modifyAxis(Inputs.getTranslationY()) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
+// 		() -> -modifyAxis(Inputs.getTranslationX()) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
+// 		() -> -modifyAxis(Inputs.getRotation()) * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND
+// ));
 		// Inputs.getBalanceButton().onTrue(getAutonomousCommand());
 	}
 	private void configureOperatorBindings(){
-		// Inputs.getArmBase().onTrue(new ArmBasePos());
+		Inputs.getArmBase().onTrue(new ArmBasePos());
 		// Inputs.getArmLowFront().onTrue(new ArmLowFront());
 		// Inputs.getArmCubeMid().onTrue(new ArmCubeMid());
 		// Inputs.getArmDoubleSubStationFront().onTrue(new ArmDoubleSubStationFront());
@@ -156,7 +145,7 @@ public class RobotContainer {
 		// Inputs.getArmConeMid().onTrue(new ArmConeMid());
 		// Inputs.getArmLowBack().onTrue(new ArmLowBack());
 		// Inputs.getArmCubeHigh().onTrue(new ArmCubeHigh());
-		// Inputs.getArmFloorPickup().whileTrue(new ArmFloorPickup());
+		Inputs.getArmFloorPickup().whileTrue(new ArmFloorPickup());
 		// Inputs.getPivotCancelButton().onTrue(new PivotCancel());
 		// Inputs.getPivotPowerButton().onTrue(new PivotPosPwrSwitch(false));
 
