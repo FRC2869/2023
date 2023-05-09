@@ -14,10 +14,10 @@ public class Inputs {
 	
     private static final XboxController driver = new XboxController(OperatorConstants.kDriverControllerPort);
 	private static final CommandXboxController driverCmd = new CommandXboxController(OperatorConstants.kDriverControllerPort);
-    private static final XboxController operator = new XboxController(OperatorConstants.kOperatorControllerPort);
-	private static final CommandXboxController operatorCmd = new CommandXboxController(OperatorConstants.kOperatorControllerPort);
-    // private static final XboxController operator2 = new XboxController(OperatorConstants.kOperatorControllerPort);
-	private static final CommandXboxController operator2Cmd = new CommandXboxController(OperatorConstants.kOperatorController2Port);
+    // private static final XboxController operator = new XboxController(OperatorConstants.kOperatorControllerPort);
+	// private static final CommandXboxController operatorCmd = new CommandXboxController(OperatorConstants.kOperatorControllerPort);
+    // // private static final XboxController operator2 = new XboxController(OperatorConstants.kOperatorControllerPort);
+	// private static final CommandXboxController operator2Cmd = new CommandXboxController(OperatorConstants.kOperatorController2Port);
     
 	/*
 	 * 
@@ -133,81 +133,81 @@ public class Inputs {
 	 /*
 	  * Arm
 	  */
-	public static double getPivotPower() {
-		var speed = operator.getLeftY();
-		if(Math.abs(speed)<.05){
-			speed = 0;
-		}
-		return speed;
-	}
-	public static double getPivotPosition() {
-		double pos = -operator.getLeftY(); // [-1, 1]
-		pos = pos + 1; // [0, 2]
-		pos = pos/2.0; // [0, 1]
-		pos = pos * (PivotConstants.kMaxAngle-PivotConstants.kMinAngle); // [0, (kMaxAngle-kMinAngle)]
-		pos = pos + PivotConstants.kMinAngle; // [kMinAngle, kMaxAngle]
-		return pos;
-	}
-	public static Trigger getArmBase(){
-		//Down
-		return operatorCmd.pov(180);
-	}
-	public static Trigger getArmLowFront(){
-		//Left
-		return operatorCmd.pov(90);
-	}
-	public static Trigger getArmCubeMid(){
-		//Right
-		return operatorCmd.pov(270);
-	}
-	public static Trigger getArmDoubleSubStationFront(){
-		//Up
-		return operatorCmd.pov(0);
-	}
-	public static Trigger getArmDoubleSubStationBack(){
-		//Up
-		return operatorCmd.y();
-	}
-	public static Trigger getArmConeMid() {
-		//Left
-		return operatorCmd.x();
-	}
-	public static Trigger getArmLowBack() {
-		//Down
-		return operatorCmd.a();
-	}
-	public static Trigger getArmCubeHigh() {
-		//Right
-		return operatorCmd.b();
-	}
-	public static Trigger getPivotCancelButton(){
-		return operatorCmd.leftBumper();
-	}
-	public static Trigger getArmFloorPickup() {
-		return operatorCmd.rightBumper();
-	}
-	public static boolean getOverrideButton() {
-        return operator.getBackButton();
-    }
-	public static Trigger getPivotPowerButton(){
-		return operatorCmd.start();
-	}
-	/*
-	 * Grabber
-	 */
-	public static Trigger getCloseGrabber(){
-		return operator2Cmd.b();
-	}
-	public static Trigger getOpenGrabber(){
-		return operator2Cmd.x();
-	}
-	public static Trigger getOffGrabber(){
-		return operator2Cmd.y();
-	}
-	public static Trigger getCloseGrabberFast() {
-        return operator2Cmd.a();
-    }
-	public static Trigger getAutoTrigger() {
-        return operator2Cmd.leftBumper();
-    }
+	// public static double getPivotPower() {
+	// 	var speed = operator.getLeftY();
+	// 	if(Math.abs(speed)<.05){
+	// 		speed = 0;
+	// 	}
+	// 	return speed;
+	// }
+	// public static double getPivotPosition() {
+	// 	double pos = -operator.getLeftY(); // [-1, 1]
+	// 	pos = pos + 1; // [0, 2]
+	// 	pos = pos/2.0; // [0, 1]
+	// 	pos = pos * (PivotConstants.kMaxAngle-PivotConstants.kMinAngle); // [0, (kMaxAngle-kMinAngle)]
+	// 	pos = pos + PivotConstants.kMinAngle; // [kMinAngle, kMaxAngle]
+	// 	return pos;
+	// }
+	// public static Trigger getArmBase(){
+	// 	//Down
+	// 	return operatorCmd.pov(180);
+	// }
+	// public static Trigger getArmLowFront(){
+	// 	//Left
+	// 	return operatorCmd.pov(90);
+	// }
+	// public static Trigger getArmCubeMid(){
+	// 	//Right
+	// 	return operatorCmd.pov(270);
+	// }
+	// public static Trigger getArmDoubleSubStationFront(){
+	// 	//Up
+	// 	return operatorCmd.pov(0);
+	// }
+	// public static Trigger getArmDoubleSubStationBack(){
+	// 	//Up
+	// 	return operatorCmd.y();
+	// }
+	// public static Trigger getArmConeMid() {
+	// 	//Left
+	// 	return operatorCmd.x();
+	// }
+	// public static Trigger getArmLowBack() {
+	// 	//Down
+	// 	return operatorCmd.a();
+	// }
+	// public static Trigger getArmCubeHigh() {
+	// 	//Right
+	// 	return operatorCmd.b();
+	// }
+	// public static Trigger getPivotCancelButton(){
+	// 	return operatorCmd.leftBumper();
+	// }
+	// public static Trigger getArmFloorPickup() {
+	// 	return operatorCmd.rightBumper();
+	// }
+	// public static boolean getOverrideButton() {
+    //     return operator.getBackButton();
+    // }
+	// public static Trigger getPivotPowerButton(){
+	// 	return operatorCmd.start();
+	// }
+	// /*
+	//  * Grabber
+	//  */
+	// public static Trigger getCloseGrabber(){
+	// 	return operator2Cmd.b();
+	// }
+	// public static Trigger getOpenGrabber(){
+	// 	return operator2Cmd.x();
+	// }
+	// public static Trigger getOffGrabber(){
+	// 	return operator2Cmd.y();
+	// }
+	// public static Trigger getCloseGrabberFast() {
+    //     return operator2Cmd.a();
+    // }
+	// public static Trigger getAutoTrigger() {
+    //     return operator2Cmd.leftBumper();
+    // }
 }

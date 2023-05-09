@@ -145,27 +145,27 @@ public class RobotContainer {
 		() -> -modifyAxis(Inputs.getTranslationX()) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
 		() -> -modifyAxis(Inputs.getRotation()) * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND
 ));
-		Inputs.getBalanceButton().onTrue(getAutonomousCommand());
+		// Inputs.getBalanceButton().onTrue(getAutonomousCommand());
 	}
 	private void configureOperatorBindings(){
-		Inputs.getArmBase().onTrue(new ArmBasePos());
-		Inputs.getArmLowFront().onTrue(new ArmLowFront());
-		Inputs.getArmCubeMid().onTrue(new ArmCubeMid());
-		Inputs.getArmDoubleSubStationFront().onTrue(new ArmDoubleSubStationFront());
-		Inputs.getArmDoubleSubStationBack().onTrue(new ArmDoubleSubStationBack());
-		Inputs.getArmConeMid().onTrue(new ArmConeMid());
-		Inputs.getArmLowBack().onTrue(new ArmLowBack());
-		Inputs.getArmCubeHigh().onTrue(new ArmCubeHigh());
-		Inputs.getArmFloorPickup().whileTrue(new ArmFloorPickup());
-		Inputs.getPivotCancelButton().onTrue(new PivotCancel());
-		Inputs.getPivotPowerButton().onTrue(new PivotPosPwrSwitch(false));
+		// Inputs.getArmBase().onTrue(new ArmBasePos());
+		// Inputs.getArmLowFront().onTrue(new ArmLowFront());
+		// Inputs.getArmCubeMid().onTrue(new ArmCubeMid());
+		// Inputs.getArmDoubleSubStationFront().onTrue(new ArmDoubleSubStationFront());
+		// Inputs.getArmDoubleSubStationBack().onTrue(new ArmDoubleSubStationBack());
+		// Inputs.getArmConeMid().onTrue(new ArmConeMid());
+		// Inputs.getArmLowBack().onTrue(new ArmLowBack());
+		// Inputs.getArmCubeHigh().onTrue(new ArmCubeHigh());
+		// Inputs.getArmFloorPickup().whileTrue(new ArmFloorPickup());
+		// Inputs.getPivotCancelButton().onTrue(new PivotCancel());
+		// Inputs.getPivotPowerButton().onTrue(new PivotPosPwrSwitch(false));
 
-		Inputs.getCloseGrabber().whileTrue(new CloseGrabber());
-		Inputs.getCloseGrabberFast().whileTrue(new CloseGrabberFast());
-		Inputs.getOpenGrabber().whileTrue(new OpenGrabber());
-		Inputs.getOffGrabber().onTrue(new OffGrabber());
+		// Inputs.getCloseGrabber().whileTrue(new CloseGrabber());
+		// Inputs.getCloseGrabberFast().whileTrue(new CloseGrabberFast());
+		// Inputs.getOpenGrabber().whileTrue(new OpenGrabber());
+		// Inputs.getOffGrabber().onTrue(new OffGrabber());
 		
-		Inputs.getAutoTrigger().onTrue(new AutoGoToCube());
+		// Inputs.getAutoTrigger().onTrue(new AutoGoToCube());
 	}
 
 	/**
