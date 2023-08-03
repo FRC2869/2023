@@ -7,7 +7,7 @@ import frc.robot.Constants.WristConstants;
 import frc.robot.subsystems.PivotSubsystem;
 import frc.robot.subsystems.WristSubsystem;
 
-public class ArmDoubleSubStationBack extends CommandBase{
+public class ArmFloorPickupFront extends CommandBase{
 	// private ArmSubsystem arm;
 	private PivotSubsystem pivot;
 	// private int armCounter;
@@ -15,11 +15,11 @@ public class ArmDoubleSubStationBack extends CommandBase{
 	private WristSubsystem wrist;
 	private int wristCounter;
 
-	public ArmDoubleSubStationBack(){
+	public ArmFloorPickupFront(){
 		// arm = ArmSubsystem.getInstance();
 		pivot = PivotSubsystem.getInstance();
 		wrist = WristSubsystem.getInstance();
-		System.out.println("Double and High");
+		System.out.println("Cube Mid");
 		// addRequirements(arm);
 		addRequirements(pivot);
 		addRequirements(wrist);
@@ -30,17 +30,17 @@ public class ArmDoubleSubStationBack extends CommandBase{
 		// arm.setPositionControl(true);
 		// arm.position(ArmConstants.Extension.midCubeDistance);
 		pivot.setPositionControl(true);
-		pivot.position(PivotConstants.doubleSubstationBackAngle);
+		pivot.position(PivotConstants.floorPickupFrontAngle);
 		wrist.setPositionControl(true);
-		wrist.position(WristConstants.doubleSubstationBackAngle);
+		wrist.position(WristConstants.floorPickupFrontAngle);
 	}
 
 	@Override
 	public boolean isFinished(){
 		
 		// boolean armDone = Math.abs(arm.getPosition()-ArmConstants.Extension.midCubeDistance) < ArmConstants.Extension.tolerance;
-		boolean pivotDone = Math.abs(pivot.getAngle()-PivotConstants.doubleSubstationBackAngle) < PivotConstants.tolerance;
-		boolean wristDone = Math.abs(wrist.getAngle()-WristConstants.doubleSubstationBackAngle) < WristConstants.tolerance;
+		boolean pivotDone = Math.abs(pivot.getAngle()-PivotConstants.floorPickupFrontAngle) < PivotConstants.tolerance;
+		boolean wristDone = Math.abs(wrist.getAngle()-WristConstants.floorPickupFrontAngle) < WristConstants.tolerance;
 
 		if(wristDone){
 			wristCounter++;
@@ -56,10 +56,16 @@ public class ArmDoubleSubStationBack extends CommandBase{
 		if(pivotCounter>Constants.pidTimer&&wristCounter>Constants.pidTimer){
 			pivot.setPositionControl(false);
 			wrist.setPositionControl(false);
-			return true;
+			return false;
 		}else{
 			return false;
 		}
 		// return (arm.getPosition()==ArmConstants.Extension.lowConeDistance) && (pivot.getAngle() == PivotConstants.lowConeAngle);
+	}
+
+	@Override
+	public void end(boolean i){
+		pivot.setPositionControl(false);
+		wrist.setPositionControl(false);
 	}
 }

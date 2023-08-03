@@ -3,20 +3,26 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.Constants.PivotConstants;
+import frc.robot.Constants.WristConstants;
 import frc.robot.subsystems.PivotSubsystem;
+import frc.robot.subsystems.WristSubsystem;
 
 public class ArmLowFront extends CommandBase{
 	// private ArmSubsystem arm;
 	private PivotSubsystem pivot;
 	// private int armCounter;
 	private int pivotCounter;
+	private WristSubsystem wrist;
+	private int wristCounter;
 
 	public ArmLowFront(){
 		// arm = ArmSubsystem.getInstance();
 		pivot = PivotSubsystem.getInstance();
+		wrist = WristSubsystem.getInstance();
 		System.out.println("Low");
 		// addRequirements(arm);
 		addRequirements(pivot);
+		addRequirements(wrist);
 	}
 
 	@Override
@@ -25,6 +31,8 @@ public class ArmLowFront extends CommandBase{
 		// arm.position(ArmConstants.Extension.lowConeDistance);
 		pivot.setPositionControl(true);
 		pivot.position(PivotConstants.lowFrontAngle);
+		wrist.setPositionControl(true);
+		wrist.position(WristConstants.lowFrontAngle);
 	}
 
 	@Override
@@ -32,20 +40,22 @@ public class ArmLowFront extends CommandBase{
 		
 		// boolean armDone = Math.abs(arm.getPosition()-ArmConstants.Extension.lowConeDistance) < ArmConstants.Extension.tolerance;
 		boolean pivotDone = Math.abs(pivot.getAngle()-PivotConstants.lowFrontAngle) < PivotConstants.tolerance;
+		boolean wristDone = Math.abs(wrist.getAngle()-WristConstants.lowFrontAngle) < WristConstants.tolerance;
 
-		// if(armDone){
-		// 	armCounter++;
-		// }else{
-		// 	armCounter=0;
-		// }
+		if(wristDone){
+			wristCounter++;
+		}else{
+			wristCounter=0;
+		}
 		if(pivotDone){
 			pivotCounter++;
 		}else{
 			pivotCounter=0;
 		}
 
-		if(pivotCounter>Constants.pidTimer){
-			pivot.setPositionControl(false);
+		if(pivotCounter>Constants.pidTimer&&wristCounter>Constants.pidTimer){
+			pivot.setPositionControl(false); 
+			wrist.setPositionControl(false); 
 			return true;
 		}else{
 			return false;

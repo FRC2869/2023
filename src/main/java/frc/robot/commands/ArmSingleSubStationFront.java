@@ -7,7 +7,7 @@ import frc.robot.Constants.WristConstants;
 import frc.robot.subsystems.PivotSubsystem;
 import frc.robot.subsystems.WristSubsystem;
 
-public class ArmDoubleSubStationBack extends CommandBase{
+public class ArmSingleSubStationFront extends CommandBase{
 	// private ArmSubsystem arm;
 	private PivotSubsystem pivot;
 	// private int armCounter;
@@ -15,7 +15,7 @@ public class ArmDoubleSubStationBack extends CommandBase{
 	private WristSubsystem wrist;
 	private int wristCounter;
 
-	public ArmDoubleSubStationBack(){
+	public ArmSingleSubStationFront(){
 		// arm = ArmSubsystem.getInstance();
 		pivot = PivotSubsystem.getInstance();
 		wrist = WristSubsystem.getInstance();
@@ -30,17 +30,17 @@ public class ArmDoubleSubStationBack extends CommandBase{
 		// arm.setPositionControl(true);
 		// arm.position(ArmConstants.Extension.midCubeDistance);
 		pivot.setPositionControl(true);
-		pivot.position(PivotConstants.doubleSubstationBackAngle);
+		pivot.position(PivotConstants.singleSubstationFrontAngle);
 		wrist.setPositionControl(true);
-		wrist.position(WristConstants.doubleSubstationBackAngle);
+		wrist.position(WristConstants.singleSubstationFrontAngle);
 	}
 
 	@Override
 	public boolean isFinished(){
 		
 		// boolean armDone = Math.abs(arm.getPosition()-ArmConstants.Extension.midCubeDistance) < ArmConstants.Extension.tolerance;
-		boolean pivotDone = Math.abs(pivot.getAngle()-PivotConstants.doubleSubstationBackAngle) < PivotConstants.tolerance;
-		boolean wristDone = Math.abs(wrist.getAngle()-WristConstants.doubleSubstationBackAngle) < WristConstants.tolerance;
+		boolean pivotDone = Math.abs(pivot.getAngle()-PivotConstants.singleSubstationFrontAngle) < PivotConstants.tolerance;
+		boolean wristDone = Math.abs(wrist.getAngle()-WristConstants.singleSubstationFrontAngle) < WristConstants.tolerance;
 
 		if(wristDone){
 			wristCounter++;

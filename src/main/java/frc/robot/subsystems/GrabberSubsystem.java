@@ -1,7 +1,7 @@
 package frc.robot.subsystems;
 
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.Motors;
@@ -13,8 +13,7 @@ public class GrabberSubsystem extends SubsystemBase{
 	// private DoubleSolenoid solenoid1;
 	// private DoubleSolenoid solenoid2;
 
-	private CANSparkMax grabber1;
-	private CANSparkMax grabber2;
+	private WPI_TalonFX grabber1;
 
 	public static GrabberSubsystem getInstance(){
 		if(instance == null){
@@ -27,8 +26,7 @@ public class GrabberSubsystem extends SubsystemBase{
 		// compressor = new Compressor(16, PneumaticsModuleType.CTREPCM);
 		// solenoid1 = new DoubleSolenoid(16, PneumaticsModuleType.CTREPCM, PneumaticsConstants.solenoidPortForwards, PneumaticsConstants.solenoidPortBackwards);
 		// solenoid2 = new DoubleSolenoid(16, PneumaticsModuleType.CTREPCM, PneumaticsConstants.solenoidPortForwardsTwo, PneumaticsConstants.solenoidPortBackwardsTwo);
-		grabber1 = new CANSparkMax(17, MotorType.kBrushless);
-		grabber2 = new CANSparkMax(18, MotorType.kBrushless);
+		grabber1 = new WPI_TalonFX(18);
 		RobotContainer.auto.addBoolean("Intaked?", ()->isIntaked()).withPosition(6, 1).withSize(1, 5);
 
 		configureGrabberMotors();
@@ -36,73 +34,28 @@ public class GrabberSubsystem extends SubsystemBase{
 	}
 
 	private void configureGrabberMotors() {
-		grabber1.restoreFactoryDefaults();
+		grabber1.configFactoryDefault();
 
-        grabber1.enableVoltageCompensation(12.0);
+        grabber1.configVoltageCompSaturation(12.0);
 		grabber1.setInverted(Motors.Grabber1.kInverted);
-		grabber1.setIdleMode(Motors.Grabber1.idlemode);
-		grabber1.setSmartCurrentLimit(Motors.Grabber1.currentLimit);
-		grabber1.setOpenLoopRampRate(Motors.Grabber1.openLoopRampRate);
-		grabber1.burnFlash();
-
-		grabber2.restoreFactoryDefaults();
-
-        grabber2.enableVoltageCompensation(12.0);
-		grabber2.setInverted(Motors.Grabber2.kInverted);
-		grabber2.setIdleMode(Motors.Grabber2.idlemode);
-		grabber2.setSmartCurrentLimit(Motors.Grabber2.currentLimit);
-		grabber2.setOpenLoopRampRate(Motors.Grabber2.openLoopRampRate);
-		grabber2.burnFlash();
+		grabber1.setNeutralMode(Motors.Grabber1.idlemode);
+		grabber1.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, Motors.Grabber1.currentLimit, Motors.Grabber1.currentLimit, 1));
+		grabber1.configOpenloopRamp(Motors.Grabber1.openLoopRampRate);
 	}
 
-	public void compressorOn(){
-		// compressor.enableDigital();
-	}
-
-	public void compressorOff(){
-		// compressor.disable();
-	}
-
-	public void closeGrabber(){
-		// solenoid1.set(Value.kForward);
-		// solenoid2.set(Value.kForward);
-		
-		grabber1.set(.15);
-		grabber2.set(.15);
-		// System.out.println("in");
+	public void closeGrabber(){		
+		grabber1.set(-.1);
 	}
 	public void closeGrabberFast(){
-		// solenoid1.set(Value.kForward);
-		// solenoid2.set(Value.kForward);
-		
-		grabber1.set(.4);
-		grabber2.set(.4);
-		// System.out.println("in");
+		grabber1.set(-.2);
 	}
 	public void openGrabber(){
-		// solenoid1.set(Value.kReverse);
-		// solenoid2.set(Value.kReverse);
-		grabber1.set(-.5);
-		grabber2.set(-.5);
-		// System.out.println("out");
+		grabber1.set(.2);
 	}
 
 	public void offGrabber(){
-		// solenoid1.set(Value.kOff);
-		// solenoid2.set(Value.kOff);
 		grabber1.set(0);
-		grabber2.set(0);
-		// System.out.println("off");
 	}
-
-	/**
-	 * 
-	 * @return if the compressor is on
-	 */
-	// public boolean getCompressorOn(){
-	// 	return compressor.isEnabled();
-	// }
-
 	@Override
 	public void periodic(){
 		// SmartDashboard.putBoolean("Intaked?", isIntaked());
@@ -112,9 +65,8 @@ public class GrabberSubsystem extends SubsystemBase{
 	}
 
 	public boolean isIntaked() {
-		var current1 = grabber1.getOutputCurrent();
-		var current2 = grabber2.getOutputCurrent();
-		return (current1+current2)/2.0 > 15;
+		var current1 = grabber1.getSupplyCurrent();
+		return current1 > 15;
 	}
 
 }

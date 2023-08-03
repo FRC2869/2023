@@ -12,17 +12,17 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.Motors;
 import frc.robot.Constants.PivotConstants;
-import frc.robot.Inputs;
 
 public class PivotSubsystem extends SubsystemBase {
 	private static PivotSubsystem instance;
 	private WPI_TalonFX pivotMotor;
 	private double speed = 0;
-	private double pos = 0;
+	private double pos = PivotConstants.startingPosition;
 	private boolean isPositionControl = false;
 	private TalonFXSensorCollection collection;
 	private DecimalFormat rounder = new DecimalFormat("#.0");
@@ -107,13 +107,14 @@ public class PivotSubsystem extends SubsystemBase {
 	@Override
 	public void periodic(){
 		String angleString = rounder.format(getAngle());
-		
+		SmartDashboard.putBoolean("Pivot PosControl", isPositionControl);
 		SmartDashboard.putString("Pivot Angle",angleString);
 		// Supplier<String> angleStringSupp = () -> angleString;
 		// RobotContainer.auto.addString("Pivot Angle", angleStringSupp).withPosition(3, 0);
 		//SmartDashboard.putNumber("Pivot Angle", getAngle());
 		// System.out.println(getAngle());
-		if(isPositionControl){
+		// if(isPositionControl){
+		if(true){
 			// pivotMotor.setReference(pos, ControlType.kPosition, 0, pivotFF.calculate(getAngle(), getVelocity()));
 			// if(getAngle()<PivotConstants.kMinAngle){
 			// 	// System.out.println("too low");
@@ -123,20 +124,22 @@ public class PivotSubsystem extends SubsystemBase {
 			// 	// System.out.println("too high");
 			// 	return;
 			// }
-			pos = (pos-PivotConstants.startingPosition)/360.0/PivotConstants.GEAR_RATIO*2048*-1;
+			SmartDashboard.putNumber("Target Pivot Angle", this.pos);
+			double pos = (this.pos-PivotConstants.startingPosition)/360.0/PivotConstants.GEAR_RATIO*2048*-1;
 			// System.out.println(pos);
 			pivotMotor.set(TalonFXControlMode.Position, pos);
 		}else{
-			if((!Inputs.getOverrideButton()) && speed>0 && getAngle()<=PivotConstants.kMinAngle){
+			SmartDashboard.putNumber("Target Pivot Angle", this.pos);
+			if(speed>0 && getAngle()<=PivotConstants.kMinAngle){
 				// System.out.println("Too Low");
 				speed = 0;
 			}
-			if((!Inputs.getOverrideButton()) && speed<0 && getAngle()>=PivotConstants.kMaxAngle){
+			if(speed<0 && getAngle()>=PivotConstants.kMaxAngle){
 				// System.out.println("Too High");
 				speed = 0;
 			}
 			
-			double feedforward = Math.cos(Units.degreesToRadians(getAngle()))*-.075;
+			double feedforward = Math.cos(Units.degreesToRadians(getAngle()))*-.10;
 			if(getAngle()>210){
 				feedforward *= 1.3;
 			}

@@ -3,20 +3,26 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.Constants.PivotConstants;
+import frc.robot.Constants.WristConstants;
 import frc.robot.subsystems.PivotSubsystem;
+import frc.robot.subsystems.WristSubsystem;
 
-public class ArmCubeMid extends CommandBase{
+public class ArmCubeMidBack extends CommandBase{
 	// private ArmSubsystem arm;
 	private PivotSubsystem pivot;
 	// private int armCounter;
 	private int pivotCounter;
+	private WristSubsystem wrist;
+	private int wristCounter;
 
-	public ArmCubeMid(){
+	public ArmCubeMidBack(){
 		// arm = ArmSubsystem.getInstance();
 		pivot = PivotSubsystem.getInstance();
+		wrist = WristSubsystem.getInstance();
 		System.out.println("Cube Mid");
 		// addRequirements(arm);
 		addRequirements(pivot);
+		addRequirements(wrist);
 	}
 
 	@Override
@@ -24,27 +30,30 @@ public class ArmCubeMid extends CommandBase{
 		// arm.setPositionControl(true);
 		// arm.position(ArmConstants.Extension.midCubeDistance);
 		pivot.setPositionControl(true);
-		pivot.position(PivotConstants.midCubeAngle);
+		pivot.position(PivotConstants.midCubeBackAngle);
+		wrist.setPositionControl(true);
+		wrist.position(WristConstants.midCubeBackAngle);
 	}
 
 	@Override
 	public boolean isFinished(){
 		
 		// boolean armDone = Math.abs(arm.getPosition()-ArmConstants.Extension.midCubeDistance) < ArmConstants.Extension.tolerance;
-		boolean pivotDone = Math.abs(pivot.getAngle()-PivotConstants.midCubeAngle) < PivotConstants.tolerance;
+		boolean pivotDone = Math.abs(pivot.getAngle()-PivotConstants.midCubeBackAngle) < PivotConstants.tolerance;
+		boolean wristDone = Math.abs(wrist.getAngle()-WristConstants.midCubeBackAngle) < WristConstants.tolerance;
 
-		// if(armDone){
-		// 	armCounter++;
-		// }else{
-		// 	armCounter=0;
-		// }
+		if(wristDone){
+			wristCounter++;
+		}else{
+			wristCounter=0;
+		}
 		if(pivotDone){
 			pivotCounter++;
 		}else{
 			pivotCounter=0;
 		}
 
-		if(pivotCounter>Constants.pidTimer){
+		if(pivotCounter>Constants.pidTimer&&wristCounter>Constants.pidTimer){
 			pivot.setPositionControl(false);
 			return true;
 		}else{

@@ -29,15 +29,16 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.SwerveConstants;
-import frc.robot.Constants.SwerveConstants.BackLeft;
-import frc.robot.Constants.SwerveConstants.BackRight;
-import frc.robot.Constants.SwerveConstants.FrontLeft;
-import frc.robot.Constants.SwerveConstants.FrontRight;
+import frc.robot.Constants.SwerveConstants.Mod0;
+import frc.robot.Constants.SwerveConstants.Mod1;
+import frc.robot.Constants.SwerveConstants.Mod2;
+import frc.robot.Constants.SwerveConstants.Mod3;
 import frc.robot.RobotContainer;
 
 public class DrivetrainSubsystem extends SubsystemBase {
 	private static DrivetrainSubsystem instance;
 	private static boolean isEnabled = false;
+	private static boolean isCreated = false;
 
 	public static void disable() {
 		isEnabled = false;
@@ -48,14 +49,11 @@ public class DrivetrainSubsystem extends SubsystemBase {
 	}
 
 	public static DrivetrainSubsystem getInstance() {
-		if (instance == null) {
+		if (instance == null && !isCreated) {
+			isCreated = true;
 			instance = new DrivetrainSubsystem();
 		}
 		return instance;
-	}
-
-	public static void deleteInstance() {
-		instance = null;
 	}
 
 	/**
@@ -161,14 +159,14 @@ public class DrivetrainSubsystem extends SubsystemBase {
 				// This can either be STANDARD or FAST depending on your gear configuration
 				Mk4iSwerveModuleHelper.GearRatio.L2,
 				// This is the ID of the drive motor
-				FrontLeft.driveMotorId,
+				Mod0.driveMotorId,
 				// This is the ID of the steer motor
-				FrontLeft.turnMotorId,
+				Mod0.turnMotorId,
 				// This is the ID of the steer encoder
-				FrontLeft.encoderId,
+				Mod0.encoderId,
 				// This is how much the steer encoder is offset from true zero (In our case,
 				// zero is facing straight forward)
-				FrontLeft.offset.getRadians());
+				Mod0.offset.getRadians());
 
 		// We will do the same for the other modules
 		m_frontRightModule = Mk4iSwerveModuleHelper.createNeo(
@@ -176,30 +174,30 @@ public class DrivetrainSubsystem extends SubsystemBase {
 						.withSize(2, 4)
 						.withPosition(2, 0),
 				Mk4iSwerveModuleHelper.GearRatio.L2,
-				FrontRight.driveMotorId,
-				FrontRight.turnMotorId,
-				FrontRight.encoderId,
-				FrontRight.offset.getRadians());
+				Mod1.driveMotorId,
+				Mod1.turnMotorId,
+				Mod1.encoderId,
+				Mod1.offset.getRadians());
 
 		m_backLeftModule = Mk4iSwerveModuleHelper.createNeo(
 				tab.getLayout("Back Left Module", BuiltInLayouts.kList)
 						.withSize(2, 4)
 						.withPosition(4, 0),
 				Mk4iSwerveModuleHelper.GearRatio.L2,
-				BackLeft.driveMotorId,
-				BackLeft.turnMotorId,
-				BackLeft.encoderId,
-				BackLeft.offset.getRadians());
+				Mod2.driveMotorId,
+				Mod2.turnMotorId,
+				Mod2.encoderId,
+				Mod2.offset.getRadians());
 
 		m_backRightModule = Mk4iSwerveModuleHelper.createNeo(
 				tab.getLayout("Back Right Module", BuiltInLayouts.kList)
 						.withSize(2, 4)
 						.withPosition(6, 0),
 				Mk4iSwerveModuleHelper.GearRatio.L2,
-				BackRight.driveMotorId,
-				BackRight.turnMotorId,
-				BackRight.encoderId,
-				BackRight.offset.getRadians());
+				Mod3.driveMotorId,
+				Mod3.turnMotorId,
+				Mod3.encoderId,
+				Mod3.offset.getRadians());
 		m_odometry = new SwerveDriveOdometry(
 				m_kinematics, m_navx.getRotation2d(),
 				getModulePositions(), new Pose2d(5.0, 13.5, new Rotation2d()));

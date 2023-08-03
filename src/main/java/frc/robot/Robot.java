@@ -19,6 +19,7 @@ import frc.robot.commands.pivot.PivotPosPwrSwitch;
 import frc.robot.commands.pivot.PivotReset;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.PivotSubsystem;
+import frc.robot.subsystems.WristSubsystem;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -128,8 +129,8 @@ public static UsbCamera camera;
   @Override
   public void autonomousInit() {
     // Shuffleboard.selectTab("Auto");
-	DrivetrainSubsystem.disable();
 	PivotSubsystem.getInstance().toggleCoast();
+	WristSubsystem.getInstance().toggleCoast();
     Constants.isAuto = true;
     // Constants.isEnabled = true;
     System.out.println("AUto");
@@ -151,15 +152,18 @@ public static UsbCamera camera;
   }
   @Override
   public void teleopInit() {
+	if(Constants.autoTimer.get()==0){
+		Constants.autoTimer.start();
+	}
     // Shuffleboard.selectTab("Teleop");
 	PivotSubsystem.getInstance().toggleCoast();
-	DrivetrainSubsystem.enable();
+	WristSubsystem.getInstance().toggleCoast();
     Constants.isAuto = false;
     // This makes sure that the autonomous stops running when
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
     // this line or comment it out.
-    new PivotPosPwrSwitch(false).schedule();
+    new PivotPosPwrSwitch(true).schedule();
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
@@ -169,6 +173,7 @@ public static UsbCamera camera;
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
+	SmartDashboard.putNumber("autoTimer",Constants.autoTimer.get());
 	Constants.locked = Inputs.getSwerveLock();
 	if(Inputs.cancelDriveButton().getAsBoolean()){
 		DrivetrainSubsystem.getInstance().getCurrentCommand().cancel();

@@ -7,7 +7,7 @@ import frc.robot.Constants.WristConstants;
 import frc.robot.subsystems.PivotSubsystem;
 import frc.robot.subsystems.WristSubsystem;
 
-public class ArmDoubleSubStationBack extends CommandBase{
+public class ArmCubeHighBack extends CommandBase{
 	// private ArmSubsystem arm;
 	private PivotSubsystem pivot;
 	// private int armCounter;
@@ -15,32 +15,32 @@ public class ArmDoubleSubStationBack extends CommandBase{
 	private WristSubsystem wrist;
 	private int wristCounter;
 
-	public ArmDoubleSubStationBack(){
+	public ArmCubeHighBack(){
 		// arm = ArmSubsystem.getInstance();
 		pivot = PivotSubsystem.getInstance();
 		wrist = WristSubsystem.getInstance();
-		System.out.println("Double and High");
+
 		// addRequirements(arm);
 		addRequirements(pivot);
-		addRequirements(wrist);
 	}
 
 	@Override
 	public void execute(){
 		// arm.setPositionControl(true);
-		// arm.position(ArmConstants.Extension.midCubeDistance);
+		// arm.position(ArmConstants.Extension.highCubeDistance);
 		pivot.setPositionControl(true);
-		pivot.position(PivotConstants.doubleSubstationBackAngle);
+		pivot.position(PivotConstants.highCubeBackAngle);
 		wrist.setPositionControl(true);
-		wrist.position(WristConstants.doubleSubstationBackAngle);
+		wrist.position(WristConstants.highCubeBackAngle);
 	}
 
 	@Override
 	public boolean isFinished(){
 		
-		// boolean armDone = Math.abs(arm.getPosition()-ArmConstants.Extension.midCubeDistance) < ArmConstants.Extension.tolerance;
-		boolean pivotDone = Math.abs(pivot.getAngle()-PivotConstants.doubleSubstationBackAngle) < PivotConstants.tolerance;
-		boolean wristDone = Math.abs(wrist.getAngle()-WristConstants.doubleSubstationBackAngle) < WristConstants.tolerance;
+		// boolean armDone = Math.abs(arm.getPosition()-ArmConstants.Extension.highCubeDistance) < ArmConstants.Extension.tolerance;
+		System.out.println(pivot.getAngle());
+		boolean pivotDone = Math.abs(pivot.getAngle()-PivotConstants.highCubeBackAngle) < PivotConstants.tolerance;
+		boolean wristDone = Math.abs(wrist.getAngle()-WristConstants.highCubeBackAngle) < WristConstants.tolerance;
 
 		if(wristDone){
 			wristCounter++;
