@@ -15,7 +15,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
-import frc.robot.commands.pivot.PivotPosPwrSwitch;
+import frc.robot.commands.ConstantsRead;
 import frc.robot.commands.pivot.PivotReset;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.PivotSubsystem;
@@ -53,7 +53,7 @@ public static UsbCamera camera;
     // led = new AddressableLED(0);
 	// led_buffer = new AddressableLEDBuffer(120);
 	// led.setLength(led_buffer.getLength());
-
+    new ConstantsRead().schedule();
     m_robotContainer = new RobotContainer();
 	// for(int i=0;i<led_buffer.getLength();i++){
 	// 	led_buffer.setRGB(i, 255, 255, 255);
@@ -163,7 +163,6 @@ public static UsbCamera camera;
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
     // this line or comment it out.
-    new PivotPosPwrSwitch(true).schedule();
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }

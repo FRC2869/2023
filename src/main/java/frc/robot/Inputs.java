@@ -36,23 +36,38 @@ public class Inputs {
 	 * 
 	 * Operator
 	 *  Button Board:
-	 * 	 Left Joystick Y - Move Arm
-	 * 	 14 - Base Position
-	 * 	 1 - Low Position (front)
-	 * 	 2 - Mid Cube Position (front)
-	 *   3 - Double Substation Position (front)
-	 *   4 - Double Substation Position (back)
-	 *   5 - Mid Cone Position (back)
-	 *   6 - Low Position (back)
-	 *   7 - High Cube Position (back)
-	 *   9 - Floor Pickup (front)
-	 * 	 8 - Cancel Arm Command
-	 * 
-	 * 	
-	 *   12 - Stop Intake
-	 * 	 11 - Outtake
-	 * 	 13 - Fast Intake	
-	 * 	 10 - Slow Intake
+	 * 	 1 - Storage 
+	 * 	  Scoring:
+	 *     Front: 
+	 *   2 - Low  
+	 *   3 - Mid Cube 
+	 *   4 - Mid Cone 
+	 *   5 - High Cube 
+	 * 	   Back:
+	 *   6 - Low
+	 *   7 - Mid Cone
+	 *   8 - Mid Cube
+	 *   9 - High Cone
+	 *   10 - High Cube
+	 *    Pickup:
+	 *   11 - Floor Cube
+	 *   12 - Single Sub Cone
+	 *   13 - Single Sub Cube
+	 *   14 - Double Sub Cone
+	 *   15 - Double Sub Cube
+	 *   16 - Stop Arm
+	 *    Intake:
+	 *   17 - Intake Cube/Outtake Cone
+	 *   18 - Intake Cone Slow/ Outtake Cube
+	 *   19 - Intake Cone Fast
+	 *   20 - Stop Intake
+	 *    Adjustment:
+	 *   21 - Wrist Up
+	 *   22 - Wrist Down
+	 *   23 - Arm Up
+	 *   24 - Arm Down
+	 *   25 - Save Position
+	 *   
 	 */
 
 
@@ -63,7 +78,7 @@ public class Inputs {
 			speed = 0;
 		}
 
-		if(driver1.getRawButton(1)){
+		if(driver1.getRawButton(5)){
 			speed *= .5;
 		}else if(driver1.getRawButton(1)){
 			speed *= 1;
@@ -79,7 +94,7 @@ public class Inputs {
 		if(Math.abs(speed) < .1){
 			speed = 0;
 		}
-		if(driver1.getRawButton(1)){
+		if(driver1.getRawButton(5)){
 			speed *= .5;
 		}else if(driver1.getRawButton(1)){
 			speed *= 1;
@@ -132,75 +147,97 @@ public class Inputs {
 	 /*
 	  * Arm
 	  */
-	public static double getPivotPower() {
-		var speed = operatorCmd.getRawAxis(0);
-		if(Math.abs(speed)<.05){
-			speed = 0;
-		}
-		return speed;
-	}
-	// public static double getPivotPosition() {
-	// 	double pos = -operator.getLeftY(); // [-1, 1]
-	// 	pos = pos + 1; // [0, 2]
-	// 	pos = pos/2.0; // [0, 1]
-	// 	pos = pos * (PivotConstants.kMaxAngle-PivotConstants.kMinAngle); // [0, (kMaxAngle-kMinAngle)]
-	// 	pos = pos + PivotConstants.kMinAngle; // [kMinAngle, kMaxAngle]
-	// 	return pos;
-	// }
 	public static Trigger getArmBase(){
-		//Down
-		return operatorCmd.button(15);
-	}
-	public static Trigger getArmLowFront(){
-		//Left
 		return operatorCmd.button(1);
 	}
-	public static Trigger getArmCubeMidFront(){
-		//Right
-		return operatorCmd.button(2);
-	}
-	public static Trigger getArmDoubleSubStationFront(){
-		//Up
-		return operatorCmd.button(3);
-	}
-	public static Trigger getArmDoubleSubStationBack(){
-		//Up
-		return operatorCmd.button(4);
-	}
-	public static Trigger getArmConeMidFront() {
-		//Left
-		return operatorCmd.button(5);
-	}
-	public static Trigger getArmLowBack() {
-		//Down
-		return operatorCmd.button(6);
-	}
-	public static Trigger getArmCubeHigh() {
-		//Right
-		return operatorCmd.button(7);
-	}
+
+	//Scoring
+		//Front
+			public static Trigger getArmLowFront(){
+				return operatorCmd.button(2);
+			}
+			public static Trigger getArmCubeMidFront(){
+				return operatorCmd.button(3);
+			}
+			public static Trigger getArmConeMidFront() {
+				return operatorCmd.button(4);
+			}
+			public static Trigger getArmCubeHighFront() {
+				return operatorCmd.button(5);
+			}
+		
+		//Back
+			public static Trigger getArmLowBack() {
+				return operatorCmd.button(6);
+			}
+			public static Trigger getArmConeMidBack() {
+				return operatorCmd.button(6);
+			}
+			public static Trigger getArmCubeMidBack(){
+				return operatorCmd.button(3);
+			}
+			public static Trigger getArmConeHighBack() {
+				return operatorCmd.button(4);
+			}
+			public static Trigger getArmCubeHighBack() {
+				return operatorCmd.button(5);
+			}
+
+	//Pickup
+		public static Trigger getArmFloorPickupCube() {
+			return operatorCmd.button(11);
+		}
+		public static Trigger getArmSingleSubStationCone(){
+			return operatorCmd.button(12);
+		}
+		public static Trigger getArmSingleSubStationCube(){
+			return operatorCmd.button(13);
+		}
+		public static Trigger getArmDoubleSubStationCone(){
+			return operatorCmd.button(14);
+		}
+		public static Trigger getArmDoubleSubStationCube(){
+			return operatorCmd.button(15);
+		}
+	
+	
 	public static Trigger getPivotCancelButton(){
-		return operatorCmd.button(8);
+		return operatorCmd.button(16);
 	}
-	public static Trigger getArmFloorPickup() {
-		return operatorCmd.button(9);
-	}
+	
 	/*
-	 * Grabber
+	 * Intake
 	 */
-	public static Trigger getCloseGrabber(){
-		return operatorCmd.button(10);
+	public static Trigger getIntakeFast() {
+        return operatorCmd.button(17);
+    }
+	public static Trigger getIntakeSlow(){
+		return operatorCmd.button(18);
 	}
-	public static Trigger getOpenGrabber(){
-		return operatorCmd.button(11);
+	public static Trigger getOuttake(){
+		return operatorCmd.button(19);
 	}
 	public static Trigger getOffGrabber(){
-		return operatorCmd.button(12);
+		return operatorCmd.button(20);
 	}
-	public static Trigger getCloseGrabberFast() {
-        return operatorCmd.button(13);
-    }
-	public static Trigger getAutoTrigger() {
-        return operatorCmd.button(14);
-    }
+
+	/*
+	 * Adjustment
+	 */
+	public static Trigger getWristAdjustUp(){
+		return operatorCmd.button(21);
+	}
+	public static Trigger getWristAdjustDown(){
+		return operatorCmd.button(22);
+	}
+	public static Trigger getPivotAdjustUp(){
+		return operatorCmd.button(23);
+	}
+	public static Trigger getPivotAdjustDown(){
+		return operatorCmd.button(24);
+	}
+	public static Trigger getSaveAdjustment(){
+		return operatorCmd.button(25);
+	}
+	
 }

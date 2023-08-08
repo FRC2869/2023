@@ -29,9 +29,7 @@ public class ArmLowFront extends CommandBase{
 	public void execute(){
 		// arm.setPositionControl(true);
 		// arm.position(ArmConstants.Extension.lowConeDistance);
-		pivot.setPositionControl(true);
 		pivot.position(PivotConstants.lowFrontAngle);
-		wrist.setPositionControl(true);
 		wrist.position(WristConstants.lowFrontAngle);
 	}
 
@@ -54,8 +52,6 @@ public class ArmLowFront extends CommandBase{
 		}
 
 		if(pivotCounter>Constants.pidTimer&&wristCounter>Constants.pidTimer){
-			pivot.setPositionControl(false); 
-			wrist.setPositionControl(false); 
 			return true;
 		}else{
 			return false;

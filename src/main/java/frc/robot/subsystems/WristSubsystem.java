@@ -11,21 +11,22 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.ArmFeedforward;
-import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.Motors;
 import frc.robot.Constants.WristConstants;
+import frc.robot.Constants.WristConstants.PositionsWrist;
 
 public class WristSubsystem extends SubsystemBase {
 	private static WristSubsystem instance;
 	private WPI_TalonFX wristMotor;
-	private double speed = 0;
 	private double pos = WristConstants.startingPosition;
-	private boolean isPositionControl = false;
 	private TalonFXSensorCollection collection;
 	private DecimalFormat rounder = new DecimalFormat("#.0");
 	// private ArmFeedforward feedForward;
+	private boolean isEnabled = true;
+	PositionsWrist currentPos = PositionsWrist.STARTING;
+
 
 	public static WristSubsystem getInstance(){
 		if(instance==null){
@@ -68,18 +69,7 @@ public class WristSubsystem extends SubsystemBase {
 	}
 
 	/**
-	 * Sets the wrist motor to the specified speed
-	 * Only applies if isPositionControl == false
-	 * @param pwr the speed to set the motor to [-1,1]
-	 */
-	public void power(double pwr) {
-		// speed = MathUtil.clamp(pwr, -WristConstants.kMaxPower, WristConstants.kMaxPower);
-		speed = pwr*WristConstants.kMaxPower;
-	}
-
-	/**
 	 * Sets the wrist motor to the specified position
-	 * Only applies if isPositionControl == true
 	 * @param pos the position to set the motor to [kMinAngle, kMaxAngle]
 	 */
 	public void position(double pos){
@@ -95,23 +85,86 @@ public class WristSubsystem extends SubsystemBase {
 		return collection.getIntegratedSensorVelocity();
 	}
 
-	/**
-	 * Changes whether  the mode is position or speed control
-	 * @param positionControl true for position control, false for speed control
-	 */
-	public void setPositionControl(boolean positionControl){
-		isPositionControl = positionControl;
+	public void setEnabled(boolean enabled){
+		isEnabled = enabled;
+	}
+
+	public void adjustUp(){
+		pos+=2;
+	}
+	public void adjustDown(){
+		pos-=2;
+	}
+	public void setCurrentPosition(PositionsWrist pos){
+		currentPos = pos;
+	}
+	public void savePositions(){
+		switch(currentPos){
+			case BASE:
+				WristConstants.basePosition = pos;
+				break;
+			case DOUBLE_CONE:
+				WristConstants.doubleSubstationConeAngle = pos;
+				break;
+			case DOUBLE_CUBE:
+				WristConstants.doubleSubstationCubeAngle = pos;
+				break;
+			case FLOOR_CONE:
+				WristConstants.floorPickupConeAngle = pos;
+				break;
+			case FLOOR_CUBE:
+				WristConstants.floorPickupCubeAngle = pos;
+				break;
+			case HIGH_CONE:
+				WristConstants.highConeAngle = pos;
+				break;
+			case HIGH_CUBE_BACK:
+				WristConstants.highCubeBackAngle = pos;
+				break;
+			case HIGH_CUBE_FRONT:
+				WristConstants.highCubeFrontAngle = pos;
+				break;
+			case LOW_BACK:
+				WristConstants.lowBackAngle = pos;
+				break;
+			case LOW_FRONT:
+				WristConstants.lowFrontAngle = pos;
+				break;
+			case MID_CONE_BACK:
+				WristConstants.midConeBackAngle = pos;
+				break;
+			case MID_CONE_FRONT:
+				WristConstants.midConeFrontAngle = pos;
+				break;
+			case MID_CUBE_BACK:
+				WristConstants.midCubeBackAngle = pos;
+				break;
+			case MID_CUBE_FRONT:
+				WristConstants.midCubeFrontAngle = pos;
+				break;
+			case SINGLE_CONE:
+				WristConstants.singleSubstationConeAngle = pos;
+				break;
+			case SINGLE_CUBE:
+				WristConstants.singleSubstationCubeAngle = pos;
+				break;
+			case STARTING:
+				break;
+			default:
+				break;
+
+		}
 	}
 
 	@Override
 	public void periodic(){
 		String angleString = rounder.format(getAngle());
-		SmartDashboard.putBoolean("Wrist PosControl", isPositionControl);
+		SmartDashboard.putBoolean("Wrist Enabled", isEnabled);
 		SmartDashboard.putString("Wrist Angle",angleString);
 		// Supplier<String> angleStringSupp = () -> angleString;
 		// RobotContainer.auto.addString("Wrist Angle", angleStringSupp).withPosition(3, 0);
 		// System.out.println(getAngle());
-		if(true){
+		if(isEnabled){
 			// wristMotor.setReference(pos, ControlType.kPosition, 0, wristFF.calculate(getAngle(), getVelocity()));
 			// if(getAngle()<WristConstants.kMinAngle){
 				// 	// System.out.println("too low");
@@ -126,22 +179,7 @@ public class WristSubsystem extends SubsystemBase {
 					// System.out.println(pos);
 			wristMotor.set(TalonFXControlMode.Position, pos);
 		}else{
-			SmartDashboard.putNumber("Target Wrist Angle", pos);
-			if(speed>0 && getAngle()<=WristConstants.kMinAngle){
-				// System.out.println("Too Low");
-				speed = 0;
-			}
-			if(speed<0 && getAngle()>=WristConstants.kMaxAngle){
-				// System.out.println("Too High");
-				speed = 0;
-			}
-			
-			double feedforward = Math.cos(Units.degreesToRadians(getAngle()))*-.075;
-			if(getAngle()>210){
-				feedforward *= 1.3;
-			}
-			// wristMotor.set(TalonFXControlMode.PercentOutput, speed-(feedForward.calculate(Units.degreesToRadians(getAngle()), 0)/12.0));
-			wristMotor.set(TalonFXControlMode.PercentOutput, speed+feedforward);
+			wristMotor.set(0);
 		}
 	}
 

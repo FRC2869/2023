@@ -92,7 +92,6 @@ public class SwerveModuleFactory<DriveConfiguration, SteerConfiguration> {
 
         @Override
         public double getDrivePosition() {
-            // TODO Auto-generated method stub
             return driveController.getPosition();
         }
     }

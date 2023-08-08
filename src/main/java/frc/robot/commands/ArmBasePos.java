@@ -7,64 +7,64 @@ import frc.robot.Constants.WristConstants;
 import frc.robot.subsystems.PivotSubsystem;
 import frc.robot.subsystems.WristSubsystem;
 
-public class ArmBasePos extends CommandBase{
-	// private ArmSubsystem arm;
+public class ArmBasePos extends CommandBase {
 	private PivotSubsystem pivot;
-	private boolean hasRun;
+	private int pivotCounter;
+	private boolean hasRun = false;
 	private WristSubsystem wrist;
+	private int wristCounter;
+	private boolean pivotDone;
+	private boolean wristDone;
 	private double startTime;
+	private final double targetPivotPos = PivotConstants.basePosition;
+	private final double targetWristPos = WristConstants.basePosition;
 
-	public ArmBasePos(){
-		// arm = ArmSubsystem.getInstance();
+	public ArmBasePos() {
 		pivot = PivotSubsystem.getInstance();
 		wrist = WristSubsystem.getInstance();
-
-		// addRequirements(arm);
-		
 		addRequirements(pivot);
 		addRequirements(wrist);
 	}
 
 	@Override
-	public void execute(){
-		if(!hasRun){
-			hasRun = true;
+	public void execute() {
+		if (!hasRun) {
 			startTime = Constants.autoTimer.get();
-			System.out.println(startTime+": Arm Base Pos Start");
+			System.out.println(startTime + ": Arm Cone Mid Start");
+			hasRun = true;
 		}
-		// arm.setPositionControl(true);
-		// arm.position(ArmConstants.Extension.highConeDistance);
-		if((Constants.autoTimer.get()-startTime)>1.5){
-		pivot.setPositionControl(false);
-		pivot.position(PivotConstants.basePosition);
-		}
-		wrist.setPositionControl(true);
-		wrist.position(WristConstants.basePosition);
+		if(pivotCounter < Constants.pidTimer){
+		wrist.position(targetWristPos);
 		
-
+		}
+		if((Constants.autoTimer.get()-startTime)>1){
+		pivot.position(targetPivotPos);
+		}
 	}
 
 	@Override
-	public boolean isFinished(){
-		
-		// boolean armDone = Math.abs(arm.getPosition()-ArmConstants.Extension.highConeDistance) < ArmConstants.Extension.tolerance;
-		boolean pivotDone = Math.abs(pivot.getAngle()-PivotConstants.basePosition)<PivotConstants.tolerance;
-		boolean wristDone = Math.abs(wrist.getAngle()-WristConstants.basePosition) < WristConstants.tolerance;
+	public boolean isFinished() {
+		pivotDone = Math.abs(pivot.getAngle() - targetPivotPos) < PivotConstants.tolerance;
+		wristDone = Math.abs(wrist.getAngle() - targetWristPos) < WristConstants.tolerance;
 
-		// if(armDone){
-		// 	armCounter++;
-		// }else{
-		// 	armCounter=0;
-		// }
-
-		if(pivotDone&&wristDone){
-			System.out.println(Constants.autoTimer.get()+": Arm Base Pos End");
-			pivot.setPositionControl(false);
-			wrist.setPositionControl(false);
-			return true;
-		}else{
-			return false;
+		if (wristDone) {
+			wristCounter++;
+		} else {
+			wristCounter = 0;
 		}
-		// return (arm.getPosition()==ArmConstants.Extension.lowConeDistance) && (pivot.getAngle() == PivotConstants.lowConeAngle);
+		if (pivotDone) {
+			pivotCounter++;
+		} else {
+			pivotCounter = 0;
+		}
+		if (pivotCounter > Constants.pidTimer && wristCounter > Constants.pidTimer) {
+			System.out.println(Constants.autoTimer.get() + ": Arm Cone Mid Done");
+			return true;
+		}
+		return false;
+	}
+
+	@Override
+	public void end(boolean isInterrupted) {
 	}
 }

@@ -7,7 +7,7 @@ import frc.robot.Constants.WristConstants;
 import frc.robot.subsystems.PivotSubsystem;
 import frc.robot.subsystems.WristSubsystem;
 
-public class ArmConeHigh extends CommandBase {
+public class ArmDoubleSubStationCube extends CommandBase {
 	private PivotSubsystem pivot;
 	private int pivotCounter;
 	private boolean hasRun = false;
@@ -16,10 +16,10 @@ public class ArmConeHigh extends CommandBase {
 	private boolean pivotDone;
 	private boolean wristDone;
 	private double startTime;
-	private final double targetPivotPos = PivotConstants.highConeAngle;
-	private final double targetWristPos = WristConstants.highConeAngle;
+	private final double targetPivotPos = PivotConstants.doubleSubstationCubeAngle;
+	private final double targetWristPos = WristConstants.doubleSubstationCubeAngle;
 
-	public ArmConeHigh() {
+	public ArmDoubleSubStationCube() {
 		pivot = PivotSubsystem.getInstance();
 		wrist = WristSubsystem.getInstance();
 		addRequirements(pivot);
