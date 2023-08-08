@@ -86,7 +86,6 @@ public class DrivetrainSubsystem extends SubsystemBase {
 	 */
 	// Here we calculate the theoretical maximum angular velocity. You can also
 	// replace this with a measured amount.
-	// TODO: Maybe lower constant
 	public static final double MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND = MAX_VELOCITY_METERS_PER_SECOND /
 			Math.hypot(SwerveConstants.trackLength_meter / 2.0, SwerveConstants.trackWidth_meter / 2.0);
 

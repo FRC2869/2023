@@ -13,6 +13,5 @@ public class PivotDefault extends CommandBase{
 
 	@Override
 	public void execute(){
-		pivot.power(0);
 	}
 }

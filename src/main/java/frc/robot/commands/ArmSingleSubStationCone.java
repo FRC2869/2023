@@ -4,10 +4,12 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.Constants.PivotConstants;
 import frc.robot.Constants.WristConstants;
+import frc.robot.Constants.PivotConstants.PositionsPivot;
+import frc.robot.Constants.WristConstants.PositionsWrist;
 import frc.robot.subsystems.PivotSubsystem;
 import frc.robot.subsystems.WristSubsystem;
 
-public class ArmConeHigh extends CommandBase {
+public class ArmSingleSubStationCone extends CommandBase {
 	private PivotSubsystem pivot;
 	private int pivotCounter;
 	private boolean hasRun = false;
@@ -16,10 +18,10 @@ public class ArmConeHigh extends CommandBase {
 	private boolean pivotDone;
 	private boolean wristDone;
 	private double startTime;
-	private final double targetPivotPos = PivotConstants.highConeAngle;
-	private final double targetWristPos = WristConstants.highConeAngle;
+	private final double targetPivotPos = PivotConstants.singleSubstationConeAngle;
+	private final double targetWristPos = WristConstants.singleSubstationConeAngle;
 
-	public ArmConeHigh() {
+	public ArmSingleSubStationCone() {
 		pivot = PivotSubsystem.getInstance();
 		wrist = WristSubsystem.getInstance();
 		addRequirements(pivot);
@@ -34,10 +36,12 @@ public class ArmConeHigh extends CommandBase {
 			hasRun = true;
 		}
 		if(pivotCounter < Constants.pidTimer){
-		pivot.position(targetPivotPos);
+			pivot.position(targetPivotPos);
+			pivot.setCurrentPosition(PositionsPivot.SINGLE_CONE);
 		}
 		if((Constants.autoTimer.get()-startTime)>1){
-		wrist.position(targetWristPos);
+			wrist.position(targetWristPos);
+			wrist.setCurrentPosition(PositionsWrist.SINGLE_CONE);
 		}
 	}
 

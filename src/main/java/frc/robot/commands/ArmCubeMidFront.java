@@ -4,26 +4,26 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.Constants.PivotConstants;
 import frc.robot.Constants.WristConstants;
+import frc.robot.Constants.PivotConstants.PositionsPivot;
+import frc.robot.Constants.WristConstants.PositionsWrist;
 import frc.robot.subsystems.PivotSubsystem;
 import frc.robot.subsystems.WristSubsystem;
 
-public class ArmCubeMidFront extends CommandBase{
-	// private ArmSubsystem arm;
+public class ArmCubeMidFront extends CommandBase {
 	private PivotSubsystem pivot;
-	// private int armCounter;
 	private int pivotCounter;
+	private boolean hasRun = false;
 	private WristSubsystem wrist;
 	private int wristCounter;
 	private boolean pivotDone;
 	private boolean wristDone;
-	private boolean hasRun;
+	private double startTime;
+	private final double targetPivotPos = PivotConstants.midCubeFrontAngle;
+	private final double targetWristPos = WristConstants.midCubeFrontAngle;
 
-	public ArmCubeMidFront(){
-		// arm = ArmSubsystem.getInstance();
+	public ArmCubeMidFront() {
 		pivot = PivotSubsystem.getInstance();
 		wrist = WristSubsystem.getInstance();
-		System.out.println("Cube Mid");
-		// addRequirements(arm);
 		addRequirements(pivot);
 		addRequirements(wrist);
 	}
@@ -31,27 +31,24 @@ public class ArmCubeMidFront extends CommandBase{
 	@Override
 	public void execute() {
 		if (!hasRun) {
-			System.out.println(Constants.autoTimer.get() + ": Arm Cube Mid Start");
+			startTime = Constants.autoTimer.get();
+			System.out.println(startTime + ": Arm Cone Mid Start");
 			hasRun = true;
 		}
-		// arm.setPositionControl(true);
-		// arm.position(ArmConstants.Extension.midConeDistance);
 		if(pivotCounter < Constants.pidTimer){
-		pivot.setPositionControl(true);
-		pivot.position(PivotConstants.midCubeFrontAngle);
-		}else if(wristCounter < Constants.pidTimer){
-		wrist.setPositionControl(true);
-		wrist.position(WristConstants.midCubeFrontAngle);
+			pivot.position(targetPivotPos);
+			pivot.setCurrentPosition(PositionsPivot.MID_CUBE_FRONT);
+		}
+		if((Constants.autoTimer.get()-startTime)>1){
+			wrist.position(targetWristPos);
+			wrist.setCurrentPosition(PositionsWrist.MID_CUBE_FRONT);
 		}
 	}
 
 	@Override
 	public boolean isFinished() {
-		// boolean armDone =
-		// Math.abs(arm.getPosition()-ArmConstants.Extension.midConeDistance) <
-		// ArmConstants.Extension.tolerance;
-		pivotDone = Math.abs(pivot.getAngle() - PivotConstants.midCubeFrontAngle) < PivotConstants.tolerance;
-		wristDone = Math.abs(wrist.getAngle() - WristConstants.midCubeFrontAngle) < WristConstants.tolerance;
+		pivotDone = Math.abs(pivot.getAngle() - targetPivotPos) < PivotConstants.tolerance;
+		wristDone = Math.abs(wrist.getAngle() - targetWristPos) < WristConstants.tolerance;
 
 		if (wristDone) {
 			wristCounter++;
@@ -63,19 +60,14 @@ public class ArmCubeMidFront extends CommandBase{
 		} else {
 			pivotCounter = 0;
 		}
-		// System.out.println(pivotCounter);
 		if (pivotCounter > Constants.pidTimer && wristCounter > Constants.pidTimer) {
-			// System.out.println("DONE");
 			System.out.println(Constants.autoTimer.get() + ": Arm Cone Mid Done");
-			pivot.setPositionControl(false);
-			wrist.setPositionControl(false);
 			return true;
-		} else if(pivotCounter > Constants.pidTimer){
-			pivot.setPositionControl(false);
-		} else if(wristCounter> Constants.pidTimer){
-			wrist.setPositionControl(false);
 		}
 		return false;
-		// return (arm.getPosition()==ArmConstants.Extension.lowConeDistance) && (pivot.getAngle() == PivotConstants.lowConeAngle);
+	}
+
+	@Override
+	public void end(boolean isInterrupted) {
 	}
 }

@@ -12,15 +12,25 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.commands.ArmBasePos;
+import frc.robot.commands.ArmConeHigh;
+import frc.robot.commands.ArmConeMidBack;
 import frc.robot.commands.ArmConeMidFront;
 import frc.robot.commands.ArmCubeHighBack;
+import frc.robot.commands.ArmCubeMidBack;
 import frc.robot.commands.ArmCubeMidFront;
-import frc.robot.commands.ArmDoubleSubStationBack;
-import frc.robot.commands.ArmDoubleSubStationFront;
-import frc.robot.commands.ArmFloorPickupFront;
+import frc.robot.commands.ArmDoubleSubStationCone;
+import frc.robot.commands.ArmDoubleSubStationCube;
+import frc.robot.commands.ArmFloorPickupCube;
 import frc.robot.commands.ArmLowBack;
 import frc.robot.commands.ArmLowFront;
+import frc.robot.commands.ArmSingleSubStationCone;
+import frc.robot.commands.ArmSingleSubStationCube;
+import frc.robot.commands.ConstantsSave;
 import frc.robot.commands.DefaultDriveCommand;
+import frc.robot.commands.PivotAdjustDown;
+import frc.robot.commands.PivotAdjustUp;
+import frc.robot.commands.WristAdjustDown;
+import frc.robot.commands.WristAdjustUp;
 import frc.robot.commands.grabber.CloseGrabber;
 import frc.robot.commands.grabber.CloseGrabberFast;
 import frc.robot.commands.grabber.OffGrabber;
@@ -129,20 +139,36 @@ public class RobotContainer {
 	}
 	private void configureOperatorBindings(){
 		Inputs.getArmBase().onTrue(new ArmBasePos());
+
 		Inputs.getArmLowFront().onTrue(new ArmLowFront());
 		Inputs.getArmCubeMidFront().onTrue(new ArmCubeMidFront());
-		Inputs.getArmDoubleSubStationFront().onTrue(new ArmDoubleSubStationFront());
-		Inputs.getArmDoubleSubStationBack().onTrue(new ArmDoubleSubStationBack());
 		Inputs.getArmConeMidFront().onTrue(new ArmConeMidFront());
+		Inputs.getArmCubeHighFront().onTrue(new ArmCubeHighBack());
+		
 		Inputs.getArmLowBack().onTrue(new ArmLowBack());
-		Inputs.getArmCubeHigh().onTrue(new ArmCubeHighBack());
-		Inputs.getArmFloorPickup().onTrue(new ArmFloorPickupFront());
+		Inputs.getArmConeMidBack().onTrue(new ArmConeMidBack());
+		Inputs.getArmCubeMidBack().onTrue(new ArmCubeMidBack());
+		Inputs.getArmConeHighBack().onTrue(new ArmConeHigh());
+		Inputs.getArmCubeHighBack().onTrue(new ArmCubeHighBack());
+
+		Inputs.getArmFloorPickupCube().onTrue(new ArmFloorPickupCube());
+		Inputs.getArmSingleSubStationCone().onTrue(new ArmSingleSubStationCone());
+		Inputs.getArmSingleSubStationCube().onTrue(new ArmSingleSubStationCube());
+		Inputs.getArmDoubleSubStationCone().onTrue(new ArmDoubleSubStationCone());
+		Inputs.getArmDoubleSubStationCube().onTrue(new ArmDoubleSubStationCube());
+		
 		Inputs.getPivotCancelButton().onTrue(new PivotCancel());
-		Inputs.getCloseGrabber().whileTrue(new CloseGrabber());
-		Inputs.getCloseGrabberFast().whileTrue(new CloseGrabberFast());
-		Inputs.getOpenGrabber().whileTrue(new OpenGrabber());
+		
+		Inputs.getIntakeSlow().whileTrue(new CloseGrabber());
+		Inputs.getIntakeFast().whileTrue(new CloseGrabberFast());
+		Inputs.getOuttake().whileTrue(new OpenGrabber());
 		Inputs.getOffGrabber().onTrue(new OffGrabber());
 		
+		Inputs.getWristAdjustUp().onTrue(new WristAdjustUp());
+		Inputs.getWristAdjustDown().onTrue(new WristAdjustDown());
+		Inputs.getPivotAdjustUp().onTrue(new PivotAdjustUp());
+		Inputs.getPivotAdjustDown().onTrue(new PivotAdjustDown());
+		Inputs.getSaveAdjustment().onTrue(new ConstantsSave());
 		// Inputs.getAutoTrigger().onTrue(new AutoGoToCube());
 	}
 
