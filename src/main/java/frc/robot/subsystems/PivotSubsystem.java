@@ -11,6 +11,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.ArmFeedforward;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.Motors;
@@ -25,6 +26,7 @@ public class PivotSubsystem extends SubsystemBase {
 	private DecimalFormat rounder = new DecimalFormat("#.0");
 	private boolean isEnabled = true;
 	PositionsPivot currentPos = PositionsPivot.STARTING;
+	private boolean isPIDControl;
 
 	public static PivotSubsystem getInstance() {
 		if (instance == null) {
@@ -60,7 +62,7 @@ public class PivotSubsystem extends SubsystemBase {
 		pivotMotor.configSupplyCurrentLimit(
 				new SupplyCurrentLimitConfiguration(true, Motors.Pivot.currentLimit, Motors.Pivot.threshholdLimit, 0));
 		pivotMotor.configOpenloopRamp(Motors.Pivot.openLoopRampRate);
-
+		pivotMotor.configMotionSCurveStrength(8);
 		collection = pivotMotor.getSensorCollection();
 		resetPivot();
 		// collection.setIntegratedSensorPosition(0, 0);
@@ -184,10 +186,26 @@ public class PivotSubsystem extends SubsystemBase {
 			// // System.out.println("too high");
 			// return;
 			// }
-			SmartDashboard.putNumber("Target Pivot Angle", this.pos);
-			double pos = (this.pos - PivotConstants.startingPosition) / 360.0 / PivotConstants.GEAR_RATIO * 2048 * -1;
-			// System.out.println(pos);
-			pivotMotor.set(TalonFXControlMode.Position, pos);
+			if (isPIDControl) {
+				SmartDashboard.putNumber("Target Pivot Angle", this.pos);
+				double pos = (this.pos - PivotConstants.startingPosition) / 360.0 / PivotConstants.GEAR_RATIO * 2048 * -1;
+				// System.out.println(pos);
+				pivotMotor.set(TalonFXControlMode.MotionMagic, pos);
+			} else {
+				// TODO:figure out if any of this is right
+				double massArm = 3; //kg 
+				double centerOfMassArm = Units.inchesToMeters(18); //m
+				double lengthArm = Units.inchesToMeters(30); //m
+				
+				double massWrist = 5; //kg
+				double centerOfMassWrist = Units.inchesToMeters(9); //m
+
+				double theta = Math.toRadians(getAngle()); // deg
+
+				double phi = Math.toRadians((180 - WristSubsystem.getInstance().getAngle())) - theta; // deg
+				double feedforward =  massArm * centerOfMassArm * Math.sin(theta) + (lengthArm * Math.sin(theta) + centerOfMassWrist * Math.cos(phi)) * massWrist;
+				pivotMotor.set(TalonFXControlMode.PercentOutput, feedforward * 1);
+			}
 		} else {
 			pivotMotor.set(0);
 		}
