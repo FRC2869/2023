@@ -11,34 +11,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
-import frc.robot.commands.ArmBasePos;
-import frc.robot.commands.ArmConeHigh;
-import frc.robot.commands.ArmConeMidBack;
-import frc.robot.commands.ArmConeMidFront;
-import frc.robot.commands.ArmCubeHighBack;
-import frc.robot.commands.ArmCubeMidBack;
-import frc.robot.commands.ArmCubeMidFront;
-import frc.robot.commands.ArmDoubleSubStationCone;
-import frc.robot.commands.ArmDoubleSubStationCube;
-import frc.robot.commands.ArmFloorPickupCube;
-import frc.robot.commands.ArmLowBack;
-import frc.robot.commands.ArmLowFront;
-import frc.robot.commands.ArmSingleSubStationCone;
-import frc.robot.commands.ArmSingleSubStationCube;
-import frc.robot.commands.ConstantsSave;
-import frc.robot.commands.DefaultDriveCommand;
-import frc.robot.commands.PivotAdjustDown;
-import frc.robot.commands.PivotAdjustUp;
-import frc.robot.commands.WristAdjustDown;
-import frc.robot.commands.WristAdjustUp;
-import frc.robot.commands.grabber.CloseGrabber;
-import frc.robot.commands.grabber.CloseGrabberFast;
-import frc.robot.commands.grabber.OffGrabber;
-import frc.robot.commands.grabber.OpenGrabber;
-import frc.robot.commands.pivot.PivotCancel;
-import frc.robot.commands.pivot.PivotDefault;
-import frc.robot.subsystems.DrivetrainSubsystem;
-import frc.robot.subsystems.PivotSubsystem;
+
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -51,10 +24,7 @@ import frc.robot.subsystems.PivotSubsystem;
  */
 public class RobotContainer {
 	// The robot's subsystems and commands are defined here...
-	// private final SwerveSubsystem swerve = SwerveSubsystem.getInstance();
-	private DrivetrainSubsystem swerve = DrivetrainSubsystem.getInstance();
-	// private final ArmSubsystem arm = ArmSubsystem.getInstance();
-	private final PivotSubsystem pivot = PivotSubsystem.getInstance();
+
 	// private final GrabberSubsystem grabber = GrabberSubsystem.getInstance();
 	public static ShuffleboardTab auto = Shuffleboard.getTab("Auto");
 	
@@ -97,7 +67,6 @@ public class RobotContainer {
 		CommandScheduler.getInstance().cancelAll();
 		configureDefaultCommands();
 		configureBindings();
-		resetSwerve();
 		// grabber.compressorOn();
 	}
 
@@ -107,20 +76,10 @@ public class RobotContainer {
 
 	private void configureDefaultCommands() {
 		// m_SwerveSubsystem.setDefaultCommand(new SwerveDriveDrive());
-		swerve.setDefaultCommand(new DefaultDriveCommand(
-            () -> (-modifyAxis(Inputs.getTranslationY()) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND),
-            () -> (-modifyAxis(Inputs.getTranslationX()) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND),
-            () -> (-modifyAxis(Inputs.getRotation()) * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND)
-    ));
-		pivot.setDefaultCommand(new PivotDefault());
 		// arm.setDefaultCommand(new ArmDefault());
 		// grabber.setDefaultCommand(new OffGrabber());
 	}
 
-	public void resetSwerve(){
-		swerve.zeroGyroscope();
-
-	}
 
 	/***************/
 	/*** BUTTONS ***/
@@ -138,37 +97,6 @@ public class RobotContainer {
 		Inputs.getBalanceButton().onTrue(getAutonomousCommand());
 	}
 	private void configureOperatorBindings(){
-		Inputs.getArmBase().onTrue(new ArmBasePos());
-
-		Inputs.getArmLowFront().onTrue(new ArmLowFront());
-		Inputs.getArmCubeMidFront().onTrue(new ArmCubeMidFront());
-		Inputs.getArmConeMidFront().onTrue(new ArmConeMidFront());
-		Inputs.getArmCubeHighFront().onTrue(new ArmCubeHighBack());
-		
-		Inputs.getArmLowBack().onTrue(new ArmLowBack());
-		Inputs.getArmConeMidBack().onTrue(new ArmConeMidBack());
-		Inputs.getArmCubeMidBack().onTrue(new ArmCubeMidBack());
-		Inputs.getArmConeHighBack().onTrue(new ArmConeHigh());
-		Inputs.getArmCubeHighBack().onTrue(new ArmCubeHighBack());
-
-		Inputs.getArmFloorPickupCube().onTrue(new ArmFloorPickupCube());
-		Inputs.getArmSingleSubStationCone().onTrue(new ArmSingleSubStationCone());
-		Inputs.getArmSingleSubStationCube().onTrue(new ArmSingleSubStationCube());
-		Inputs.getArmDoubleSubStationCone().onTrue(new ArmDoubleSubStationCone());
-		Inputs.getArmDoubleSubStationCube().onTrue(new ArmDoubleSubStationCube());
-		
-		Inputs.getPivotCancelButton().onTrue(new PivotCancel());
-		
-		Inputs.getIntakeSlow().whileTrue(new CloseGrabber());
-		Inputs.getIntakeFast().whileTrue(new CloseGrabberFast());
-		Inputs.getOuttake().whileTrue(new OpenGrabber());
-		Inputs.getOffGrabber().onTrue(new OffGrabber());
-		
-		Inputs.getWristAdjustUp().onTrue(new WristAdjustUp());
-		Inputs.getWristAdjustDown().onTrue(new WristAdjustDown());
-		Inputs.getPivotAdjustUp().onTrue(new PivotAdjustUp());
-		Inputs.getPivotAdjustDown().onTrue(new PivotAdjustDown());
-		Inputs.getSaveAdjustment().onTrue(new ConstantsSave());
 		// Inputs.getAutoTrigger().onTrue(new AutoGoToCube());
 	}
 

@@ -6,20 +6,13 @@ package frc.robot;
 
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.cscore.UsbCamera;
-import edu.wpi.first.hal.HALUtil;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.AddressableLEDBuffer;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
-import frc.robot.commands.ConstantsRead;
-import frc.robot.commands.pivot.PivotReset;
-import frc.robot.subsystems.DrivetrainSubsystem;
-import frc.robot.subsystems.PivotSubsystem;
-import frc.robot.subsystems.WristSubsystem;
+
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -53,7 +46,6 @@ public static UsbCamera camera;
     // led = new AddressableLED(0);
 	// led_buffer = new AddressableLEDBuffer(120);
 	// led.setLength(led_buffer.getLength());
-    new ConstantsRead().schedule();
     m_robotContainer = new RobotContainer();
 	// for(int i=0;i<led_buffer.getLength();i++){
 	// 	led_buffer.setRGB(i, 255, 255, 255);
@@ -88,14 +80,11 @@ public static UsbCamera camera;
     // Runs the Scheduler.  This is responsible for polling buttons, adding newly-scheduled
     // commands, running already-scheduled commands, removing finished or interrupted commands,
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
-    // block in order for anything in the Command-based framework to work.
+    // block in order for anything in the Command-based framework to work.\
     CommandScheduler.getInstance().run();
     if(Inputs.getSwerveReset()){
-      m_robotContainer.resetSwerve();
     }
-	if(HALUtil.getFPGAButton()){
-		PivotSubsystem.getInstance().toggleCoast();
-	}
+
 	// rainbow();
 	// led.setData(led_buffer);
 	// led.start();
@@ -129,8 +118,6 @@ public static UsbCamera camera;
   @Override
   public void autonomousInit() {
     // Shuffleboard.selectTab("Auto");
-	PivotSubsystem.getInstance().toggleCoast();
-	WristSubsystem.getInstance().toggleCoast();
     Constants.isAuto = true;
     // Constants.isEnabled = true;
     System.out.println("AUto");
@@ -141,7 +128,6 @@ public static UsbCamera camera;
 	// new SwerveStop().schedule();
     // schedule the autonomous command (example)
     if (m_autonomousCommand != null) {
-		new SequentialCommandGroup(new PivotReset(), new WaitCommand(.25), m_autonomousCommand).schedule();
     }
 }
 
@@ -156,8 +142,6 @@ public static UsbCamera camera;
 		Constants.autoTimer.start();
 	}
     // Shuffleboard.selectTab("Teleop");
-	PivotSubsystem.getInstance().toggleCoast();
-	WristSubsystem.getInstance().toggleCoast();
     Constants.isAuto = false;
     // This makes sure that the autonomous stops running when
     // teleop starts running. If you want the autonomous to
@@ -175,7 +159,6 @@ public static UsbCamera camera;
 	SmartDashboard.putNumber("autoTimer",Constants.autoTimer.get());
 	Constants.locked = Inputs.getSwerveLock();
 	if(Inputs.cancelDriveButton().getAsBoolean()){
-		DrivetrainSubsystem.getInstance().getCurrentCommand().cancel();
 	}
   }
 
