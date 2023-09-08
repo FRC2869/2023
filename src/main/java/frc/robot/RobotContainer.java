@@ -51,8 +51,8 @@ import frc.robot.subsystems.PivotSubsystem;
  */
 public class RobotContainer {
 	// The robot's subsystems and commands are defined here...
-	// private final SwerveSubsystem swerve = SwerveSubsystem.getInstance();
-	private DrivetrainSubsystem swerve = DrivetrainSubsystem.getInstance();
+	private final SwerveSubsystem swerve = SwerveSubsystem.getInstance();
+	// private DrivetrainSubsystem swerve = DrivetrainSubsystem.getInstance();
 	// private final ArmSubsystem arm = ArmSubsystem.getInstance();
 	private final PivotSubsystem pivot = PivotSubsystem.getInstance();
 	// private final GrabberSubsystem grabber = GrabberSubsystem.getInstance();
