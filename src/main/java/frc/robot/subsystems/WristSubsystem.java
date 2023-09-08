@@ -197,7 +197,7 @@ public class WristSubsystem extends SubsystemBase {
 
 				double phi = Math.toRadians((180 - getAngle())) - theta; // rad
 				double feedforward = Math.sin(phi);
-				wristMotor.set(TalonFXControlMode.PercentOutput, feedforward * 1);
+				wristMotor.set(TalonFXControlMode.PercentOutput, feedforward * 0.0001);
 			}
 		} else {
 			wristMotor.set(0);

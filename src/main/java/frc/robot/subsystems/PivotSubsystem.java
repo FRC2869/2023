@@ -204,7 +204,7 @@ public class PivotSubsystem extends SubsystemBase {
 
 				double phi = Math.toRadians((180 - WristSubsystem.getInstance().getAngle())) - theta; // deg
 				double feedforward =  massArm * centerOfMassArm * Math.sin(theta) + (lengthArm * Math.sin(theta) + centerOfMassWrist * Math.cos(phi)) * massWrist;
-				pivotMotor.set(TalonFXControlMode.PercentOutput, feedforward * 1);
+				pivotMotor.set(TalonFXControlMode.PercentOutput, feedforward * .001);
 			}
 		} else {
 			pivotMotor.set(0);
