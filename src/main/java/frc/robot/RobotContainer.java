@@ -51,8 +51,8 @@ import frc.robot.subsystems.PivotSubsystem;
  */
 public class RobotContainer {
 	// The robot's subsystems and commands are defined here...
-	// private final SwerveSubsystem swerve = SwerveSubsystem.getInstance();
-	private DrivetrainSubsystem swerve = DrivetrainSubsystem.getInstance();
+	private final SwerveSubsystem swerve = SwerveSubsystem.getInstance();
+	// private DrivetrainSubsystem swerve = DrivetrainSubsystem.getInstance();
 	// private final ArmSubsystem arm = ArmSubsystem.getInstance();
 	private final PivotSubsystem pivot = PivotSubsystem.getInstance();
 	// private final GrabberSubsystem grabber = GrabberSubsystem.getInstance();
@@ -108,9 +108,10 @@ public class RobotContainer {
 	private void configureDefaultCommands() {
 		// m_SwerveSubsystem.setDefaultCommand(new SwerveDriveDrive());
 		swerve.setDefaultCommand(new DefaultDriveCommand(
-            () -> (-modifyAxis(Inputs.getTranslationY()) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND),
-            () -> (-modifyAxis(Inputs.getTranslationX()) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND),
-            () -> (-modifyAxis(Inputs.getRotation()) * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND)
+            () -> Inputs.getTranslationY(),
+            () -> Inputs.getTranslationX(),
+            () -> Inputs.getRotation(),
+			() -> (true), false, true
     ));
 		pivot.setDefaultCommand(new PivotDefault());
 		// arm.setDefaultCommand(new ArmDefault());
