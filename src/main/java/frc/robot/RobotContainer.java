@@ -37,8 +37,8 @@ import frc.robot.commands.grabber.OffGrabber;
 import frc.robot.commands.grabber.OpenGrabber;
 import frc.robot.commands.pivot.PivotCancel;
 import frc.robot.commands.pivot.PivotDefault;
-import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.PivotSubsystem;
+import frc.robot.subsystems.SwerveSubsystem;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -111,7 +111,7 @@ public class RobotContainer {
             () -> Inputs.getTranslationY(),
             () -> Inputs.getTranslationX(),
             () -> Inputs.getRotation(),
-			() -> (true), false, true
+			() -> (true), true, false
     ));
 		pivot.setDefaultCommand(new PivotDefault());
 		// arm.setDefaultCommand(new ArmDefault());
@@ -119,7 +119,7 @@ public class RobotContainer {
 	}
 
 	public void resetSwerve(){
-		swerve.zeroGyroscope();
+		swerve.zeroGyro();
 
 	}
 
