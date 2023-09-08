@@ -38,10 +38,10 @@ public class DefaultDriveCommand extends CommandBase
    *
    * @param swerve The subsystem used by this command.
    */
-  public DefaultDriveCommand(SwerveSubsystem swerve, DoubleSupplier vX, DoubleSupplier vY, DoubleSupplier omega,
+  public DefaultDriveCommand( DoubleSupplier vX, DoubleSupplier vY, DoubleSupplier omega,
                      BooleanSupplier driveMode, boolean isOpenLoop, boolean headingCorrection)
   {
-    this.swerve = swerve;
+    this.swerve = SwerveSubsystem.getInstance();
     this.vX = vX;
     this.vY = vY;
     this.omega = omega;
