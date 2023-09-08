@@ -340,7 +340,7 @@ public final class Constants {
     public static final int wristMotorId = 17;
     public static final double kP = .3;
     public static final double kI = 0.0;
-    public static final double kD = 20;
+    public static final double kD = 30;
     public static final double kF = 0;
     public static final double kS = 0;
     public static final double kV = 0;
@@ -352,7 +352,7 @@ public final class Constants {
 
     public static final double startingPosition = 156;
 
-    public static double basePosition = 150;
+    public static double basePosition = 140;
 
     public static double doubleSubstationConeAngle = 0;
     public static double doubleSubstationCubeAngle = 0;

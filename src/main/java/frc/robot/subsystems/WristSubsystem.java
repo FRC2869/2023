@@ -105,6 +105,7 @@ public class WristSubsystem extends SubsystemBase {
 
 	public void setCurrentPosition(PositionsWrist pos) {
 		currentPos = pos;
+		
 	}
 
 	public void savePositions() {
@@ -165,6 +166,10 @@ public class WristSubsystem extends SubsystemBase {
 		}
 	}
 
+	public void setPIDControl(boolean isPIDControl){
+		this.isPIDControl = isPIDControl;
+	}
+
 	@Override
 	public void periodic() {
 		String angleString = rounder.format(getAngle());
@@ -185,12 +190,17 @@ public class WristSubsystem extends SubsystemBase {
 			// // System.out.println("too high");
 			// return;
 			// }
+			SmartDashboard.putNumber("Target Wrist Angle", this.pos);
+			SmartDashboard.putNumber("wrist difference", Math.abs(getAngle()-this.pos));
+			SmartDashboard.putBoolean("wrist PID", isPIDControl);
 			if (isPIDControl) {
-				SmartDashboard.putNumber("Target Wrist Angle", pos);
 				double pos = (this.pos - WristConstants.startingPosition) / 360.0 / WristConstants.GEAR_RATIO * 2048
 						* -1;
 				// System.out.println(pos);
-				wristMotor.set(TalonFXControlMode.MotionMagic, pos);
+				wristMotor.set(TalonFXControlMode.Position, pos);
+				if(Math.abs(getAngle()-this.pos)<.5){
+					isPIDControl = true;
+				}
 			} else {
 				// TODO:figure out if any of this is right
 				double theta = Math.toRadians(PivotSubsystem.getInstance().getAngle()); // rad
@@ -198,6 +208,9 @@ public class WristSubsystem extends SubsystemBase {
 				double phi = Math.toRadians((180 - getAngle())) - theta; // rad
 				double feedforward = Math.sin(phi);
 				wristMotor.set(TalonFXControlMode.PercentOutput, feedforward * 0.0001);
+				if(Math.abs(getAngle()-this.pos)>.5){
+					isPIDControl = true;
+				}
 			}
 		} else {
 			wristMotor.set(0);

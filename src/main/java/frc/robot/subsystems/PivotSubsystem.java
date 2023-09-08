@@ -164,6 +164,10 @@ public class PivotSubsystem extends SubsystemBase {
 		}
 	}
 
+	public void setPIDControl(boolean isPIDControl){
+		this.isPIDControl = isPIDControl;
+	}
+
 	@Override
 	public void periodic() {
 		String angleString = rounder.format(getAngle());
@@ -186,25 +190,36 @@ public class PivotSubsystem extends SubsystemBase {
 			// // System.out.println("too high");
 			// return;
 			// }
+			SmartDashboard.putNumber("Target Pivot Angle", this.pos);
+			SmartDashboard.putNumber("pivot difference", Math.abs(getAngle()-this.pos));
+			SmartDashboard.putBoolean("pivot PID", isPIDControl);
+
 			if (isPIDControl) {
-				SmartDashboard.putNumber("Target Pivot Angle", this.pos);
 				double pos = (this.pos - PivotConstants.startingPosition) / 360.0 / PivotConstants.GEAR_RATIO * 2048 * -1;
 				// System.out.println(pos);
-				pivotMotor.set(TalonFXControlMode.MotionMagic, pos);
+				pivotMotor.set(TalonFXControlMode.Position, pos);
+				if(Math.abs(getAngle()-this.pos)<.5){
+					isPIDControl = true;
+				}
 			} else {
 				// TODO:figure out if any of this is right
 				double massArm = 3; //kg 
-				double centerOfMassArm = Units.inchesToMeters(18); //m
+				double centerOfMassArm = Units.inchesToMeters(20); //m
 				double lengthArm = Units.inchesToMeters(30); //m
 				
 				double massWrist = 5; //kg
-				double centerOfMassWrist = Units.inchesToMeters(9); //m
+				double centerOfMassWrist = Units.inchesToMeters(10); //m
 
-				double theta = Math.toRadians(getAngle()); // deg
+				double theta = Math.toRadians(getAngle()); // rad
 
-				double phi = Math.toRadians((180 - WristSubsystem.getInstance().getAngle())) - theta; // deg
+				double phi = Math.toRadians((180 - WristSubsystem.getInstance().getAngle())) - theta; // rad
 				double feedforward =  massArm * centerOfMassArm * Math.sin(theta) + (lengthArm * Math.sin(theta) + centerOfMassWrist * Math.cos(phi)) * massWrist;
-				pivotMotor.set(TalonFXControlMode.PercentOutput, feedforward * .001);
+				SmartDashboard.putNumber("pivot Feedforward", feedforward*.11);
+				if(getAngle()>-40)
+					pivotMotor.set(TalonFXControlMode.PercentOutput, feedforward * .11);
+				if(Math.abs(getAngle()-this.pos)>.5){
+					isPIDControl = true;
+				}
 			}
 		} else {
 			pivotMotor.set(0);
