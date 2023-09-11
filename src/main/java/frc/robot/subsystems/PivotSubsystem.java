@@ -16,126 +16,213 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.Motors;
 import frc.robot.Constants.PivotConstants;
-import frc.robot.Inputs;
+import frc.robot.Constants.PivotConstants.PositionsPivot;
 
 public class PivotSubsystem extends SubsystemBase {
 	private static PivotSubsystem instance;
 	private WPI_TalonFX pivotMotor;
-	private double speed = 0;
-	private double pos = 0;
-	private boolean isPositionControl = false;
+	private double pos = PivotConstants.startingPosition;
 	private TalonFXSensorCollection collection;
 	private DecimalFormat rounder = new DecimalFormat("#.0");
-	// private ArmFeedforward feedForward;
+	private boolean isEnabled = true;
+	PositionsPivot currentPos = PositionsPivot.STARTING;
+	private boolean isPIDControl;
 
-	public static PivotSubsystem getInstance(){
-		if(instance==null){
+	public static PivotSubsystem getInstance() {
+		if (instance == null) {
 			instance = new PivotSubsystem();
 		}
 		return instance;
 	}
 
-	public PivotSubsystem(){
+	public PivotSubsystem() {
 		pivotMotor = new WPI_TalonFX(PivotConstants.pivotMotorId);
 		configurePivotMotor();
 		new ArmFeedforward(PivotConstants.kS, PivotConstants.kG, PivotConstants.kV);
 	}
 
-	private void configurePivotMotor() {
-		// pivotMotor.restoreFactoryDefaults();
-		
-        pivotMotor.config_kP(0, PivotConstants.kP);
-        pivotMotor.config_kI(0, PivotConstants.kI);
-        pivotMotor.config_kD(0, PivotConstants.kD);
-		pivotMotor.config_kF(0, PivotConstants.kF);
-		// pivotMotor.setIntegralAccumulator(10);
-        pivotMotor.config_IntegralZone(0, 2000);
-		pivotMotor.configClosedLoopPeakOutput(0, PivotConstants.kMaxAutoPower);
-		pivotMotor.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor,0,0);
-        pivotMotor.configVoltageCompSaturation(12.0);
-		pivotMotor.setInverted(Motors.Pivot.kInverted);
-		pivotMotor.setNeutralMode(Motors.Pivot.idlemode);
-		pivotMotor.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, Motors.Pivot.currentLimit, Motors.Pivot.threshholdLimit, 0));
-		pivotMotor.configOpenloopRamp(Motors.Pivot.openLoopRampRate);
-		
-		collection = pivotMotor.getSensorCollection();
+	public void resetPivot() {
 		collection.setIntegratedSensorPosition(0, 0);
-		// collection.setIntegratedSensorPosition(PivotConstants.startingPosition,0);
-		// feedForward = new ArmFeedforward(0.5, .9	, 0);
 	}
 
-	/**
-	 * Sets the pivot motor to the specified speed
-	 * Only applies if isPositionControl == false
-	 * @param pwr the speed to set the motor to [-1,1]
-	 */
-	public void power(double pwr) {
-		// speed = MathUtil.clamp(pwr, -PivotConstants.kMaxPower, PivotConstants.kMaxPower);
-		speed = pwr*PivotConstants.kMaxPower;
+	private void configurePivotMotor() {
+		// pivotMotor.restoreFactoryDefaults();
+
+		pivotMotor.config_kP(0, PivotConstants.kP);
+		pivotMotor.config_kI(0, PivotConstants.kI);
+		pivotMotor.config_kD(0, PivotConstants.kD);
+		pivotMotor.config_kF(0, PivotConstants.kF);
+		// pivotMotor.setIntegralAccumulator(10);
+		pivotMotor.config_IntegralZone(0, 2000);
+		pivotMotor.configClosedLoopPeakOutput(0, PivotConstants.kMaxAutoPower);
+		pivotMotor.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 0, 0);
+		pivotMotor.configVoltageCompSaturation(12.0);
+		pivotMotor.setInverted(Motors.Pivot.kInverted);
+		pivotMotor.setNeutralMode(Motors.Pivot.idlemode);
+		pivotMotor.configSupplyCurrentLimit(
+				new SupplyCurrentLimitConfiguration(true, Motors.Pivot.currentLimit, Motors.Pivot.threshholdLimit, 0));
+		pivotMotor.configOpenloopRamp(Motors.Pivot.openLoopRampRate);
+		pivotMotor.configMotionSCurveStrength(8);
+		collection = pivotMotor.getSensorCollection();
+		resetPivot();
+		// collection.setIntegratedSensorPosition(0, 0);
+		// collection.setIntegratedSensorPosition(PivotConstants.startingPosition,0);
+		// feedForward = new ArmFeedforward(0.5, .9 , 0);
 	}
 
 	/**
 	 * Sets the pivot motor to the specified position
 	 * Only applies if isPositionControl == true
+	 * 
 	 * @param pos the position to set the motor to [kMinAngle, kMaxAngle]
 	 */
-	public void position(double pos){
+	public void position(double pos) {
 		this.pos = MathUtil.clamp(pos, PivotConstants.kMinAngle, PivotConstants.kMaxAngle);
 	}
 
-	public double getAngle(){
+	public double getAngle() {
 		// return -collection.getIntegratedSensorPosition();
-		return -1.0*((collection.getIntegratedSensorPosition()/2048.0)*PivotConstants.GEAR_RATIO*360)+PivotConstants.startingPosition;
+		return -1.0 * ((collection.getIntegratedSensorPosition() / 2048.0) * PivotConstants.GEAR_RATIO * 360)
+				+ PivotConstants.startingPosition;
 	}
 
-	public double getVelocity(){
+	public double getVelocity() {
 		return collection.getIntegratedSensorVelocity();
 	}
 
-	/**
-	 * Changes whether  the mode is position or speed control
-	 * @param positionControl true for position control, false for speed control
-	 */
-	public void setPositionControl(boolean positionControl){
-		isPositionControl = positionControl;
+	public void setEnabled(boolean enabled) {
+		isEnabled = enabled;
+	}
+
+	public void adjustUp() {
+		pos += 2;
+	}
+
+	public void adjustDown() {
+		pos -= 2;
+	}
+
+	public void setCurrentPosition(PositionsPivot pos) {
+		currentPos = pos;
+	}
+
+	public void savePositions() {
+		switch (currentPos) {
+			case BASE:
+				PivotConstants.basePosition = pos;
+				break;
+			case DOUBLE_CONE:
+				PivotConstants.doubleSubstationConeAngle = pos;
+				break;
+			case DOUBLE_CUBE:
+				PivotConstants.doubleSubstationCubeAngle = pos;
+				break;
+			case FLOOR_CONE:
+				PivotConstants.floorPickupConeAngle = pos;
+				break;
+			case FLOOR_CUBE:
+				PivotConstants.floorPickupCubeAngle = pos;
+				break;
+			case HIGH_CONE:
+				PivotConstants.highConeAngle = pos;
+				break;
+			case HIGH_CUBE_BACK:
+				PivotConstants.highCubeBackAngle = pos;
+				break;
+			case HIGH_CUBE_FRONT:
+				PivotConstants.highCubeFrontAngle = pos;
+				break;
+			case LOW_BACK:
+				PivotConstants.lowBackAngle = pos;
+				break;
+			case LOW_FRONT:
+				PivotConstants.lowFrontAngle = pos;
+				break;
+			case MID_CONE_BACK:
+				PivotConstants.midConeBackAngle = pos;
+				break;
+			case MID_CONE_FRONT:
+				PivotConstants.midConeFrontAngle = pos;
+				break;
+			case MID_CUBE_BACK:
+				PivotConstants.midCubeBackAngle = pos;
+				break;
+			case MID_CUBE_FRONT:
+				PivotConstants.midCubeFrontAngle = pos;
+				break;
+			case SINGLE_CONE:
+				PivotConstants.singleSubstationConeAngle = pos;
+				break;
+			case SINGLE_CUBE:
+				PivotConstants.singleSubstationCubeAngle = pos;
+				break;
+			case STARTING:
+				break;
+			default:
+				break;
+
+		}
+	}
+
+	public void setPIDControl(boolean isPIDControl){
+		this.isPIDControl = isPIDControl;
 	}
 
 	@Override
-	public void periodic(){
+	public void periodic() {
 		String angleString = rounder.format(getAngle());
-		
-		SmartDashboard.putString("Pivot Angle",angleString);
-		//SmartDashboard.putNumber("Pivot Angle", getAngle());
+		SmartDashboard.putBoolean("Pivot Enabled", isEnabled);
+		SmartDashboard.putString("Pivot Angle", angleString);
+		// Supplier<String> angleStringSupp = () -> angleString;
+		// RobotContainer.auto.addString("Pivot Angle", angleStringSupp).withPosition(3,
+		// 0);
+		// SmartDashboard.putNumber("Pivot Angle", getAngle());
 		// System.out.println(getAngle());
-		if(isPositionControl){
-			// pivotMotor.setReference(pos, ControlType.kPosition, 0, pivotFF.calculate(getAngle(), getVelocity()));
+		// if(isPositionControl){
+		if (isEnabled) {
+			// pivotMotor.setReference(pos, ControlType.kPosition, 0,
+			// pivotFF.calculate(getAngle(), getVelocity()));
 			// if(getAngle()<PivotConstants.kMinAngle){
-			// 	// System.out.println("too low");
-			// 	return;
+			// // System.out.println("too low");
+			// return;
 			// }
 			// if(getAngle()>PivotConstants.kMaxAngle){
-			// 	// System.out.println("too high");
-			// 	return;
+			// // System.out.println("too high");
+			// return;
 			// }
-			pos = (pos-PivotConstants.startingPosition)/360.0/PivotConstants.GEAR_RATIO*2048*-1;
-			// System.out.println(pos);
-			pivotMotor.set(TalonFXControlMode.Position, pos);
-		}else{
-			if((!Inputs.getOverrideButton()) && speed>0 && getAngle()<=PivotConstants.kMinAngle){
-				// System.out.println("Too Low");
-				speed = 0;
+			SmartDashboard.putNumber("Target Pivot Angle", this.pos);
+			SmartDashboard.putNumber("pivot difference", Math.abs(getAngle()-this.pos));
+			SmartDashboard.putBoolean("pivot PID", isPIDControl);
+
+			if (isPIDControl) {
+				double pos = (this.pos - PivotConstants.startingPosition) / 360.0 / PivotConstants.GEAR_RATIO * 2048 * -1;
+				// System.out.println(pos);
+				pivotMotor.set(TalonFXControlMode.Position, pos);
+				if(Math.abs(getAngle()-this.pos)<.5){
+					isPIDControl = true;
+				}
+			} else {
+				// TODO:figure out if any of this is right
+				double massArm = 3; //kg 
+				double centerOfMassArm = Units.inchesToMeters(20); //m
+				double lengthArm = Units.inchesToMeters(30); //m
+				
+				double massWrist = 5; //kg
+				double centerOfMassWrist = Units.inchesToMeters(10); //m
+
+				double theta = Math.toRadians(getAngle()); // rad
+
+				double phi = Math.toRadians((180 - WristSubsystem.getInstance().getAngle())) - theta; // rad
+				double feedforward =  massArm * centerOfMassArm * Math.sin(theta) + (lengthArm * Math.sin(theta) + centerOfMassWrist * Math.cos(phi)) * massWrist;
+				SmartDashboard.putNumber("pivot Feedforward", feedforward*.11);
+				if(getAngle()>-40)
+					pivotMotor.set(TalonFXControlMode.PercentOutput, feedforward * .11);
+				if(Math.abs(getAngle()-this.pos)>.5){
+					isPIDControl = true;
+				}
 			}
-			if((!Inputs.getOverrideButton()) && speed<0 && getAngle()>=PivotConstants.kMaxAngle){
-				// System.out.println("Too High");
-				speed = 0;
-			}
-			
-			double feedforward = Math.cos(Units.degreesToRadians(getAngle()))*-.075;
-			if(getAngle()>210){
-				feedforward *= 1.3;
-			}
-			// pivotMotor.set(TalonFXControlMode.PercentOutput, speed-(feedForward.calculate(Units.degreesToRadians(getAngle()), 0)/12.0));
-			pivotMotor.set(TalonFXControlMode.PercentOutput, speed+feedforward);
+		} else {
+			pivotMotor.set(0);
 		}
 	}
 

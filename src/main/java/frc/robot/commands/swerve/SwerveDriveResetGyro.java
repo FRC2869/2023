@@ -1,18 +1,18 @@
 package frc.robot.commands.swerve;
 
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import frc.robot.subsystems.DrivetrainSubsystem;
+import frc.robot.subsystems.SwerveSubsystem;
 
 public class SwerveDriveResetGyro extends InstantCommand {
-	private DrivetrainSubsystem swerve;
+	private SwerveSubsystem swerve;
 
 	public SwerveDriveResetGyro(){
-		swerve = DrivetrainSubsystem.getInstance();
+		swerve = SwerveSubsystem.getInstance();
 		addRequirements(swerve);
 	}
 
 	@Override
 	public void execute(){
-		swerve.zeroGyroscope();
+		swerve.zeroGyro();
 	}
 }

@@ -4,8 +4,8 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants.PivotConstants.PositionsPivot;
 import frc.robot.Constants.WristConstants.PositionsWrist;
 
-public class ArmConeHigh extends SequentialCommandGroup {
-	public ArmConeHigh(){
-		addCommands(new ArmMove(PositionsPivot.HIGH_CONE, PositionsWrist.HIGH_CONE, 0,1));
+public class ArmFloorPickupCone extends SequentialCommandGroup {
+	public ArmFloorPickupCone(){
+		addCommands(new ArmMove(PositionsPivot.FLOOR_CONE, PositionsWrist.FLOOR_CONE, 0,1));
 	}
 }
