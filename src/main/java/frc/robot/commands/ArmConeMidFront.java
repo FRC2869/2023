@@ -1,73 +1,11 @@
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants;
-import frc.robot.Constants.PivotConstants;
-import frc.robot.Constants.WristConstants;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants.PivotConstants.PositionsPivot;
 import frc.robot.Constants.WristConstants.PositionsWrist;
-import frc.robot.subsystems.PivotSubsystem;
-import frc.robot.subsystems.WristSubsystem;
 
-public class ArmConeMidFront extends CommandBase {
-	private PivotSubsystem pivot;
-	private int pivotCounter;
-	private boolean hasRun = false;
-	private WristSubsystem wrist;
-	private int wristCounter;
-	private boolean pivotDone;
-	private boolean wristDone;
-	private double startTime;
-	private final double targetPivotPos = PivotConstants.midConeFrontAngle;
-	private final double targetWristPos = WristConstants.midConeFrontAngle;
-
-	public ArmConeMidFront() {
-		pivot = PivotSubsystem.getInstance();
-		wrist = WristSubsystem.getInstance();
-		addRequirements(pivot);
-		addRequirements(wrist);
-	}
-
-	@Override
-	public void execute() {
-		if (!hasRun) {
-			startTime = Constants.autoTimer.get();
-			System.out.println(startTime + ": Arm Cone Mid Start");
-			hasRun = true;
-		}
-		if(pivotCounter < Constants.pidTimer){
-			pivot.position(targetPivotPos);
-			pivot.setCurrentPosition(PositionsPivot.MID_CONE_FRONT);
-		}
-		if((Constants.autoTimer.get()-startTime)>1){
-			wrist.position(targetWristPos);
-			wrist.setCurrentPosition(PositionsWrist.MID_CONE_FRONT);
-		}
-	}
-
-	@Override
-	public boolean isFinished() {
-		pivotDone = Math.abs(pivot.getAngle() - targetPivotPos) < PivotConstants.tolerance;
-		wristDone = Math.abs(wrist.getAngle() - targetWristPos) < WristConstants.tolerance;
-
-		if (wristDone) {
-			wristCounter++;
-		} else {
-			wristCounter = 0;
-		}
-		if (pivotDone) {
-			pivotCounter++;
-		} else {
-			pivotCounter = 0;
-		}
-		if (pivotCounter > Constants.pidTimer && wristCounter > Constants.pidTimer) {
-			System.out.println(Constants.autoTimer.get() + ": Arm Cone Mid Done");
-			return true;
-		}
-		return false;
-	}
-
-	@Override
-	public void end(boolean isInterrupted) {
+public class ArmConeMidFront extends SequentialCommandGroup {
+	public ArmConeMidFront(){
+		addCommands(new ArmMove(PositionsPivot.MID_CONE_FRONT, PositionsWrist.MID_CONE_FRONT, 0,1));
 	}
 }

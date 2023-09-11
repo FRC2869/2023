@@ -217,6 +217,7 @@ public final class Constants {
     public static enum PositionsPivot {
       STARTING, BASE, DOUBLE_CONE, DOUBLE_CUBE, FLOOR_CONE, FLOOR_CUBE, HIGH_CONE, HIGH_CUBE_BACK, HIGH_CUBE_FRONT,
       LOW_BACK, LOW_FRONT, MID_CONE_BACK, MID_CONE_FRONT, MID_CUBE_BACK, MID_CUBE_FRONT, SINGLE_CONE, SINGLE_CUBE
+      
     }
 
     public static final int pivotMotorId = 14;
@@ -299,7 +300,6 @@ public final class Constants {
       File dest = new File(Filesystem.getDeployDirectory() + "/pivotConstants" + formatter.format(date) + ".txt");
       Files.copy(source.toPath(), dest.toPath());
 
-
       String constants = "";
       constants += basePosition + "\n";
       constants += doubleSubstationConeAngle + "\n";
@@ -321,6 +321,47 @@ public final class Constants {
           new FileWriter(Filesystem.getDeployDirectory() + "/pivotConstants.txt"));
       writer.write(constants);
       writer.close();
+    }
+
+    public static double getTargetPos(PositionsPivot pivotEnum) {
+      switch (pivotEnum) {
+        case BASE:
+          return PivotConstants.basePosition;
+        case DOUBLE_CONE:
+          return PivotConstants.doubleSubstationConeAngle;
+        case DOUBLE_CUBE:
+          return PivotConstants.doubleSubstationCubeAngle;
+        case FLOOR_CONE:
+          return PivotConstants.floorPickupConeAngle;
+        case FLOOR_CUBE:
+          return PivotConstants.floorPickupCubeAngle;
+        case HIGH_CONE:
+          return PivotConstants.highConeAngle;
+        case HIGH_CUBE_BACK:
+          return PivotConstants.highCubeBackAngle;
+        case HIGH_CUBE_FRONT:
+          return PivotConstants.highCubeFrontAngle;
+        case LOW_BACK:
+          return PivotConstants.lowBackAngle;
+        case LOW_FRONT:
+          return PivotConstants.lowFrontAngle;
+        case MID_CONE_BACK:
+          return PivotConstants.midConeBackAngle;
+        case MID_CONE_FRONT:
+          return PivotConstants.midConeFrontAngle;
+        case MID_CUBE_BACK:
+          return PivotConstants.midCubeBackAngle;
+        case MID_CUBE_FRONT:
+          return PivotConstants.midCubeFrontAngle;
+        case SINGLE_CONE:
+          return PivotConstants.singleSubstationConeAngle;
+        case SINGLE_CUBE:
+          return PivotConstants.singleSubstationCubeAngle;
+        case STARTING:
+          return PivotConstants.startingPosition;
+        default:
+          return 0;
+      }
     }
   }
 
@@ -417,8 +458,6 @@ public final class Constants {
       File dest = new File(Filesystem.getDeployDirectory() + "/wristConstants" + formatter.format(date) + ".txt");
       Files.copy(source.toPath(), dest.toPath());
 
-
-
       String constants = "";
       constants += basePosition + "\n";
       constants += doubleSubstationConeAngle + "\n";
@@ -440,6 +479,47 @@ public final class Constants {
           new FileWriter(Filesystem.getDeployDirectory() + "/wristConstants.txt"));
       writer.write(constants);
       writer.close();
+    }
+
+    public static double getTargetPos(PositionsWrist wristEnum) {
+      switch (wristEnum) {
+        case BASE:
+          return WristConstants.basePosition;
+        case DOUBLE_CONE:
+          return WristConstants.doubleSubstationConeAngle;
+        case DOUBLE_CUBE:
+          return WristConstants.doubleSubstationCubeAngle;
+        case FLOOR_CONE:
+          return WristConstants.floorPickupConeAngle;
+        case FLOOR_CUBE:
+          return WristConstants.floorPickupCubeAngle;
+        case HIGH_CONE:
+          return WristConstants.highConeAngle;
+        case HIGH_CUBE_BACK:
+          return WristConstants.highCubeBackAngle;
+        case HIGH_CUBE_FRONT:
+          return WristConstants.highCubeFrontAngle;
+        case LOW_BACK:
+          return WristConstants.lowBackAngle;
+        case LOW_FRONT:
+          return WristConstants.lowFrontAngle;
+        case MID_CONE_BACK:
+          return WristConstants.midConeBackAngle;
+        case MID_CONE_FRONT:
+          return WristConstants.midConeFrontAngle;
+        case MID_CUBE_BACK:
+          return WristConstants.midCubeBackAngle;
+        case MID_CUBE_FRONT:
+          return WristConstants.midCubeFrontAngle;
+        case SINGLE_CONE:
+          return WristConstants.singleSubstationConeAngle;
+        case SINGLE_CUBE:
+          return WristConstants.singleSubstationCubeAngle;
+        case STARTING:
+          return WristConstants.startingPosition;
+        default:
+          return 0;
+      }
     }
 
   }

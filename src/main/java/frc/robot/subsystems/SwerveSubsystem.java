@@ -331,4 +331,16 @@ public class SwerveSubsystem extends SubsystemBase
 
     return autoBuilder.fullAuto(pathGroup);
   }
+
+public Rotation2d getAdjustedGyroPitch() {
+    return null;
+}
+
+public Rotation2d getGyroscopeRotation() {
+    return null;
+}
+
+public Rotation2d getGyroYaw() {
+    return null;
+}
 }

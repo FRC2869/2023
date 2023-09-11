@@ -17,8 +17,8 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.commands.ConstantsRead;
 import frc.robot.commands.pivot.PivotReset;
-import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.PivotSubsystem;
+import frc.robot.subsystems.SwerveSubsystem;
 import frc.robot.subsystems.WristSubsystem;
 
 /**
@@ -175,7 +175,7 @@ public static UsbCamera camera;
 	SmartDashboard.putNumber("autoTimer",Constants.autoTimer.get());
 	Constants.locked = Inputs.getSwerveLock();
 	if(Inputs.cancelDriveButton().getAsBoolean()){
-		DrivetrainSubsystem.getInstance().getCurrentCommand().cancel();
+		SwerveSubsystem.getInstance().getCurrentCommand().cancel();
 	}
   }
 

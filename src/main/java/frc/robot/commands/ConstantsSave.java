@@ -27,7 +27,7 @@ public class ConstantsSave extends InstantCommand {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {
+  public void execute() {
     wrist.savePositions();
     pivot.savePositions();
     try {
