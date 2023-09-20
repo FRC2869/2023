@@ -228,7 +228,7 @@ public final class Constants {
     public static final double kS = 1.0;
     public static final double kV = 0;
     public static final double kG = 0.9;
-    public static final double GEAR_RATIO = (1 / 25.0) * (12.0 / 54.0);
+    public static final double GEAR_RATIO = (1 / 36.0) * (12.0 / 54.0);
     public static final double tolerance = 1;
     public static final double kMaxAutoPower = .7;
     public static final double kMaxPower = .35;
@@ -252,10 +252,10 @@ public final class Constants {
     public static double lowFrontAngle = -40;
 
     public static double midConeBackAngle = 0;
-    public static double midConeFrontAngle = 24;
+    public static double midConeFrontAngle = 0;
 
     public static double midCubeBackAngle = 0;
-    public static double midCubeFrontAngle = -18;
+    public static double midCubeFrontAngle = -12;
 
     public static double singleSubstationConeAngle = 0;
     public static double singleSubstationCubeAngle = 0;
@@ -264,64 +264,64 @@ public final class Constants {
     public static final double kMinAngle = -45;
     public static final double VELOCITY_CONVERSION = 1 / 60.0;
 
-    public static void readConstants() {
-      Scanner in = new Scanner(Filesystem.getDeployDirectory() + "/pivotConstants.txt");
-      basePosition = in.nextDouble();
+    // public static void readConstants() {
+    //   Scanner in = new Scanner(Filesystem.getDeployDirectory() + "/pivotConstants.txt");
+    //   basePosition = in.nextDouble();
 
-      doubleSubstationConeAngle = in.nextDouble();
-      doubleSubstationCubeAngle = in.nextDouble();
+    //   doubleSubstationConeAngle = in.nextDouble();
+    //   doubleSubstationCubeAngle = in.nextDouble();
 
-      floorPickupConeAngle = in.nextDouble();
-      floorPickupCubeAngle = in.nextDouble();
+    //   floorPickupConeAngle = in.nextDouble();
+    //   floorPickupCubeAngle = in.nextDouble();
 
-      highConeAngle = in.nextDouble();
+    //   highConeAngle = in.nextDouble();
 
-      highCubeBackAngle = in.nextDouble();
-      highCubeFrontAngle = in.nextDouble();
+    //   highCubeBackAngle = in.nextDouble();
+    //   highCubeFrontAngle = in.nextDouble();
 
-      lowBackAngle = in.nextDouble();
-      lowFrontAngle = in.nextDouble();
+    //   lowBackAngle = in.nextDouble();
+    //   lowFrontAngle = in.nextDouble();
 
-      midConeBackAngle = in.nextDouble();
-      midConeFrontAngle = in.nextDouble();
+    //   midConeBackAngle = in.nextDouble();
+    //   midConeFrontAngle = in.nextDouble();
 
-      midCubeBackAngle = in.nextDouble();
-      midCubeFrontAngle = in.nextDouble();
+    //   midCubeBackAngle = in.nextDouble();
+    //   midCubeFrontAngle = in.nextDouble();
 
-      singleSubstationConeAngle = in.nextDouble();
-      singleSubstationCubeAngle = in.nextDouble();
-      in.close();
-    }
+    //   singleSubstationConeAngle = in.nextDouble();
+    //   singleSubstationCubeAngle = in.nextDouble();
+    //   in.close();
+    // }
 
-    public static void writeConstants() throws IOException {
-      SimpleDateFormat formatter = new SimpleDateFormat("dd_MM_yy_HH_mm_ss");
-      Date date = new Date();
-      File source = new File(Filesystem.getDeployDirectory() + "/pivotConstants.txt");
-      File dest = new File(Filesystem.getDeployDirectory() + "/pivotConstants" + formatter.format(date) + ".txt");
-      Files.copy(source.toPath(), dest.toPath());
+    // public static void writeConstants() throws IOException {
+    //   SimpleDateFormat formatter = new SimpleDateFormat("dd_MM_yy_HH_mm_ss");
+    //   Date date = new Date();
+    //   File source = new File(Filesystem.getDeployDirectory() + "/pivotConstants.txt");
+    //   File dest = new File(Filesystem.getDeployDirectory() + "/pivotConstants" + formatter.format(date) + ".txt");
+    //   Files.copy(source.toPath(), dest.toPath());
 
-      String constants = "";
-      constants += basePosition + "\n";
-      constants += doubleSubstationConeAngle + "\n";
-      constants += doubleSubstationCubeAngle + "\n";
-      constants += floorPickupConeAngle + "\n";
-      constants += floorPickupCubeAngle + "\n";
-      constants += highConeAngle + "\n";
-      constants += highCubeBackAngle + "\n";
-      constants += highCubeFrontAngle + "\n";
-      constants += lowBackAngle + "\n";
-      constants += lowFrontAngle + "\n";
-      constants += midConeFrontAngle + "\n";
-      constants += midConeBackAngle + "\n";
-      constants += midCubeFrontAngle + "\n";
-      constants += midCubeBackAngle + "\n";
-      constants += singleSubstationConeAngle + "\n";
-      constants += singleSubstationCubeAngle;
-      BufferedWriter writer = new BufferedWriter(
-          new FileWriter(Filesystem.getDeployDirectory() + "/pivotConstants.txt"));
-      writer.write(constants);
-      writer.close();
-    }
+    //   String constants = "";
+    //   constants += basePosition + "\n";
+    //   constants += doubleSubstationConeAngle + "\n";
+    //   constants += doubleSubstationCubeAngle + "\n";
+    //   constants += floorPickupConeAngle + "\n";
+    //   constants += floorPickupCubeAngle + "\n";
+    //   constants += highConeAngle + "\n";
+    //   constants += highCubeBackAngle + "\n";
+    //   constants += highCubeFrontAngle + "\n";
+    //   constants += lowBackAngle + "\n";
+    //   constants += lowFrontAngle + "\n";
+    //   constants += midConeFrontAngle + "\n";
+    //   constants += midConeBackAngle + "\n";
+    //   constants += midCubeFrontAngle + "\n";
+    //   constants += midCubeBackAngle + "\n";
+    //   constants += singleSubstationConeAngle + "\n";
+    //   constants += singleSubstationCubeAngle;
+    //   BufferedWriter writer = new BufferedWriter(
+    //       new FileWriter(Filesystem.getDeployDirectory() + "/pivotConstants.txt"));
+    //   writer.write(constants);
+    //   writer.close();
+    // }
 
     public static double getTargetPos(PositionsPivot pivotEnum) {
       switch (pivotEnum) {
@@ -386,7 +386,7 @@ public final class Constants {
     public static final double kS = 0;
     public static final double kV = 0;
     public static final double kG = 0.5;
-    public static final double GEAR_RATIO = 1.0 / 25.0;
+    public static final double GEAR_RATIO = 1.0 / 60.0;
     public static final double tolerance = 1;
     public static final double kMaxPower = 0.30;
     public static final double kMaxAutoPower = .30;
@@ -410,10 +410,10 @@ public final class Constants {
     public static double lowFrontAngle = 70;
 
     public static double midConeBackAngle = 0;
-    public static double midConeFrontAngle = -20;
+    public static double midConeFrontAngle = 36;
 
     public static double midCubeBackAngle = 0;
-    public static double midCubeFrontAngle = 70;
+    public static double midCubeFrontAngle = 58;
 
     public static double singleSubstationConeAngle = 0;
     public static double singleSubstationCubeAngle = 0;
@@ -422,64 +422,64 @@ public final class Constants {
     public static final double kMinAngle = -140;
     public static final double kMaxAngle = 145;
 
-    public static void readConstants() {
-      Scanner in = new Scanner(Filesystem.getDeployDirectory() + "/wristConstants.txt");
-      basePosition = in.nextDouble();
+    // public static void readConstants() {
+    //   Scanner in = new Scanner(Filesystem.getDeployDirectory() + "/wristConstants.txt");
+    //   basePosition = in.nextDouble();
 
-      doubleSubstationConeAngle = in.nextDouble();
-      doubleSubstationCubeAngle = in.nextDouble();
+    //   doubleSubstationConeAngle = in.nextDouble();
+    //   doubleSubstationCubeAngle = in.nextDouble();
 
-      floorPickupConeAngle = in.nextDouble();
-      floorPickupCubeAngle = in.nextDouble();
+    //   floorPickupConeAngle = in.nextDouble();
+    //   floorPickupCubeAngle = in.nextDouble();
 
-      highConeAngle = in.nextDouble();
+    //   highConeAngle = in.nextDouble();
 
-      highCubeBackAngle = in.nextDouble();
-      highCubeFrontAngle = in.nextDouble();
+    //   highCubeBackAngle = in.nextDouble();
+    //   highCubeFrontAngle = in.nextDouble();
 
-      lowBackAngle = in.nextDouble();
-      lowFrontAngle = in.nextDouble();
+    //   lowBackAngle = in.nextDouble();
+    //   lowFrontAngle = in.nextDouble();
 
-      midConeBackAngle = in.nextDouble();
-      midConeFrontAngle = in.nextDouble();
+    //   midConeBackAngle = in.nextDouble();
+    //   midConeFrontAngle = in.nextDouble();
 
-      midCubeBackAngle = in.nextDouble();
-      midCubeFrontAngle = in.nextDouble();
+    //   midCubeBackAngle = in.nextDouble();
+    //   midCubeFrontAngle = in.nextDouble();
 
-      singleSubstationConeAngle = in.nextDouble();
-      singleSubstationCubeAngle = in.nextDouble();
-      in.close();
-    }
+    //   singleSubstationConeAngle = in.nextDouble();
+    //   singleSubstationCubeAngle = in.nextDouble();
+    //   in.close();
+    // }
 
-    public static void writeConstants() throws IOException {
-      SimpleDateFormat formatter = new SimpleDateFormat("dd_MM_yy_HH_mm_ss");
-      Date date = new Date();
-      File source = new File(Filesystem.getDeployDirectory() + "/wristConstants.txt");
-      File dest = new File(Filesystem.getDeployDirectory() + "/wristConstants" + formatter.format(date) + ".txt");
-      Files.copy(source.toPath(), dest.toPath());
+    // public static void writeConstants() throws IOException {
+    //   SimpleDateFormat formatter = new SimpleDateFormat("dd_MM_yy_HH_mm_ss");
+    //   Date date = new Date();
+    //   File source = new File(Filesystem.getDeployDirectory() + "/wristConstants.txt");
+    //   File dest = new File(Filesystem.getDeployDirectory() + "/wristConstants" + formatter.format(date) + ".txt");
+    //   Files.copy(source.toPath(), dest.toPath());
 
-      String constants = "";
-      constants += basePosition + "\n";
-      constants += doubleSubstationConeAngle + "\n";
-      constants += doubleSubstationCubeAngle + "\n";
-      constants += floorPickupConeAngle + "\n";
-      constants += floorPickupCubeAngle + "\n";
-      constants += highConeAngle + "\n";
-      constants += highCubeBackAngle + "\n";
-      constants += highCubeFrontAngle + "\n";
-      constants += lowBackAngle + "\n";
-      constants += lowFrontAngle + "\n";
-      constants += midConeFrontAngle + "\n";
-      constants += midConeBackAngle + "\n";
-      constants += midCubeFrontAngle + "\n";
-      constants += midCubeBackAngle + "\n";
-      constants += singleSubstationConeAngle + "\n";
-      constants += singleSubstationCubeAngle;
-      BufferedWriter writer = new BufferedWriter(
-          new FileWriter(Filesystem.getDeployDirectory() + "/wristConstants.txt"));
-      writer.write(constants);
-      writer.close();
-    }
+    //   String constants = "";
+    //   constants += basePosition + "\n";
+    //   constants += doubleSubstationConeAngle + "\n";
+    //   constants += doubleSubstationCubeAngle + "\n";
+    //   constants += floorPickupConeAngle + "\n";
+    //   constants += floorPickupCubeAngle + "\n";
+    //   constants += highConeAngle + "\n";
+    //   constants += highCubeBackAngle + "\n";
+    //   constants += highCubeFrontAngle + "\n";
+    //   constants += lowBackAngle + "\n";
+    //   constants += lowFrontAngle + "\n";
+    //   constants += midConeFrontAngle + "\n";
+    //   constants += midConeBackAngle + "\n";
+    //   constants += midCubeFrontAngle + "\n";
+    //   constants += midCubeBackAngle + "\n";
+    //   constants += singleSubstationConeAngle + "\n";
+    //   constants += singleSubstationCubeAngle;
+    //   BufferedWriter writer = new BufferedWriter(
+    //       new FileWriter(Filesystem.getDeployDirectory() + "/wristConstants.txt"));
+    //   writer.write(constants);
+    //   writer.close();
+    // }
 
     public static double getTargetPos(PositionsWrist wristEnum) {
       switch (wristEnum) {

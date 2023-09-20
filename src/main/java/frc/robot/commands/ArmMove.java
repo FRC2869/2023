@@ -26,12 +26,6 @@ public class ArmMove extends CommandBase {
 	private final double pivotDelay;
 	private final double wristDelay;
 	
-	private int pivotCounter;
-	private int wristCounter;
-	
-	private boolean pivotDone;
-	private boolean wristDone;
-	
 	private boolean hasSetPivot = false;
 	private boolean hasSetWrist = false;
 
@@ -59,6 +53,8 @@ public class ArmMove extends CommandBase {
 			startTime = Constants.autoTimer.get();
 			System.out.println(startTime + ": Arm Movement:" + pivotEnum.name());
 			hasRun = true;
+			pivot.position(pivot.getAngle());
+			wrist.position(wrist.getAngle());
 		}
 
 		if((Constants.autoTimer.get()-startTime)>pivotDelay && !hasSetPivot){
@@ -76,20 +72,7 @@ public class ArmMove extends CommandBase {
 
 	@Override
 	public boolean isFinished() {
-		pivotDone = Math.abs(pivot.getAngle() - targetPivotPos) < PivotConstants.tolerance;
-		wristDone = Math.abs(wrist.getAngle() - targetWristPos) < WristConstants.tolerance;
-
-		if (wristDone) {
-			wristCounter++;
-		} else {
-			wristCounter = 0;
-		}
-		if (pivotDone) {
-			pivotCounter++;
-		} else {
-			pivotCounter = 0;
-		}
-		if (pivotCounter > Constants.pidTimer && wristCounter > Constants.pidTimer) {
+		if (Constants.autoTimer.get()-startTime>wristDelay&&Constants.autoTimer.get()-startTime>pivotDelay){
 			System.out.println(Constants.autoTimer.get() + ": Arm Movement Done:" + pivotEnum.name());
 			return true;
 		}
