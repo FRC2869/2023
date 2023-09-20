@@ -11,21 +11,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
-import frc.robot.commands.ArmBasePos;
-import frc.robot.commands.ArmConeHigh;
-import frc.robot.commands.ArmConeMidBack;
-import frc.robot.commands.ArmConeMidFront;
-import frc.robot.commands.ArmCubeHighBack;
-import frc.robot.commands.ArmCubeMidBack;
-import frc.robot.commands.ArmCubeMidFront;
-import frc.robot.commands.ArmDoubleSubStationCone;
-import frc.robot.commands.ArmDoubleSubStationCube;
-import frc.robot.commands.ArmFloorPickupCube;
-import frc.robot.commands.ArmLowBack;
-import frc.robot.commands.ArmLowFront;
-import frc.robot.commands.ArmSingleSubStationCone;
-import frc.robot.commands.ArmSingleSubStationCube;
-import frc.robot.commands.ConstantsSave;
+import frc.robot.Constants.PivotConstants.PositionsPivot;
+import frc.robot.Constants.WristConstants.PositionsWrist;
+import frc.robot.commands.ArmMove;
 import frc.robot.commands.DefaultDriveCommand;
 import frc.robot.commands.PivotAdjustDown;
 import frc.robot.commands.PivotAdjustUp;
@@ -139,24 +127,24 @@ public class RobotContainer {
 		Inputs.getBalanceButton().onTrue(getAutonomousCommand());
 	}
 	private void configureOperatorBindings(){
-		Inputs.getArmBase().onTrue(new ArmBasePos());
+		Inputs.getArmBase().onTrue(new ArmMove(PositionsPivot.BASE, PositionsWrist.BASE, 1,0));
 
-		Inputs.getArmLowFront().onTrue(new ArmLowFront());
-		Inputs.getArmCubeMidFront().onTrue(new ArmCubeMidFront());
-		Inputs.getArmConeMidFront().onTrue(new ArmConeMidFront());
-		Inputs.getArmCubeHighFront().onTrue(new ArmCubeHighBack());
+		Inputs.getArmLowFront().onTrue(new ArmMove(PositionsPivot.LOW_FRONT, PositionsWrist.LOW_FRONT, 0,1));
+		Inputs.getArmCubeMidFront().onTrue(new ArmMove(PositionsPivot.MID_CUBE_FRONT, PositionsWrist.MID_CUBE_FRONT, 0,1));
+		Inputs.getArmConeMidFront().onTrue(new ArmMove(PositionsPivot.MID_CONE_FRONT, PositionsWrist.MID_CONE_FRONT, 0,1));
+		Inputs.getArmCubeHighFront().onTrue(new ArmMove(PositionsPivot.HIGH_CUBE_FRONT, PositionsWrist.HIGH_CUBE_FRONT, 0,1));
 		
-		Inputs.getArmLowBack().onTrue(new ArmLowBack());
-		Inputs.getArmConeMidBack().onTrue(new ArmConeMidBack());
-		Inputs.getArmCubeMidBack().onTrue(new ArmCubeMidBack());
-		Inputs.getArmConeHighBack().onTrue(new ArmConeHigh());
-		Inputs.getArmCubeHighBack().onTrue(new ArmCubeHighBack());
+		Inputs.getArmLowBack().onTrue(new ArmMove(PositionsPivot.LOW_BACK, PositionsWrist.LOW_BACK, 0,1));
+		Inputs.getArmCubeMidBack().onTrue(new ArmMove(PositionsPivot.MID_CUBE_BACK, PositionsWrist.MID_CUBE_BACK, 0,1));
+		Inputs.getArmConeMidBack().onTrue(new ArmMove(PositionsPivot.MID_CONE_BACK, PositionsWrist.MID_CONE_BACK, 0,1));
+		Inputs.getArmConeHighBack().onTrue(new ArmMove(PositionsPivot.HIGH_CONE, PositionsWrist.HIGH_CONE, 0,1));
+		Inputs.getArmCubeHighBack().onTrue(new ArmMove(PositionsPivot.HIGH_CUBE_BACK, PositionsWrist.HIGH_CUBE_BACK, 0,1));
 
-		Inputs.getArmFloorPickupCube().onTrue(new ArmFloorPickupCube());
-		Inputs.getArmSingleSubStationCone().onTrue(new ArmSingleSubStationCone());
-		Inputs.getArmSingleSubStationCube().onTrue(new ArmSingleSubStationCube());
-		Inputs.getArmDoubleSubStationCone().onTrue(new ArmDoubleSubStationCone());
-		Inputs.getArmDoubleSubStationCube().onTrue(new ArmDoubleSubStationCube());
+		Inputs.getArmFloorPickupCube().onTrue(new ArmMove(PositionsPivot.FLOOR_CUBE, PositionsWrist.FLOOR_CUBE, 0,1));
+		Inputs.getArmSingleSubStationCone().onTrue(new ArmMove(PositionsPivot.SINGLE_CONE, PositionsWrist.SINGLE_CONE, 0,1));
+		Inputs.getArmSingleSubStationCube().onTrue(new ArmMove(PositionsPivot.SINGLE_CUBE, PositionsWrist.SINGLE_CUBE, 0,1));
+		Inputs.getArmDoubleSubStationCone().onTrue(new ArmMove(PositionsPivot.DOUBLE_CONE, PositionsWrist.DOUBLE_CONE, 0,1));
+		Inputs.getArmDoubleSubStationCube().onTrue(new ArmMove(PositionsPivot.DOUBLE_CUBE, PositionsWrist.DOUBLE_CUBE, 0,1));
 		
 		Inputs.getPivotCancelButton().onTrue(new PivotCancel());
 		
@@ -169,7 +157,7 @@ public class RobotContainer {
 		Inputs.getWristAdjustDown().onTrue(new WristAdjustDown());
 		Inputs.getPivotAdjustUp().onTrue(new PivotAdjustUp());
 		Inputs.getPivotAdjustDown().onTrue(new PivotAdjustDown());
-		Inputs.getSaveAdjustment().onTrue(new ConstantsSave());
+		// Inputs.getSaveAdjustment().onTrue(new ConstantsSave());
 		// Inputs.getAutoTrigger().onTrue(new AutoGoToCube());
 	}
 

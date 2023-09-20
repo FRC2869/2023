@@ -15,7 +15,7 @@ public class Inputs {
     private static final Joystick driver1 = new Joystick(OperatorConstants.kDriver1ControllerPort);
     // private static final Joystick driver2 = new Joystick(OperatorConstants.kDriver2ControllerPort);
 	private static final CommandJoystick driver1Cmd = new CommandJoystick(OperatorConstants.kDriver1ControllerPort);
-	private static final CommandJoystick driver2Cmd = new CommandJoystick(OperatorConstants.kDriver2ControllerPort);
+	// private static final CommandJoystick driver2Cmd = new CommandJoystick(OperatorConstants.kDriver2ControllerPort);
 	private static final CommandGenericHID operatorCmd = new CommandGenericHID(OperatorConstants.kOperatorControllerPort);
     // private static final XboxController operator2 = new XboxController(OperatorConstants.kOperatorControllerPort);
 	// private static final CommandXboxController operator2Cmd = new CommandXboxController(OperatorConstants.kOperatorController2Port);
@@ -123,13 +123,13 @@ public class Inputs {
 		return driver1Cmd.button(2);
 	}
 	public static Trigger getBalanceButton() {
-		return driver2Cmd.button(3);
+		return driver1Cmd.button(3);
 	}
 	public static Trigger cancelDriveButton() {
-		return driver2Cmd.button(1);
+		return driver1Cmd.button(1);
 	}
 	public static Trigger getResetGyroButton() {
-		return driver2Cmd.button(2);
+		return driver1Cmd.button(2);
 	}
 	public static boolean getSwerveReset() {
 		return driver1.getRawButton(4);

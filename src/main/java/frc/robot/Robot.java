@@ -15,7 +15,6 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
-import frc.robot.commands.ConstantsRead;
 import frc.robot.commands.pivot.PivotReset;
 import frc.robot.subsystems.PivotSubsystem;
 import frc.robot.subsystems.SwerveSubsystem;
@@ -53,18 +52,22 @@ public static UsbCamera camera;
     // led = new AddressableLED(0);
 	// led_buffer = new AddressableLEDBuffer(120);
 	// led.setLength(led_buffer.getLength());
-    new ConstantsRead().schedule();
+    // new ConstantsRead().schedule();
     m_robotContainer = new RobotContainer();
 	// for(int i=0;i<led_buffer.getLength();i++){
 	// 	led_buffer.setRGB(i, 255, 255, 255);
 	// }
 	// led.setData(led_buffer);
 	// led.start();
-	camera = CameraServer.startAutomaticCapture("cam0",0);
-    camera.setResolution(160, 120);
-	camera.setFPS(10);
+
 	
-	RobotContainer.auto.add(camera).withPosition(7, 1).withSize(6, 5);
+	// camera = CameraServer.startAutomaticCapture("cam0",0);
+    // camera.setResolution(160, 120);
+	// camera.setFPS(10);
+	
+	// RobotContainer.auto.add(camera).withPosition(7, 1).withSize(6, 5);
+
+
     // RobotContainer.auto.addCamera("Floor Pickup", "cam", camera.getPath()).withPosition(7, 1).withSize(6, 5);
     // RobotContainer.auto.addCamera("Floor Pickup", "cam", camera.getPath()).withPosition(7, 1).withSize(6, 5);
     // RobotContainer.auto.addCamera("LimeLight", "limelight", "10.28.69.87");
