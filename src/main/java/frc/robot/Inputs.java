@@ -171,16 +171,16 @@ public class Inputs {
 				return operatorCmd.button(6);
 			}
 			public static Trigger getArmConeMidBack() {
-				return operatorCmd.button(6);
+				return operatorCmd.button(7);
 			}
 			public static Trigger getArmCubeMidBack(){
-				return operatorCmd.button(3);
+				return operatorCmd.button(8);
 			}
 			public static Trigger getArmConeHighBack() {
-				return operatorCmd.button(4);
+				return operatorCmd.button(9);
 			}
 			public static Trigger getArmCubeHighBack() {
-				return operatorCmd.button(5);
+				return operatorCmd.button(10);
 			}
 
 	//Pickup

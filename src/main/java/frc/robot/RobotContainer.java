@@ -24,8 +24,6 @@ import frc.robot.commands.grabber.CloseGrabberFast;
 import frc.robot.commands.grabber.OffGrabber;
 import frc.robot.commands.grabber.OpenGrabber;
 import frc.robot.commands.pivot.PivotCancel;
-import frc.robot.commands.pivot.PivotDefault;
-import frc.robot.subsystems.PivotSubsystem;
 import frc.robot.subsystems.SwerveSubsystem;
 
 /**
@@ -42,7 +40,7 @@ public class RobotContainer {
 	private final SwerveSubsystem swerve = SwerveSubsystem.getInstance();
 	// private DrivetrainSubsystem swerve = DrivetrainSubsystem.getInstance();
 	// private final ArmSubsystem arm = ArmSubsystem.getInstance();
-	private final PivotSubsystem pivot = PivotSubsystem.getInstance();
+	// private final PivotSubsystem pivot = PivotSubsystem.getInstance();
 	// private final GrabberSubsystem grabber = GrabberSubsystem.getInstance();
 	public static ShuffleboardTab auto = Shuffleboard.getTab("Auto");
 	
@@ -101,7 +99,7 @@ public class RobotContainer {
             () -> Inputs.getRotation(),
 			() -> (true), true, false
     ));
-		pivot.setDefaultCommand(new PivotDefault());
+		// pivot.setDefaultCommand(new PivotDefault());
 		// arm.setDefaultCommand(new ArmDefault());
 		// grabber.setDefaultCommand(new OffGrabber());
 	}
@@ -129,7 +127,7 @@ public class RobotContainer {
 	private void configureOperatorBindings(){
 		Inputs.getArmBase().onTrue(new ArmMove(PositionsPivot.BASE, PositionsWrist.BASE, 1,0));
 
-		Inputs.getArmLowFront().onTrue(new ArmMove(PositionsPivot.LOW_FRONT, PositionsWrist.LOW_FRONT, 0,1));
+		Inputs.getArmLowFront().onTrue(new ArmMove(PositionsPivot.LOW_FRONT, PositionsWrist.LOW_FRONT, 0,0));
 		Inputs.getArmCubeMidFront().onTrue(new ArmMove(PositionsPivot.MID_CUBE_FRONT, PositionsWrist.MID_CUBE_FRONT, 0,1));
 		Inputs.getArmConeMidFront().onTrue(new ArmMove(PositionsPivot.MID_CONE_FRONT, PositionsWrist.MID_CONE_FRONT, 0,1));
 		Inputs.getArmCubeHighFront().onTrue(new ArmMove(PositionsPivot.HIGH_CUBE_FRONT, PositionsWrist.HIGH_CUBE_FRONT, 0,1));

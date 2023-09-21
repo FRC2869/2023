@@ -4,15 +4,6 @@
 
 package frc.robot;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Scanner;
-
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.revrobotics.CANSparkMax.IdleMode;
 
@@ -20,7 +11,6 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.util.Units;
-import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.Timer;
 
 /**
@@ -235,13 +225,13 @@ public final class Constants {
 
     public static final double startingPosition = -52;
 
-    public static double basePosition = -40;
+    public static double basePosition = -50;
 
     public static double doubleSubstationConeAngle = 0;
     public static double doubleSubstationCubeAngle = 0;
 
     public static double floorPickupConeAngle = 0;
-    public static double floorPickupCubeAngle = -40;
+    public static double floorPickupCubeAngle = -50;
 
     public static double highConeAngle = 0;
 
@@ -249,10 +239,10 @@ public final class Constants {
     public static double highCubeFrontAngle = 0;
 
     public static double lowBackAngle = 0;
-    public static double lowFrontAngle = -40;
+    public static double lowFrontAngle = -50;
 
     public static double midConeBackAngle = 0;
-    public static double midConeFrontAngle = 0;
+    public static double midConeFrontAngle = 22;
 
     public static double midCubeBackAngle = 0;
     public static double midCubeFrontAngle = -12;
@@ -388,12 +378,12 @@ public final class Constants {
     public static final double kG = 0.5;
     public static final double GEAR_RATIO = 1.0 / 60.0;
     public static final double tolerance = 1;
-    public static final double kMaxPower = 0.30;
-    public static final double kMaxAutoPower = .30;
+    public static final double kMaxPower = 0.45;
+    public static final double kMaxAutoPower = .45;
 
     public static final double startingPosition = 156;
 
-    public static double basePosition = 140;
+    public static double basePosition = 154;
 
     public static double doubleSubstationConeAngle = 0;
     public static double doubleSubstationCubeAngle = 0;
@@ -410,7 +400,7 @@ public final class Constants {
     public static double lowFrontAngle = 70;
 
     public static double midConeBackAngle = 0;
-    public static double midConeFrontAngle = 36;
+    public static double midConeFrontAngle = -22;
 
     public static double midCubeBackAngle = 0;
     public static double midCubeFrontAngle = 58;

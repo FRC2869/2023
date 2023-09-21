@@ -4,7 +4,6 @@
 
 package frc.robot;
 
-import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.hal.HALUtil;
 import edu.wpi.first.networktables.NetworkTableInstance;
@@ -15,6 +14,9 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
+import frc.robot.Constants.PivotConstants.PositionsPivot;
+import frc.robot.Constants.WristConstants.PositionsWrist;
+import frc.robot.commands.ArmMove;
 import frc.robot.commands.pivot.PivotReset;
 import frc.robot.subsystems.PivotSubsystem;
 import frc.robot.subsystems.SwerveSubsystem;
@@ -97,7 +99,7 @@ public static UsbCamera camera;
       m_robotContainer.resetSwerve();
     }
 	if(HALUtil.getFPGAButton()){
-		PivotSubsystem.getInstance().toggleCoast();
+		PivotSubsystem.getInstance().brake();
 	}
 	// rainbow();
 	// led.setData(led_buffer);
@@ -132,8 +134,8 @@ public static UsbCamera camera;
   @Override
   public void autonomousInit() {
     // Shuffleboard.selectTab("Auto");
-	PivotSubsystem.getInstance().toggleCoast();
-	WristSubsystem.getInstance().toggleCoast();
+	PivotSubsystem.getInstance().brake();
+	WristSubsystem.getInstance().brake();
     Constants.isAuto = true;
     // Constants.isEnabled = true;
     System.out.println("AUto");
@@ -157,10 +159,11 @@ public static UsbCamera camera;
   public void teleopInit() {
 	if(Constants.autoTimer.get()==0){
 		Constants.autoTimer.start();
+		new ArmMove(PositionsPivot.STARTING, PositionsWrist.STARTING,0,0).schedule();
 	}
     // Shuffleboard.selectTab("Teleop");
-	PivotSubsystem.getInstance().toggleCoast();
-	WristSubsystem.getInstance().toggleCoast();
+	PivotSubsystem.getInstance().brake();
+	WristSubsystem.getInstance().brake();
     Constants.isAuto = false;
     // This makes sure that the autonomous stops running when
     // teleop starts running. If you want the autonomous to

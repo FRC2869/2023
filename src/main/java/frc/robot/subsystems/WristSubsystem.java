@@ -9,7 +9,6 @@ import com.ctre.phoenix.motorcontrol.TalonFXFeedbackDevice;
 import com.ctre.phoenix.motorcontrol.TalonFXSensorCollection;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
-import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -78,7 +77,8 @@ public class WristSubsystem extends SubsystemBase {
 	 * @param pos the position to set the motor to [kMinAngle, kMaxAngle]
 	 */
 	public void position(double pos) {
-		this.pos = MathUtil.clamp(pos, WristConstants.kMinAngle, WristConstants.kMaxAngle);
+		// this.pos = MathUtil.clamp(pos, WristConstants.kMinAngle, WristConstants.kMaxAngle);
+		this.pos = pos;
 	}
 
 	public double getAngle() {
@@ -217,7 +217,7 @@ public class WristSubsystem extends SubsystemBase {
 		}
 	}
 
-	public void toggleCoast() {
+	public void brake() {
 		wristMotor.setNeutralMode(NeutralMode.Brake);
 	}
 }

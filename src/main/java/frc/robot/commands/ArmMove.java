@@ -38,6 +38,7 @@ public class ArmMove extends CommandBase {
 		
 		this.targetPivotPos = PivotConstants.getTargetPos(pivotEnum);
 		this.targetWristPos = WristConstants.getTargetPos(wristEnum);
+		System.out.println(targetPivotPos+" : "+ targetWristPos);
 
 		this.pivotDelay = pivotDelay;
 		this.wristDelay = wristDelay;
@@ -49,6 +50,14 @@ public class ArmMove extends CommandBase {
 
 		hasRun = false;
 
+	}
+
+	@Override
+	public void initialize(){
+		hasSetPivot = false;
+		hasSetWrist = false;
+
+		hasRun = false;
 	}
 
 	@Override

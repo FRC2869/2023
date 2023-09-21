@@ -9,7 +9,6 @@ import com.ctre.phoenix.motorcontrol.TalonFXFeedbackDevice;
 import com.ctre.phoenix.motorcontrol.TalonFXSensorCollection;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
-import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -77,7 +76,8 @@ public class PivotSubsystem extends SubsystemBase {
 	 * @param pos the position to set the motor to [kMinAngle, kMaxAngle]
 	 */
 	public void position(double pos) {
-		this.pos = MathUtil.clamp(pos, PivotConstants.kMinAngle, PivotConstants.kMaxAngle);
+		// this.pos = MathUtil.clamp(pos, PivotConstants.kMinAngle, PivotConstants.kMaxAngle);
+		this.pos = pos;
 	}
 
 	public double getAngle() {
@@ -226,7 +226,7 @@ public class PivotSubsystem extends SubsystemBase {
 		}
 	}
 
-	public void toggleCoast() {
+	public void brake() {
 		pivotMotor.setNeutralMode(NeutralMode.Brake);
 	}
 }
