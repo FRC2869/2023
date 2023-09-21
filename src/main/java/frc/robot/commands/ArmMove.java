@@ -42,8 +42,12 @@ public class ArmMove extends CommandBase {
 		this.pivotDelay = pivotDelay;
 		this.wristDelay = wristDelay;
 		
-		addRequirements(pivot);
-		addRequirements(wrist);
+		addRequirements(pivot, wrist);
+		
+		hasSetPivot = false;
+		hasSetWrist = false;
+
+		hasRun = false;
 
 	}
 
