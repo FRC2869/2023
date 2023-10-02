@@ -4,13 +4,18 @@
 
 package frc.robot;
 
+
+import java.util.HashMap;
+
+import com.pathplanner.lib.PathConstraints;
+import com.pathplanner.lib.auto.PIDConstants;
+
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants.PivotConstants.PositionsPivot;
 import frc.robot.Constants.WristConstants.PositionsWrist;
 import frc.robot.commands.ArmMove;
@@ -300,7 +305,10 @@ public class RobotContainer {
 			// case ScoreMidConeAndScoreCubeAndChargeStation:
 			// 	break;
 			default:
-				return new WaitCommand(5000);			
+				HashMap<String, Command> eventMap = new HashMap<>();
+
+				return SwerveSubsystem.getInstance().createPathPlannerCommand("forward1m", new PathConstraints(1, 3), eventMap, new PIDConstants(5.0, 0.0, 0.0), new PIDConstants(0.5, 0.0, 0.0), true);
+				// return new WaitCommand(5000);			
 		}
 		// return null;
 		// An example command will be run in autonomous
