@@ -125,7 +125,7 @@ public class RobotContainer {
 		Inputs.getBalanceButton().onTrue(getAutonomousCommand());
 	}
 	private void configureOperatorBindings(){
-		Inputs.getArmBase().onTrue(new ArmMove(PositionsPivot.BASE, PositionsWrist.BASE, 1,0));
+		Inputs.getArmBase().onTrue(new ArmMove(PositionsPivot.BASE, PositionsWrist.BASE, 0,0));
 
 		Inputs.getArmLowFront().onTrue(new ArmMove(PositionsPivot.LOW_FRONT, PositionsWrist.LOW_FRONT, 0,0));
 		Inputs.getArmCubeMidFront().onTrue(new ArmMove(PositionsPivot.MID_CUBE_FRONT, PositionsWrist.MID_CUBE_FRONT, 0,1));
@@ -135,10 +135,10 @@ public class RobotContainer {
 		Inputs.getArmLowBack().onTrue(new ArmMove(PositionsPivot.LOW_BACK, PositionsWrist.LOW_BACK, 0,1));
 		Inputs.getArmCubeMidBack().onTrue(new ArmMove(PositionsPivot.MID_CUBE_BACK, PositionsWrist.MID_CUBE_BACK, 0,1));
 		Inputs.getArmConeMidBack().onTrue(new ArmMove(PositionsPivot.MID_CONE_BACK, PositionsWrist.MID_CONE_BACK, 0,1));
-		Inputs.getArmConeHighBack().onTrue(new ArmMove(PositionsPivot.HIGH_CONE, PositionsWrist.HIGH_CONE, 0,1));
+		Inputs.getArmConeHighBack().onTrue(new ArmMove(PositionsPivot.HIGH_CONE, PositionsWrist.HIGH_CONE, 0,0));
 		Inputs.getArmCubeHighBack().onTrue(new ArmMove(PositionsPivot.HIGH_CUBE_BACK, PositionsWrist.HIGH_CUBE_BACK, 0,1));
 
-		Inputs.getArmFloorPickupCube().onTrue(new ArmMove(PositionsPivot.FLOOR_CUBE, PositionsWrist.FLOOR_CUBE, 0,1));
+		Inputs.getArmFloorPickupCube().onTrue(new ArmMove(PositionsPivot.FLOOR_CUBE, PositionsWrist.FLOOR_CUBE, 0,0));
 		Inputs.getArmSingleSubStationCone().onTrue(new ArmMove(PositionsPivot.SINGLE_CONE, PositionsWrist.SINGLE_CONE, 0,1));
 		Inputs.getArmSingleSubStationCube().onTrue(new ArmMove(PositionsPivot.SINGLE_CUBE, PositionsWrist.SINGLE_CUBE, 0,1));
 		Inputs.getArmDoubleSubStationCone().onTrue(new ArmMove(PositionsPivot.DOUBLE_CONE, PositionsWrist.DOUBLE_CONE, 0,1));

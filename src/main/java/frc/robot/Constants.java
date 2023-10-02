@@ -227,27 +227,27 @@ public final class Constants {
 
     public static double basePosition = -50;
 
-    public static double doubleSubstationConeAngle = 0;
-    public static double doubleSubstationCubeAngle = 0;
+    public static double doubleSubstationConeAngle = 16;
+    public static double doubleSubstationCubeAngle = 16;
 
     public static double floorPickupConeAngle = 0;
     public static double floorPickupCubeAngle = -50;
 
-    public static double highConeAngle = 0;
+    public static double highConeAngle = 128;
 
-    public static double highCubeBackAngle = 0;
+    public static double highCubeBackAngle = 126;
     public static double highCubeFrontAngle = 0;
 
     public static double lowBackAngle = 0;
-    public static double lowFrontAngle = -50;
+    public static double lowFrontAngle = -51;
 
-    public static double midConeBackAngle = 0;
+    public static double midConeBackAngle = 108;
     public static double midConeFrontAngle = 22;
 
-    public static double midCubeBackAngle = 0;
+    public static double midCubeBackAngle = 114;
     public static double midCubeFrontAngle = -12;
 
-    public static double singleSubstationConeAngle = 0;
+    public static double singleSubstationConeAngle = -50;
     public static double singleSubstationCubeAngle = 0;
 
     public static final double kMaxAngle = 240;
@@ -385,27 +385,27 @@ public final class Constants {
 
     public static double basePosition = 154;
 
-    public static double doubleSubstationConeAngle = 0;
-    public static double doubleSubstationCubeAngle = 0;
+    public static double doubleSubstationConeAngle = -16;
+    public static double doubleSubstationCubeAngle = 14;
 
     public static double floorPickupConeAngle = 0;
     public static double floorPickupCubeAngle = 40;
 
-    public static double highConeAngle = 0;
+    public static double highConeAngle = 22;
 
-    public static double highCubeBackAngle = 0;
+    public static double highCubeBackAngle = 50;
     public static double highCubeFrontAngle = 0;
 
     public static double lowBackAngle = 0;
     public static double lowFrontAngle = 70;
 
-    public static double midConeBackAngle = 0;
+    public static double midConeBackAngle = 98;
     public static double midConeFrontAngle = -22;
 
-    public static double midCubeBackAngle = 0;
+    public static double midCubeBackAngle = 106;
     public static double midCubeFrontAngle = 58;
 
-    public static double singleSubstationConeAngle = 0;
+    public static double singleSubstationConeAngle = 118;
     public static double singleSubstationCubeAngle = 0;
 
     public static final double VELOCITY_CONVERSION = 1 / 60.0;
