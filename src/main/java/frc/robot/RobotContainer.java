@@ -139,7 +139,7 @@ public class RobotContainer {
 		Inputs.getArmCubeHighBack().onTrue(new ArmMove(PositionsPivot.HIGH_CUBE_BACK, PositionsWrist.HIGH_CUBE_BACK, 0,1));
 
 		Inputs.getArmFloorPickupCube().onTrue(new ArmMove(PositionsPivot.FLOOR_CUBE, PositionsWrist.FLOOR_CUBE, 0,0));
-		Inputs.getArmSingleSubStationCone().onTrue(new ArmMove(PositionsPivot.SINGLE_CONE, PositionsWrist.SINGLE_CONE, 0,1));
+		Inputs.getArmSingleSubStationCone().onTrue(new ArmMove(PositionsPivot.SINGLE_CONE, PositionsWrist.SINGLE_CONE, 0,0));
 		Inputs.getArmSingleSubStationCube().onTrue(new ArmMove(PositionsPivot.SINGLE_CUBE, PositionsWrist.SINGLE_CUBE, 0,1));
 		Inputs.getArmDoubleSubStationCone().onTrue(new ArmMove(PositionsPivot.DOUBLE_CONE, PositionsWrist.DOUBLE_CONE, 0,1));
 		Inputs.getArmDoubleSubStationCube().onTrue(new ArmMove(PositionsPivot.DOUBLE_CUBE, PositionsWrist.DOUBLE_CUBE, 0,1));

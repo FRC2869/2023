@@ -114,8 +114,8 @@ public final class Constants {
       public static final Rotation2d offset = new Rotation2d(Units.degreesToRadians(-146.1621003889326));
       public static final Translation2d location = new Translation2d(trackWidth_meter / 2.0, -trackLength_meter / 2.0);
       public static final String name = "FR";
-      public static final int driveMotorId = 6;
-      public static final int turnMotorId = 5;
+      public static final int driveMotorId = 5;
+      public static final int turnMotorId = 6;
       public static final int encoderId = 11;
     }
 
@@ -189,7 +189,7 @@ public final class Constants {
     public interface Grabber1 {
       boolean kInverted = true;
       NeutralMode idlemode = NeutralMode.Brake;
-      int currentLimit = 20;
+      int currentLimit = 5;
       double openLoopRampRate = 0;
     }
 
@@ -242,7 +242,7 @@ public final class Constants {
     public static double lowFrontAngle = -51;
 
     public static double midConeBackAngle = 108;
-    public static double midConeFrontAngle = 22;
+    public static double midConeFrontAngle = 24;
 
     public static double midCubeBackAngle = 114;
     public static double midCubeFrontAngle = -12;
@@ -385,13 +385,13 @@ public final class Constants {
 
     public static double basePosition = 154;
 
-    public static double doubleSubstationConeAngle = -16;
+    public static double doubleSubstationConeAngle = 12;
     public static double doubleSubstationCubeAngle = 14;
 
     public static double floorPickupConeAngle = 0;
     public static double floorPickupCubeAngle = 40;
 
-    public static double highConeAngle = 22;
+    public static double highConeAngle = 10;
 
     public static double highCubeBackAngle = 50;
     public static double highCubeFrontAngle = 0;

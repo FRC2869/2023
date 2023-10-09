@@ -78,10 +78,10 @@ public class Inputs {
 			speed = 0;
 		}
 
-		if(driver1.getRawButton(5)){
-			speed *= .5;
-		}else if(driver1.getRawButton(1)){
-			speed *= 1;
+		if(driver1.getRawButton(6)){
+			speed *= .6;
+		}else if(driver1.getRawButton(2)){
+			speed *= .6;
 		}else{
 			speed *= 1;
 		}
@@ -94,10 +94,10 @@ public class Inputs {
 		if(Math.abs(speed) < .1){
 			speed = 0;
 		}
-		if(driver1.getRawButton(5)){
-			speed *= .5;
-		}else if(driver1.getRawButton(1)){
-			speed *= 1;
+		if(driver1.getRawButton(6)){
+			speed *= .6;
+		}else if(driver1.getRawButton(2)){
+			speed *= .6;
 		}else{
 			speed *= 1;
 		}
@@ -106,21 +106,23 @@ public class Inputs {
     }
     public static double getRotation(){
         // return	 0.0;
-		double speed = -driver1.getZ();
+		double speed = -driver1.getRawAxis(4);
 		if(Math.abs(speed) < .1){
 			speed = 0;
 		}
-		if(driver1.getRawButton(5)){
-			speed *= .25;
-		}else if(driver1.getRawButton(1)){
+		if(driver1.getRawButton(6)){
+			speed *= .75;
+		}else if(driver1.getRawButton(2)){
 			speed *= .6;
 		}else{
-			speed *= .65;
+			speed *= 1;
 		}
+		if(Math.abs(getTranslationX())>.1||Math.abs(getTranslationY())>.1)
+		speed += driver1.getRawAxis(3)*(getTranslationY()+getTranslationX())/2.0*.1;
         return speed;
     }
 	public static Trigger getRobotRelative() {
-		return driver1Cmd.button(2);
+		return driver1Cmd.button(10);
 	}
 	public static Trigger getBalanceButton() {
 		return driver1Cmd.button(3);
@@ -209,13 +211,13 @@ public class Inputs {
 	 * Intake
 	 */
 	public static Trigger getIntakeFast() {
-        return operatorCmd.button(17);
+        return operatorCmd.button(19);
     }
 	public static Trigger getIntakeSlow(){
 		return operatorCmd.button(18);
 	}
 	public static Trigger getOuttake(){
-		return operatorCmd.button(19);
+		return operatorCmd.button(17);
 	}
 	public static Trigger getOffGrabber(){
 		return operatorCmd.button(20);

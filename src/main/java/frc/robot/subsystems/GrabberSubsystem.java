@@ -39,15 +39,15 @@ public class GrabberSubsystem extends SubsystemBase{
         grabber1.configVoltageCompSaturation(12.0);
 		grabber1.setInverted(Motors.Grabber1.kInverted);
 		grabber1.setNeutralMode(Motors.Grabber1.idlemode);
-		grabber1.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, Motors.Grabber1.currentLimit, Motors.Grabber1.currentLimit, 1));
+		grabber1.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, Motors.Grabber1.currentLimit, Motors.Grabber1.currentLimit, 0.01));
 		grabber1.configOpenloopRamp(Motors.Grabber1.openLoopRampRate);
 	}
 
 	public void closeGrabber(){		
-		grabber1.set(-.1);
+		grabber1.set(-.2);
 	}
 	public void closeGrabberFast(){
-		grabber1.set(-.2);
+		grabber1.set(-.5);
 	}
 	public void openGrabber(){
 		grabber1.set(.2);
