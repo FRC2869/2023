@@ -97,7 +97,7 @@ public class RobotContainer {
             () -> Inputs.getTranslationY(),
             () -> Inputs.getTranslationX(),
             () -> Inputs.getRotation(),
-			() -> (true), true, false
+			() -> (true), true, true
     ));
 		// pivot.setDefaultCommand(new PivotDefault());
 		// arm.setDefaultCommand(new ArmDefault());

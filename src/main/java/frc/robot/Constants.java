@@ -231,7 +231,7 @@ public final class Constants {
     public static double doubleSubstationCubeAngle = 16;
 
     public static double floorPickupConeAngle = 0;
-    public static double floorPickupCubeAngle = -50;
+    public static double floorPickupCubeAngle = basePosition;
 
     public static double highConeAngle = 128;
 
@@ -239,16 +239,16 @@ public final class Constants {
     public static double highCubeFrontAngle = 0;
 
     public static double lowBackAngle = 0;
-    public static double lowFrontAngle = -51;
+    public static double lowFrontAngle = basePosition;
 
     public static double midConeBackAngle = 108;
-    public static double midConeFrontAngle = 24;
+    public static double midConeFrontAngle = 28;
 
     public static double midCubeBackAngle = 114;
     public static double midCubeFrontAngle = -12;
 
-    public static double singleSubstationConeAngle = -50;
-    public static double singleSubstationCubeAngle = 0;
+    public static double singleSubstationConeAngle = basePosition;
+    public static double singleSubstationCubeAngle = basePosition;
 
     public static final double kMaxAngle = 240;
     public static final double kMinAngle = -45;
@@ -405,7 +405,7 @@ public final class Constants {
     public static double midCubeBackAngle = 106;
     public static double midCubeFrontAngle = 58;
 
-    public static double singleSubstationConeAngle = 118;
+    public static double singleSubstationConeAngle = 110;
     public static double singleSubstationCubeAngle = 0;
 
     public static final double VELOCITY_CONVERSION = 1 / 60.0;

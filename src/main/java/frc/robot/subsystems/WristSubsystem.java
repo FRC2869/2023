@@ -25,7 +25,7 @@ public class WristSubsystem extends SubsystemBase {
 	// private ArmFeedforward feedForward;
 	private boolean isEnabled = true;
 	PositionsWrist currentPos = PositionsWrist.STARTING;
-	private boolean isPIDControl;
+	// private boolean isPIDControl;
 
 	public static WristSubsystem getInstance() {
 		if (instance == null) {
@@ -166,10 +166,7 @@ public class WristSubsystem extends SubsystemBase {
 		}
 	}
 
-	public void setPIDControl(boolean isPIDControl){
-		this.isPIDControl = isPIDControl;
-	}
-
+	
 	@Override
 	public void periodic() {
 		String angleString = rounder.format(getAngle());
@@ -205,10 +202,15 @@ public class WristSubsystem extends SubsystemBase {
 			} else {
 				if(getAngle()<150){
 					if(getAngle()<130){
-						double basepos = (135 - WristConstants.startingPosition) / 360.0 / WristConstants.GEAR_RATIO * 2048
-					* -1;
-						// System.out.println("fast");
-						wristMotor.set(TalonFXControlMode.Position, basepos);
+					// 	double basepos = (135 - WristConstants.startingPosition) / 360.0 / WristConstants.GEAR_RATIO * 2048
+					// * -1;
+					// 	// System.out.println("fast");
+					// 	wristMotor.set(TalonFXControlMode.Position, basepos);
+					if(getAngle()<100){
+						wristMotor.set(TalonFXControlMode.PercentOutput, -WristConstants.kMaxPower);
+					}else{
+						wristMotor.set(TalonFXControlMode.PercentOutput, -.25);
+					}
 					}
 					else {
 						// System.out.println("slow");
