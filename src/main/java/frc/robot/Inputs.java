@@ -140,6 +140,11 @@ public class Inputs {
 		return driver1.getRawButton(3);
 	}
 
+	public static Trigger getSlowMode(){
+		return driver1Cmd.button(6);
+	}
+
+	
 	/*
 	 * 
 	 * OPERATOR CONTROLS

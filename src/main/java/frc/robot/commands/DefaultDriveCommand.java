@@ -77,10 +77,10 @@ public class DefaultDriveCommand extends CommandBase
     SmartDashboard.putNumber("vX", xVelocity);
     SmartDashboard.putNumber("vY", yVelocity);
     SmartDashboard.putNumber("omega", angVelocity);
+	angle += (angVelocity * (timer.get() - lastTime)) * controller.config.maxAngularVelocity;
     if (headingCorrection)
     {
       // Estimate the desired angle in radians.
-      angle += (angVelocity * (timer.get() - lastTime)) * controller.config.maxAngularVelocity;
       // Get the desired ChassisSpeeds given the desired angle and current angle.
       ChassisSpeeds correctedChassisSpeeds = controller.getTargetSpeeds(xVelocity, yVelocity, angle,
                                                                         swerve.getHeading().getRadians());

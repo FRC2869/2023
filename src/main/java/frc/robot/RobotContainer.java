@@ -97,7 +97,7 @@ public class RobotContainer {
             () -> Inputs.getTranslationY(),
             () -> Inputs.getTranslationX(),
             () -> Inputs.getRotation(),
-			() -> (true), true, true
+			() -> (true), false, false
     ));
 		// pivot.setDefaultCommand(new PivotDefault());
 		// arm.setDefaultCommand(new ArmDefault());
@@ -123,6 +123,7 @@ public class RobotContainer {
 	private void configureDriverBindings() {
 		
 		Inputs.getBalanceButton().onTrue(getAutonomousCommand());
+		// Inputs.getSlowMode().whileTrue(new DefaultDriveCommand(()->Inputs.getTranslationY(), ()->Inputs.getTranslationX(), ()->Inputs.getRotation(), ()-> true, true, false));
 	}
 	private void configureOperatorBindings(){
 		Inputs.getArmBase().onTrue(new ArmMove(PositionsPivot.BASE, PositionsWrist.BASE, 0,0));
