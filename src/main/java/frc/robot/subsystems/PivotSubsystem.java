@@ -86,6 +86,10 @@ public class PivotSubsystem extends SubsystemBase {
 				+ PivotConstants.startingPosition;
 	}
 
+	public boolean isAtPosition(){
+		return Math.abs(pos-getAngle())<.5;
+	}
+
 	public double getVelocity() {
 		return collection.getIntegratedSensorVelocity();
 	}
