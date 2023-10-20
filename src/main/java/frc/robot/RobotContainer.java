@@ -23,6 +23,7 @@ import frc.robot.Constants.WristConstants.PositionsWrist;
 import frc.robot.commands.ArmBasePos;
 import frc.robot.commands.ArmConeMidFront;
 import frc.robot.commands.ArmCubeMidFront;
+import frc.robot.commands.ArmFloorPickupCone;
 import frc.robot.commands.ArmFloorPickupCube;
 import frc.robot.commands.ArmMove;
 import frc.robot.commands.DefaultDriveCommand;
@@ -60,7 +61,13 @@ public class RobotContainer {
 	ShuffleboardTab test = Shuffleboard.getTab("test");
 
 	private enum Autos {
-		Nothing, Forward, ScoreMidCone, ScoreMidConeAndMove, TurnToCube, ScoreMidConeAndScoreCube, ScoreMidConeAndChargeStation, ChargeStation, ScoreMidConeAndScoreCubeAndChargeStation, ScoreMidConeAndCrossChargeStation, HumanPlayerSideScoreAndMove, EdgeSideScoreAndMove, REDHumanPlayerSideScoreAndMove, BLUEHumanPlayerSideScoreAndMove, BLUEBumpSideScoreAndMove, REDBumpSideScoreAndMove
+		Nothing, Forward, ScoreMidCone, 
+		REDClearCone, REDClearCube, 
+		BLUEClearCone, BLUEClearCube, 
+		REDBumpCone, REDBumpCube, 
+		BLUEBumpCone, BLUEBumpCube, 
+		REDClearMove, BLUEClearMove, 
+		REDBumpMove, BLUEBumpMove
 	}
 	Autos currentAuto = Autos.Nothing;
 	private SendableChooser<Autos> newautopick; 
@@ -74,18 +81,18 @@ public class RobotContainer {
 		newautopick.addOption("Nothing", Autos.Nothing);
 		newautopick.addOption("Forward", Autos.Forward);
 		newautopick.setDefaultOption("ScoreMidCone", Autos.ScoreMidCone);
-		newautopick.addOption("ScoreMidConeAndMove", Autos.ScoreMidConeAndMove);
+		//newautopick.addOption("ScoreMidConeAndMove", Autos.ScoreMidConeAndMove);
 		// newautopick.addOption("ScoreMidConeAndPickupCube", Autos.ScoreMidConeAndPickupCube);
 		// newautopick.addOption("ScoreMidConeAndScoreCube", Autos.ScoreMidConeAndScoreCube);
-		newautopick.addOption("ScoreMidConeAndChargeStation", Autos.ScoreMidConeAndChargeStation);
-		newautopick.addOption("ScoreMidConeAndCrossChargeStation", Autos.ScoreMidConeAndCrossChargeStation);
-		newautopick.addOption("ChargeStation", Autos.ChargeStation);
-			newautopick.addOption("REDHumanPlayerSideScoreAndMove", Autos.REDHumanPlayerSideScoreAndMove);
-			newautopick.addOption("BLUEHumanPlayerSideScoreAndMove", Autos.BLUEHumanPlayerSideScoreAndMove);
-			newautopick.addOption("REDBumpSideScoreAndMove", Autos.REDBumpSideScoreAndMove);
-			newautopick.addOption("BLUEBumpSideScoreAndMove", Autos.BLUEBumpSideScoreAndMove);
-			newautopick.addOption("EdgeSideScoreAndMove", Autos.EdgeSideScoreAndMove);
-			newautopick.addOption("TurnToCube", Autos.TurnToCube);
+		//newautopick.addOption("ScoreMidConeAndChargeStation", Autos.ScoreMidConeAndChargeStation);
+		//newautopick.addOption("ScoreMidConeAndCrossChargeStation", Autos.ScoreMidConeAndCrossChargeStation);
+		//newautopick.addOption("ChargeStation", Autos.ChargeStation);
+			//newautopick.addOption("REDHumanPlayerSideScoreAndMove", Autos.REDHumanPlayerSideScoreAndMove);
+			//newautopick.addOption("BLUEHumanPlayerSideScoreAndMove", Autos.BLUEHumanPlayerSideScoreAndMove);
+			//newautopick.addOption("REDBumpSideScoreAndMove", Autos.REDBumpSideScoreAndMove);
+			//newautopick.addOption("BLUEBumpSideScoreAndMove", Autos.BLUEBumpSideScoreAndMove);
+			//newautopick.addOption("EdgeSideScoreAndMove", Autos.EdgeSideScoreAndMove);
+			//newautopick.addOption("TurnToCube", Autos.TurnToCube);
 		// newautopick.addOption("ScoreMidConeAndScoreCubeAndChargeStation", Autos.ScoreMidConeAndScoreCubeAndChargeStation);
 
 		auto.add("auto", newautopick).withPosition(0, 0).withSize(3, 1);
@@ -178,6 +185,218 @@ public class RobotContainer {
 	 */
 	public Command getAutonomousCommand() {
 		switch(newautopick.getSelected()){
+			case REDClearCube:
+				HashMap<String, Command> eventMap1 = new HashMap<>();
+				return new SequentialCommandGroup(
+					new ArmCubeMidFront(),
+					new WaitUntilAtPos(),
+					new OpenGrabber(),
+					new WaitCommand(1),
+					new ArmBasePos(),
+					new WaitUntilAtPos(),
+					new OffGrabber(),
+					SwerveSubsystem.getInstance().createPathPlannerCommand("Pathredtop1", new PathConstraints(1, 3), eventMap1, new PIDConstants(5.0, 0.0, 0.0), new PIDConstants(0.5, 0.0, 0.0), false),
+					new ArmFloorPickupCube(),
+					new CloseGrabber(),
+					new WaitCommand(1),
+					new OffGrabber(),
+					new ArmBasePos(),
+					SwerveSubsystem.getInstance().createPathPlannerCommand("Pathredtop2", new PathConstraints(1, 3), eventMap1, new PIDConstants(5, 0, 0), new PIDConstants(.5, 0, 0), false),
+					new ArmCubeMidFront(),
+					new WaitUntilAtPos(),
+					new CloseGrabberFast()
+				);
+			case REDClearCone:
+				HashMap<String, Command> eventMap2 = new HashMap<>();
+				return new SequentialCommandGroup(
+					new ArmConeMidFront(),
+					new WaitUntilAtPos(),
+					new OpenGrabber(),
+					new WaitCommand(1),
+					new ArmBasePos(),
+					new WaitUntilAtPos(),
+					new OffGrabber(),
+					SwerveSubsystem.getInstance().createPathPlannerCommand("Pathredtop1", new PathConstraints(1, 3), eventMap2, new PIDConstants(5.0, 0.0, 0.0), new PIDConstants(0.5, 0.0, 0.0), false),
+					new ArmFloorPickupCube(),
+					new CloseGrabber(),
+					new WaitCommand(1),
+					new OffGrabber(),
+					new ArmBasePos(),
+					SwerveSubsystem.getInstance().createPathPlannerCommand("Pathredtop2", new PathConstraints(1, 3), eventMap2, new PIDConstants(5, 0, 0), new PIDConstants(.5, 0, 0), false),
+					new ArmCubeMidFront(),
+					new WaitUntilAtPos(),
+					new CloseGrabberFast()
+				);
+			case BLUEClearCube:
+				HashMap<String, Command> eventMap3 = new HashMap<>();
+				return new SequentialCommandGroup(
+					new ArmCubeMidFront(),
+					new WaitUntilAtPos(),
+					new OpenGrabber(),
+					new WaitCommand(1),
+					new ArmBasePos(),
+					new WaitUntilAtPos(),
+					new OffGrabber(),
+					SwerveSubsystem.getInstance().createPathPlannerCommand("Pathbluetop1", new PathConstraints(1, 3), eventMap3, new PIDConstants(5.0, 0.0, 0.0), new PIDConstants(0.5, 0.0, 0.0), false),
+					new ArmFloorPickupCube(),
+					new CloseGrabber(),
+					new WaitCommand(1),
+					new OffGrabber(),
+					new ArmBasePos(),
+					SwerveSubsystem.getInstance().createPathPlannerCommand("Pathbluetop2", new PathConstraints(1, 3), eventMap3, new PIDConstants(5, 0, 0), new PIDConstants(.5, 0, 0), false),
+					new ArmCubeMidFront(),
+					new WaitUntilAtPos(),
+					new CloseGrabberFast()
+				);
+			case BLUEClearCone:
+				HashMap<String, Command> eventMap4 = new HashMap<>();
+				return new SequentialCommandGroup(
+					new ArmConeMidFront(),
+					new WaitUntilAtPos(),
+					new OpenGrabber(),
+					new WaitCommand(1),
+					new ArmBasePos(),
+					new WaitUntilAtPos(),
+					new OffGrabber(),
+					SwerveSubsystem.getInstance().createPathPlannerCommand("Pathbluetop1", new PathConstraints(1, 3), eventMap4, new PIDConstants(5.0, 0.0, 0.0), new PIDConstants(0.5, 0.0, 0.0), false),
+					new ArmFloorPickupCube(),
+					new CloseGrabber(),
+					new WaitCommand(1),
+					new OffGrabber(),
+					new ArmBasePos(),
+					SwerveSubsystem.getInstance().createPathPlannerCommand("Pathbluetop2", new PathConstraints(1, 3), eventMap4, new PIDConstants(5, 0, 0), new PIDConstants(.5, 0, 0), false),
+					new ArmCubeMidFront(),
+					new WaitUntilAtPos(),
+					new CloseGrabberFast()
+				);
+			case BLUEBumpCube:
+				HashMap<String, Command> eventMap5 = new HashMap<>();
+				return new SequentialCommandGroup(
+					new ArmConeMidFront(),
+					new WaitUntilAtPos(),
+					new OpenGrabber(),
+					new WaitCommand(1),
+					new ArmBasePos(),
+					new WaitUntilAtPos(),
+					new OffGrabber(),
+					SwerveSubsystem.getInstance().createPathPlannerCommand("Pathbluebottom1", new PathConstraints(1, 3), eventMap5, new PIDConstants(5.0, 0.0, 0.0), new PIDConstants(0.5, 0.0, 0.0), false),
+					new ArmFloorPickupCube(),
+					new CloseGrabber(),
+					new WaitCommand(1),
+					new OffGrabber(),
+					new ArmBasePos(),
+					SwerveSubsystem.getInstance().createPathPlannerCommand("Pathbluebottom2", new PathConstraints(1, 3), eventMap5, new PIDConstants(5, 0, 0), new PIDConstants(.5, 0, 0), false),
+					new ArmCubeMidFront(),
+					new WaitUntilAtPos(),
+					new CloseGrabberFast()
+				);
+			case BLUEBumpCone:
+				HashMap<String, Command> eventMap6 = new HashMap<>();
+				return new SequentialCommandGroup(
+					new ArmConeMidFront(),
+					new WaitUntilAtPos(),
+					new OpenGrabber(),
+					new WaitCommand(1),
+					new ArmBasePos(),
+					new WaitUntilAtPos(),
+					new OffGrabber(),
+					SwerveSubsystem.getInstance().createPathPlannerCommand("Pathbluebottom1", new PathConstraints(1, 3), eventMap6, new PIDConstants(5.0, 0.0, 0.0), new PIDConstants(0.5, 0.0, 0.0), false),
+					new ArmFloorPickupCube(),
+					new CloseGrabber(),
+					new WaitCommand(1),
+					new OffGrabber(),
+					new ArmBasePos(),
+					SwerveSubsystem.getInstance().createPathPlannerCommand("Pathbluebottom2", new PathConstraints(1, 3), eventMap6, new PIDConstants(5, 0, 0), new PIDConstants(.5, 0, 0), false),
+					new ArmCubeMidFront(),
+					new WaitUntilAtPos(),
+					new CloseGrabberFast()
+				);
+			case REDBumpCube:
+				HashMap<String, Command> eventMap7 = new HashMap<>();
+				return new SequentialCommandGroup(
+					new ArmConeMidFront(),
+					new WaitUntilAtPos(),
+					new OpenGrabber(),
+					new WaitCommand(1),
+					new ArmBasePos(),
+					new WaitUntilAtPos(),
+					new OffGrabber(),
+					SwerveSubsystem.getInstance().createPathPlannerCommand("Pathredbottom1", new PathConstraints(1, 3), eventMap7, new PIDConstants(5.0, 0.0, 0.0), new PIDConstants(0.5, 0.0, 0.0), false),
+					new ArmFloorPickupCube(),
+					new CloseGrabber(),
+					new WaitCommand(1),
+					new OffGrabber(),
+					new ArmBasePos(),
+					SwerveSubsystem.getInstance().createPathPlannerCommand("Pathredbottom2", new PathConstraints(1, 3), eventMap7, new PIDConstants(5, 0, 0), new PIDConstants(.5, 0, 0), false),
+					new ArmCubeMidFront(),
+					new WaitUntilAtPos(),
+					new CloseGrabberFast()
+				);
+			case REDBumpCone:
+				HashMap<String, Command> eventMap8 = new HashMap<>();
+				return new SequentialCommandGroup(
+					new ArmConeMidFront(),
+					new WaitUntilAtPos(),
+					new OpenGrabber(),
+					new WaitCommand(1),
+					new ArmBasePos(),
+					new WaitUntilAtPos(),
+					new OffGrabber(),
+					SwerveSubsystem.getInstance().createPathPlannerCommand("Pathredbottom1", new PathConstraints(1, 3), eventMap8, new PIDConstants(5.0, 0.0, 0.0), new PIDConstants(0.5, 0.0, 0.0), false),
+					new ArmFloorPickupCube(),
+					new CloseGrabber(),
+					new WaitCommand(1),
+					new OffGrabber(),
+					new ArmBasePos(),
+					SwerveSubsystem.getInstance().createPathPlannerCommand("Pathredbottom2", new PathConstraints(1, 3), eventMap8, new PIDConstants(5, 0, 0), new PIDConstants(.5, 0, 0), false),
+					new ArmCubeMidFront(),
+					new WaitUntilAtPos(),
+					new CloseGrabberFast()
+				);
+			case REDBumpMove:
+				HashMap<String, Command> eventMap9 = new HashMap<>();
+				return new SequentialCommandGroup(
+					new ArmConeMidFront(),
+					new WaitUntilAtPos(),
+					new WaitCommand(1),
+					new ArmBasePos(),
+					new WaitUntilAtPos(),
+					new OffGrabber(),
+					SwerveSubsystem.getInstance().createPathPlannerCommand("bottomRedMove", new PathConstraints(1, 3), eventMap9, new PIDConstants(5.0, 0.0, 0.0), new PIDConstants(0.5, 0.0, 0.0), false)
+				);
+			case REDClearMove:
+				HashMap<String, Command> eventMap10 = new HashMap<>();
+				return new SequentialCommandGroup(
+					new ArmConeMidFront(),
+					new WaitUntilAtPos(),
+					new WaitCommand(1),
+					new ArmBasePos(),
+					new WaitUntilAtPos(),
+					new OffGrabber(),
+					SwerveSubsystem.getInstance().createPathPlannerCommand("topRedMove", new PathConstraints(1, 3), eventMap10, new PIDConstants(5.0, 0.0, 0.0), new PIDConstants(0.5, 0.0, 0.0), false)
+				);
+			case BLUEBumpMove:
+				HashMap<String, Command> eventMap11 = new HashMap<>();
+				return new SequentialCommandGroup(
+					new ArmConeMidFront(),
+					new WaitUntilAtPos(),
+					new WaitCommand(1),
+					new ArmBasePos(),
+					new WaitUntilAtPos(),
+					new OffGrabber(),
+					SwerveSubsystem.getInstance().createPathPlannerCommand("bottomBlueMove", new PathConstraints(1, 3), eventMap11, new PIDConstants(5.0, 0.0, 0.0), new PIDConstants(0.5, 0.0, 0.0), false)
+				);
+			case BLUEClearMove:
+				HashMap<String, Command> eventMap12 = new HashMap<>();
+				return new SequentialCommandGroup(
+					new ArmConeMidFront(),
+					new WaitUntilAtPos(),
+					new WaitCommand(1),
+					new ArmBasePos(),
+					new WaitUntilAtPos(),
+					new OffGrabber(),
+					SwerveSubsystem.getInstance().createPathPlannerCommand("topBlueMove", new PathConstraints(1, 3), eventMap12, new PIDConstants(5.0, 0.0, 0.0), new PIDConstants(0.5, 0.0, 0.0), false)
+				);
 			// case ChargeStation:
 			// return new SequentialCommandGroup(
 			// 	new AutoCrossChargeStation(),
