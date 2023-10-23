@@ -81,6 +81,10 @@ public class WristSubsystem extends SubsystemBase {
 		this.pos = pos;
 	}
 
+	public boolean isAtPosition(){
+		return Math.abs(pos-getAngle())<.5;
+	}
+
 	public double getAngle() {
 		// return -collection.getIntegratedSensorPosition();
 		return ((collection.getIntegratedSensorPosition() / 2048.0) * WristConstants.GEAR_RATIO * 360)
