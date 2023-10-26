@@ -242,10 +242,10 @@ public final class Constants {
     public static double lowFrontAngle = basePosition;
 
     public static double midConeBackAngle = 108;
-    public static double midConeFrontAngle = 20;
+    public static double midConeFrontAngle = 36;
 
     public static double midCubeBackAngle = 114;
-    public static double midCubeFrontAngle = -12;
+    public static double midCubeFrontAngle = -10;
 
     public static double singleSubstationConeAngle = basePosition;
     public static double singleSubstationCubeAngle = -34;
@@ -399,13 +399,13 @@ public final class Constants {
     public static double lowBackAngle = 0;
     public static double lowFrontAngle = 70;
 
-    public static double midConeBackAngle = 98;
-    public static double midConeFrontAngle = -22;
+    public static double midConeBackAngle = 76;
+    public static double midConeFrontAngle = -28;
 
     public static double midCubeBackAngle = 106;
-    public static double midCubeFrontAngle = 64;
+    public static double midCubeFrontAngle = 68;
 
-    public static double singleSubstationConeAngle = 110;
+    public static double singleSubstationConeAngle = 100;
     public static double singleSubstationCubeAngle = 102;
 
     public static final double VELOCITY_CONVERSION = 1 / 60.0;

@@ -12,6 +12,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.RobotContainer;
 import frc.robot.Constants.Motors;
 import frc.robot.Constants.WristConstants;
 import frc.robot.Constants.WristConstants.PositionsWrist;
@@ -26,6 +27,8 @@ public class WristSubsystem extends SubsystemBase {
 	private boolean isEnabled = true;
 	PositionsWrist currentPos = PositionsWrist.STARTING;
 	// private boolean isPIDControl;
+	private String angleString = "";
+	private boolean bool;
 
 	public static WristSubsystem getInstance() {
 		if (instance == null) {
@@ -37,6 +40,8 @@ public class WristSubsystem extends SubsystemBase {
 	public WristSubsystem() {
 		wristMotor = new WPI_TalonFX(WristConstants.wristMotorId);
 		configureWristMotor();
+		RobotContainer.auto.addDouble("Target Wrist Angle 2", ()->this.pos).withPosition(1, 2);
+		RobotContainer.auto.addString("Wrist Angle 2", ()->angleString).withPosition(0, 2);
 		new ArmFeedforward(WristConstants.kS, WristConstants.kG, WristConstants.kV);
 	}
 
@@ -79,10 +84,15 @@ public class WristSubsystem extends SubsystemBase {
 	public void position(double pos) {
 		// this.pos = MathUtil.clamp(pos, WristConstants.kMinAngle, WristConstants.kMaxAngle);
 		this.pos = pos;
+		bool = true;
 	}
 
 	public boolean isAtPosition(){
-		return Math.abs(pos-getAngle())<.5;
+		if(currentPos != PositionsWrist.BASE)
+			return Math.abs(pos-getAngle())<.5;
+		else 
+			return pos>WristConstants.getTargetPos(PositionsWrist.BASE);
+
 	}
 
 	public double getAngle() {
@@ -174,8 +184,9 @@ public class WristSubsystem extends SubsystemBase {
 	@Override
 	public void periodic() {
 		String angleString = rounder.format(getAngle());
-		SmartDashboard.putBoolean("Wrist Enabled", isEnabled);
+		// SmartDashboard.putBoolean("Wrist Enabled", isEnabled);
 		SmartDashboard.putString("Wrist Angle", angleString);
+
 		// Supplier<String> angleStringSupp = () -> angleString;
 		// RobotContainer.auto.addString("Wrist Angle", angleStringSupp).withPosition(3,
 		// 0);
@@ -191,10 +202,11 @@ public class WristSubsystem extends SubsystemBase {
 			// // System.out.println("too high");
 			// return;
 			// }
-			SmartDashboard.putNumber("Target Wrist Angle", this.pos);
-			SmartDashboard.putNumber("wrist difference", Math.abs(getAngle()-this.pos));
-			SmartDashboard.putNumber("just the angle", Math.abs(getAngle()));
-			SmartDashboard.putBoolean("wrist base?", getAngle()>140);
+			SmartDashboard.putNumber("Target Wrist Angle 1", this.pos);
+
+			// SmartDashboard.putNumber("wrist difference", Math.abs(getAngle()-this.pos));
+			// SmartDashboard.putNumber("just the angle", Math.abs(getAngle()));
+			// SmartDashboard.putBoolean("wrist base?", getAngle()>140);
 			double pos = (this.pos - WristConstants.startingPosition) / 360.0 / WristConstants.GEAR_RATIO * 2048
 					* -1;
 			if (this.pos<150) {
@@ -205,20 +217,20 @@ public class WristSubsystem extends SubsystemBase {
 				// }
 			} else {
 				if(getAngle()<150){
-					if(getAngle()<130){
-					// 	double basepos = (135 - WristConstants.startingPosition) / 360.0 / WristConstants.GEAR_RATIO * 2048
-					// * -1;
-					// 	// System.out.println("fast");
-					// 	wristMotor.set(TalonFXControlMode.Position, basepos);
-					if(getAngle()<100){
-						wristMotor.set(TalonFXControlMode.PercentOutput, -WristConstants.kMaxPower);
-					}else{
-						wristMotor.set(TalonFXControlMode.PercentOutput, -.25);
-					}
+					if(getAngle()<130 && bool){
+						double basepos = (135 - WristConstants.startingPosition) / 360.0 / WristConstants.GEAR_RATIO * 2048 * -1;
+						// System.out.println("fast");
+						wristMotor.set(TalonFXControlMode.Position, basepos);
+					// if(getAngle()<100){
+					// 	wristMotor.set(TalonFXControlMode.PercentOutput, -2);
+					// }else{
+					// 	wristMotor.set(TalonFXControlMode.PercentOutput, -.15);
+					// }
 					}
 					else {
+						bool = false;
 						// System.out.println("slow");
-						wristMotor.set(TalonFXControlMode.PercentOutput, -.1);
+						wristMotor.set(TalonFXControlMode.PercentOutput, -.2);
 					}
 				}
 				else {

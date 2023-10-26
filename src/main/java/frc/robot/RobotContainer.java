@@ -21,9 +21,9 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants.PivotConstants.PositionsPivot;
 import frc.robot.Constants.WristConstants.PositionsWrist;
 import frc.robot.commands.ArmBasePos;
+import frc.robot.commands.ArmConeMidBack;
 import frc.robot.commands.ArmConeMidFront;
 import frc.robot.commands.ArmCubeMidFront;
-import frc.robot.commands.ArmFloorPickupCone;
 import frc.robot.commands.ArmFloorPickupCube;
 import frc.robot.commands.ArmMove;
 import frc.robot.commands.DefaultDriveCommand;
@@ -81,20 +81,19 @@ public class RobotContainer {
 		newautopick.addOption("Nothing", Autos.Nothing);
 		newautopick.addOption("Forward", Autos.Forward);
 		newautopick.setDefaultOption("ScoreMidCone", Autos.ScoreMidCone);
-		//newautopick.addOption("ScoreMidConeAndMove", Autos.ScoreMidConeAndMove);
-		// newautopick.addOption("ScoreMidConeAndPickupCube", Autos.ScoreMidConeAndPickupCube);
-		// newautopick.addOption("ScoreMidConeAndScoreCube", Autos.ScoreMidConeAndScoreCube);
-		//newautopick.addOption("ScoreMidConeAndChargeStation", Autos.ScoreMidConeAndChargeStation);
-		//newautopick.addOption("ScoreMidConeAndCrossChargeStation", Autos.ScoreMidConeAndCrossChargeStation);
-		//newautopick.addOption("ChargeStation", Autos.ChargeStation);
-			//newautopick.addOption("REDHumanPlayerSideScoreAndMove", Autos.REDHumanPlayerSideScoreAndMove);
-			//newautopick.addOption("BLUEHumanPlayerSideScoreAndMove", Autos.BLUEHumanPlayerSideScoreAndMove);
-			//newautopick.addOption("REDBumpSideScoreAndMove", Autos.REDBumpSideScoreAndMove);
-			//newautopick.addOption("BLUEBumpSideScoreAndMove", Autos.BLUEBumpSideScoreAndMove);
-			//newautopick.addOption("EdgeSideScoreAndMove", Autos.EdgeSideScoreAndMove);
-			//newautopick.addOption("TurnToCube", Autos.TurnToCube);
-		// newautopick.addOption("ScoreMidConeAndScoreCubeAndChargeStation", Autos.ScoreMidConeAndScoreCubeAndChargeStation);
-
+		newautopick.addOption("RedClearCone", Autos.REDClearCone);
+		newautopick.addOption("RedClearCube", Autos.REDClearCube);
+		newautopick.addOption("BlueClearCone", Autos.BLUEClearCone);
+		newautopick.addOption("BlueClearCube", Autos.BLUEClearCube);
+		newautopick.addOption("RedBumpCone", Autos.REDBumpCone);
+		newautopick.addOption("RedBumpCube", Autos.REDBumpCube);
+		newautopick.addOption("BlueBumpCone", Autos.BLUEBumpCone);
+		newautopick.addOption("BlueBumpCube", Autos.BLUEBumpCube);
+		newautopick.addOption("RedClearMove", Autos.REDClearMove);
+		newautopick.addOption("RedBumpMove", Autos.REDBumpMove);
+		newautopick.addOption("BlueClearMove", Autos.BLUEClearMove);
+		newautopick.addOption("BlueBumpMove", Autos.BLUEBumpMove);
+		
 		auto.add("auto", newautopick).withPosition(0, 0).withSize(3, 1);
 		SmartDashboard.putNumber("Balance kP", 0.25);
 		SmartDashboard.putNumber("Balance kD", 0.1);
@@ -215,18 +214,18 @@ public class RobotContainer {
 					new OpenGrabber(),
 					new WaitCommand(1),
 					new ArmBasePos(),
-					new WaitUntilAtPos(),
+					// new WaitUntilAtPos(),
 					new OffGrabber(),
-					SwerveSubsystem.getInstance().createPathPlannerCommand("Pathredtop1", new PathConstraints(1, 3), eventMap2, new PIDConstants(5.0, 0.0, 0.0), new PIDConstants(0.5, 0.0, 0.0), false),
+					SwerveSubsystem.getInstance().createPathPlannerCommand("Pathredtop1", new PathConstraints(1, 3), eventMap2, new PIDConstants(5.0, 0.0, 0.0), new PIDConstants(0.5, 0.0, 0.0), true),
 					new ArmFloorPickupCube(),
 					new CloseGrabber(),
 					new WaitCommand(1),
 					new OffGrabber(),
-					new ArmBasePos(),
-					SwerveSubsystem.getInstance().createPathPlannerCommand("Pathredtop2", new PathConstraints(1, 3), eventMap2, new PIDConstants(5, 0, 0), new PIDConstants(.5, 0, 0), false),
-					new ArmCubeMidFront(),
-					new WaitUntilAtPos(),
-					new CloseGrabberFast()
+					new ArmBasePos()
+					// SwerveSubsystem.getInstance().createPathPlannerCommand("Pathredtop2", new PathConstraints(1, 3), eventMap2, new PIDConstants(5, 0, 0), new PIDConstants(.5, 0, 0), true),
+					// new ArmCubeMidFront(),
+					// new WaitUntilAtPos(),
+					// new CloseGrabberFast()
 				);
 			case BLUEClearCube:
 				HashMap<String, Command> eventMap3 = new HashMap<>();
@@ -236,15 +235,15 @@ public class RobotContainer {
 					new OpenGrabber(),
 					new WaitCommand(1),
 					new ArmBasePos(),
-					new WaitUntilAtPos(),
+					// new WaitUntilAtPos(),
 					new OffGrabber(),
-					SwerveSubsystem.getInstance().createPathPlannerCommand("Pathbluetop1", new PathConstraints(1, 3), eventMap3, new PIDConstants(5.0, 0.0, 0.0), new PIDConstants(0.5, 0.0, 0.0), false),
+					SwerveSubsystem.getInstance().createPathPlannerCommand("Pathbluetop1", new PathConstraints(2, 1), eventMap3, new PIDConstants(0, 0.0, 0.0), new PIDConstants(0, 0.0, 0.0), false),
 					new ArmFloorPickupCube(),
 					new CloseGrabber(),
 					new WaitCommand(1),
 					new OffGrabber(),
 					new ArmBasePos(),
-					SwerveSubsystem.getInstance().createPathPlannerCommand("Pathbluetop2", new PathConstraints(1, 3), eventMap3, new PIDConstants(5, 0, 0), new PIDConstants(.5, 0, 0), false),
+					SwerveSubsystem.getInstance().createPathPlannerCommand("Pathbluetop2", new PathConstraints(2, 1), eventMap3, new PIDConstants(0, 0, 0), new PIDConstants(0, 0, 0), false),
 					new ArmCubeMidFront(),
 					new WaitUntilAtPos(),
 					new CloseGrabberFast()
@@ -252,23 +251,24 @@ public class RobotContainer {
 			case BLUEClearCone:
 				HashMap<String, Command> eventMap4 = new HashMap<>();
 				return new SequentialCommandGroup(
-					new ArmConeMidFront(),
+					new ArmConeMidBack(),
 					new WaitUntilAtPos(),
 					new OpenGrabber(),
 					new WaitCommand(1),
 					new ArmBasePos(),
-					new WaitUntilAtPos(),
+					// new WaitUntilAtPos(),
 					new OffGrabber(),
-					SwerveSubsystem.getInstance().createPathPlannerCommand("Pathbluetop1", new PathConstraints(1, 3), eventMap4, new PIDConstants(5.0, 0.0, 0.0), new PIDConstants(0.5, 0.0, 0.0), false),
+					
+					SwerveSubsystem.getInstance().createPathPlannerCommand("Pathbluetop1", new PathConstraints(1, 3), eventMap4, new PIDConstants(5.0, 0.0, 0.0), new PIDConstants(0.5, 0.0, 0.0), true),
 					new ArmFloorPickupCube(),
 					new CloseGrabber(),
 					new WaitCommand(1),
 					new OffGrabber(),
-					new ArmBasePos(),
-					SwerveSubsystem.getInstance().createPathPlannerCommand("Pathbluetop2", new PathConstraints(1, 3), eventMap4, new PIDConstants(5, 0, 0), new PIDConstants(.5, 0, 0), false),
-					new ArmCubeMidFront(),
-					new WaitUntilAtPos(),
-					new CloseGrabberFast()
+					new ArmBasePos()
+					// SwerveSubsystem.getInstance().createPathPlannerCommand("Pathbluetop2", new PathConstraints(1, 3), eventMap4, new PIDConstants(5, 0, 0), new PIDConstants(.5, 0, 0), true),
+					// new ArmCubeMidFront(),
+					// new WaitUntilAtPos(),
+					// new CloseGrabberFast()
 				);
 			case BLUEBumpCube:
 				HashMap<String, Command> eventMap5 = new HashMap<>();
@@ -278,7 +278,7 @@ public class RobotContainer {
 					new OpenGrabber(),
 					new WaitCommand(1),
 					new ArmBasePos(),
-					new WaitUntilAtPos(),
+					// new WaitUntilAtPos(),
 					new OffGrabber(),
 					SwerveSubsystem.getInstance().createPathPlannerCommand("Pathbluebottom1", new PathConstraints(1, 3), eventMap5, new PIDConstants(5.0, 0.0, 0.0), new PIDConstants(0.5, 0.0, 0.0), false),
 					new ArmFloorPickupCube(),
@@ -299,7 +299,7 @@ public class RobotContainer {
 					new OpenGrabber(),
 					new WaitCommand(1),
 					new ArmBasePos(),
-					new WaitUntilAtPos(),
+					// new WaitUntilAtPos(),
 					new OffGrabber(),
 					SwerveSubsystem.getInstance().createPathPlannerCommand("Pathbluebottom1", new PathConstraints(1, 3), eventMap6, new PIDConstants(5.0, 0.0, 0.0), new PIDConstants(0.5, 0.0, 0.0), false),
 					new ArmFloorPickupCube(),
@@ -320,7 +320,7 @@ public class RobotContainer {
 					new OpenGrabber(),
 					new WaitCommand(1),
 					new ArmBasePos(),
-					new WaitUntilAtPos(),
+					// new WaitUntilAtPos(),
 					new OffGrabber(),
 					SwerveSubsystem.getInstance().createPathPlannerCommand("Pathredbottom1", new PathConstraints(1, 3), eventMap7, new PIDConstants(5.0, 0.0, 0.0), new PIDConstants(0.5, 0.0, 0.0), false),
 					new ArmFloorPickupCube(),
@@ -341,7 +341,7 @@ public class RobotContainer {
 					new OpenGrabber(),
 					new WaitCommand(1),
 					new ArmBasePos(),
-					new WaitUntilAtPos(),
+					// new WaitUntilAtPos(),
 					new OffGrabber(),
 					SwerveSubsystem.getInstance().createPathPlannerCommand("Pathredbottom1", new PathConstraints(1, 3), eventMap8, new PIDConstants(5.0, 0.0, 0.0), new PIDConstants(0.5, 0.0, 0.0), false),
 					new ArmFloorPickupCube(),
@@ -361,7 +361,7 @@ public class RobotContainer {
 					new WaitUntilAtPos(),
 					new WaitCommand(1),
 					new ArmBasePos(),
-					new WaitUntilAtPos(),
+					// new WaitUntilAtPos(),
 					new OffGrabber(),
 					SwerveSubsystem.getInstance().createPathPlannerCommand("bottomRedMove", new PathConstraints(1, 3), eventMap9, new PIDConstants(5.0, 0.0, 0.0), new PIDConstants(0.5, 0.0, 0.0), false)
 				);
@@ -372,7 +372,7 @@ public class RobotContainer {
 					new WaitUntilAtPos(),
 					new WaitCommand(1),
 					new ArmBasePos(),
-					new WaitUntilAtPos(),
+					// new WaitUntilAtPos(),
 					new OffGrabber(),
 					SwerveSubsystem.getInstance().createPathPlannerCommand("topRedMove", new PathConstraints(1, 3), eventMap10, new PIDConstants(5.0, 0.0, 0.0), new PIDConstants(0.5, 0.0, 0.0), false)
 				);
@@ -383,7 +383,7 @@ public class RobotContainer {
 					new WaitUntilAtPos(),
 					new WaitCommand(1),
 					new ArmBasePos(),
-					new WaitUntilAtPos(),
+					// new WaitUntilAtPos(),
 					new OffGrabber(),
 					SwerveSubsystem.getInstance().createPathPlannerCommand("bottomBlueMove", new PathConstraints(1, 3), eventMap11, new PIDConstants(5.0, 0.0, 0.0), new PIDConstants(0.5, 0.0, 0.0), false)
 				);
@@ -394,166 +394,13 @@ public class RobotContainer {
 					new WaitUntilAtPos(),
 					new WaitCommand(1),
 					new ArmBasePos(),
-					new WaitUntilAtPos(),
+					// new WaitUntilAtPos(),
 					new OffGrabber(),
 					SwerveSubsystem.getInstance().createPathPlannerCommand("topBlueMove", new PathConstraints(1, 3), eventMap12, new PIDConstants(5.0, 0.0, 0.0), new PIDConstants(0.5, 0.0, 0.0), false)
 				);
-			// case ChargeStation:
-			// return new SequentialCommandGroup(
-			// 	new AutoCrossChargeStation(),
-			// 	new WaitCommand(.5),
-			// 	new AutoChargeStationOnBack(),
-
-			// 	// new AutoChargeStationOn(), 
-			// 	// between 2.9 and 2.65
-			// 	new AutoForwardsAprilTags(2.7),
-			// 	// new AutoForwardsDist(SmartDashboard.getNumber("Charge Station Dist", 2.7), .6),
-			// 	// new ParallelRaceGroup(new SwerveDriveAutoBalance(), new WaitCommand(3)),
-			// 	new NaiveBalance(),
-			// 	// new AutoForwards(SmartDashboard.getNumber("Charge Station Dist", 2.2)),
-			// 	new WaitCommand(500));
-			// case Forward:
-			// // return new Print();
-			// return new SequentialCommandGroup(
-			// 	new AutoForwardsDist(5.2),
-			// 	new WaitCommand(500));
-			// 	// return new AutoForwards();
-			// case REDHumanPlayerSideScoreAndMove:
-			// return new SequentialCommandGroup(
-			// 		new ParallelRaceGroup(new ArmConeMidBack(), new WaitCommand(3)),
-			// 		// new WaitCommand(.5), 
-			// 		new OpenGrabber1sec(),
-			// 		new OffGrabber(),  
-
-			// 		new ParallelRaceGroup(new AutoForwardsDist(4.8), new SequentialCommandGroup(new WaitCommand(1), new ArmFloorPickupBack())),
-			// 		new AutoDriveLeftAndTurn(180, .8),
-			// 		new ParallelRaceGroup(new CloseGrabberFast(), new ArmFloorPickupBack(), new WaitCommand(1)),
-			// 		// new AutoDriveAndTurn(180, .75),
-			// 		new ParallelDeadlineGroup(new AutoGoToCube(), new ArmFloorPickupBack(), new WaitCommand(5)),
-			// 		// new ParallelRaceGroup(new CloseGrabber(), new ArmBasePos()),
-			// 		// new ParallelRaceGroup(new AutoBack(5), new CloseGrabber(), new ArmCubeMid()),
-			// 		// new ArmCubeMid(),
-			// 		// new OpenGrabber(),
-			// 		new WaitCommand(500));
-			// case BLUEBumpSideScoreAndMove:
-			// return new SequentialCommandGroup(
-			// 		new ParallelRaceGroup(new ArmConeMidBack(), new WaitCommand(3)),
-			// 		// new WaitCommand(.5), 
-			// 		new OpenGrabber1sec(),
-			// 		new OffGrabber(),  
-
-			// 		new ParallelRaceGroup(new AutoForwardsDist(5), new SequentialCommandGroup(new WaitCommand(1), new ArmFloorPickupBack())),
-			// 		new AutoDriveLeftAndTurn(180, .8),
-			// 		new ParallelRaceGroup(new CloseGrabberFast(), new ArmFloorPickupBack(), new WaitCommand(1)),
-			// 		// new AutoDriveAndTurn(180, .75),
-			// 		new ParallelDeadlineGroup(new AutoGoToCube(), new ArmFloorPickupBack(), new WaitCommand(5)),
-			// 		// new ParallelRaceGroup(new CloseGrabber(), new ArmBasePos()),
-			// 		// new ParallelRaceGroup(new AutoBack(5), new CloseGrabber(), new ArmCubeMid()),
-			// 		// new ArmCubeMid(),
-			// 		// new OpenGrabber(),
-			// 		new WaitCommand(500));
-			// case BLUEHumanPlayerSideScoreAndMove:
-			// return new SequentialCommandGroup(
-			// 	new ParallelRaceGroup(new ArmConeMidBack(), new WaitCommand(3)),
-			// 	// new WaitCommand(.5), 
-			// 	new OpenGrabber1sec(),
-			// 	new OffGrabber(),  
-
-			// 	new ParallelRaceGroup(new AutoForwardsDist(4.8), new SequentialCommandGroup(new WaitCommand(1), new ArmFloorPickupBack())),
-			// 	new AutoDriveRightAndTurn(180, .8),
-			// 	new ParallelRaceGroup(new CloseGrabberFast(), new ArmFloorPickupBack(), new WaitCommand(1)),
-			// 	// new AutoDriveAndTurn(180, .75),
-			// 	new ParallelDeadlineGroup(new AutoGoToCube(), new ArmFloorPickupBack(), new WaitCommand(5)),
-			// 	// new ParallelRaceGroup(new CloseGrabber(), new ArmBasePos()),
-			// 	// new ParallelRaceGroup(new AutoBack(5), new CloseGrabber(), new ArmCubeMid()),
-			// 	// new ArmCubeMid(),
-			// 	// new OpenGrabber(),
-			// 	new WaitCommand(500));
-			// case REDBumpSideScoreAndMove:
-			// return new SequentialCommandGroup(
-			// 	new ParallelRaceGroup(new ArmConeMidBack(), new WaitCommand(3)),
-			// 	// new WaitCommand(.5), 
-			// 	new OpenGrabber1sec(),
-			// 	new OffGrabber(),  
-
-			// 	new ParallelRaceGroup(new AutoForwardsDist(5), new SequentialCommandGroup(new WaitCommand(1), new ArmFloorPickupBack())),
-			// 	new AutoDriveRightAndTurn(180, .8),
-			// 	new ParallelRaceGroup(new CloseGrabberFast(), new ArmFloorPickupBack(), new WaitCommand(1)),
-			// 	// new AutoDriveAndTurn(180, .75),
-			// 	new ParallelDeadlineGroup(new AutoGoToCube(), new ArmFloorPickupBack(), new WaitCommand(5)),
-			// 	// new ParallelRaceGroup(new CloseGrabber(), new ArmBasePos()),
-			// 	// new ParallelRaceGroup(new AutoBack(5), new CloseGrabber(), new ArmCubeMid()),
-			// 	// new ArmCubeMid(),
-			// 	// new OpenGrabber(),
-			// 	new WaitCommand(500));
-			// case Nothing:
-			// 	return new WaitCommand(5000);
-			// case ScoreMidCone:
-			// 	return new SequentialCommandGroup(
-			// 		new ParallelRaceGroup(new ArmConeMidBack(), new WaitCommand(5)),
-			// 		new WaitCommand(.5), 
-			// 		new OpenGrabber1sec(),
-			// 		new OffGrabber(),  
-			// 		new ArmBasePos(), new WaitCommand(500));
-			// case ScoreMidConeAndCrossChargeStation:
-			// 	return new SequentialCommandGroup(
-			// 		new ParallelRaceGroup(new ArmConeMidBack(), new WaitCommand(3)),
-			// 		new OpenGrabber1sec(),
-			// 		new OffGrabber(),  
-			// 		new ArmBasePos(), 
-			// 		new AutoCrossChargeStation(),
-			// 		new AutoChargeStationOnBack(), 
-			// 		new ParallelRaceGroup(new SwerveDriveAutoBalance(), new WaitCommand(3)),
-			// 		new WaitCommand(500));
-			// case ScoreMidConeAndChargeStation:
-			// 	return new SequentialCommandGroup(
-			// 		new ParallelRaceGroup(new ArmConeMidBack(), new WaitCommand(3)),
-			// 		new OpenGrabber1sec(),
-			// 		new OffGrabber(),  
-			// 		new ArmBasePos(), 
-			// 		new AutoChargeStationOn(), 
-			// 		new ParallelRaceGroup(new NaiveBalance(), new WaitCommand(8)),
-			// 		new WaitCommand(500));
-			// case ScoreMidConeAndMove:
-			// 	System.out.println("AUTO");
-			// 	return new SequentialCommandGroup(
-			// 		new ParallelRaceGroup(new ArmConeMidBack(), new WaitCommand(4)),
-			// 		new WaitCommand(.25), 
-			// 		new OpenGrabber1sec(),
-			// 		new OffGrabber(),  
-			// 		new ParallelRaceGroup(new ArmBasePos(), new WaitCommand(5)), 
-			// 		new AutoForwards(), 
-			// 		// new SwerveStop(),
-			// 		new WaitCommand(500));
-			// case TurnToCube:
-			// 	return new AutoGoToCube();
-			// case ScoreMidConeAndScoreCube:
-			// 	break;
-			// case ScoreMidConeAndScoreCubeAndChargeStation:
-			// 	break;
 			default:
-				HashMap<String, Command> eventMap = new HashMap<>();
-
-				return new SequentialCommandGroup(
-					new ArmConeMidFront(),
-					new WaitUntilAtPos(),
-					new OpenGrabber(),
-					new WaitCommand(1),
-					new ArmBasePos(),
-					new WaitUntilAtPos(),
-					new OffGrabber(),
-					SwerveSubsystem.getInstance().createPathPlannerCommand("Pathredtop1", new PathConstraints(1, 3), eventMap, new PIDConstants(5.0, 0.0, 0.0), new PIDConstants(0.5, 0.0, 0.0), false),
-					new ArmFloorPickupCube(),
-					new CloseGrabber(),
-					new WaitCommand(1),
-					new OffGrabber(),
-					new ArmBasePos(),
-					SwerveSubsystem.getInstance().createPathPlannerCommand("Pathredtop2", new PathConstraints(1, 3), eventMap, new PIDConstants(5, 0, 0), new PIDConstants(.5, 0, 0), false),
-					new ArmCubeMidFront(),
-					new WaitUntilAtPos(),
-					new CloseGrabberFast()
+				return new WaitCommand(500000);
 				
-				);
 					// return new WaitCommand(5000);			
 		}
 		// return null;

@@ -12,6 +12,8 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants.PivotConstants.PositionsPivot;
 import frc.robot.Constants.WristConstants.PositionsWrist;
 import frc.robot.commands.ArmMove;
@@ -53,6 +55,7 @@ public static UsbCamera camera;
 	// led.setLength(led_buffer.getLength());
     // new ConstantsRead().schedule();
     m_robotContainer = new RobotContainer();
+	
 	// for(int i=0;i<led_buffer.getLength();i++){
 	// 	led_buffer.setRGB(i, 255, 255, 255);
 	// }
@@ -140,12 +143,14 @@ public static UsbCamera camera;
     System.out.println("AUto");
     Constants.autoTimer.reset();
     Constants.autoTimer.start();
+	new ArmMove(PositionsPivot.STARTING, PositionsWrist.STARTING, 0, 0).schedule();
 	
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
 	// new SwerveStop().schedule();
     // schedule the autonomous command (example)
     if (m_autonomousCommand != null) {
-		m_autonomousCommand.schedule();
+		new SequentialCommandGroup(m_autonomousCommand, new WaitCommand(500000)).schedule();
+		// m_autonomousCommand.schedule();
     }
 }
 

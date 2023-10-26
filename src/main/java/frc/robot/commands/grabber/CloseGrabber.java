@@ -1,9 +1,9 @@
 package frc.robot.commands.grabber;
 
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.subsystems.GrabberSubsystem;
 
-public class CloseGrabber extends CommandBase {
+public class CloseGrabber extends InstantCommand {
 	GrabberSubsystem grab;
 	int counter = 0;
 
@@ -16,13 +16,5 @@ public class CloseGrabber extends CommandBase {
 	public void execute(){
 		grab.closeGrabber();
 		counter++;
-	}
-
-	@Override
-	public boolean isFinished(){
-		// if(counter>1000){
-		// 	return true;
-		// }
-		return false;
 	}
 }

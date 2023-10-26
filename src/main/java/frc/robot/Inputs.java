@@ -80,7 +80,7 @@ public class Inputs {
 
 		if(driver1.getRawButton(6)){
 			speed *= .6;
-		}else if(driver1.getRawButton(2)){
+		}else if(driver1.getRawButton(1)){
 			speed *= .6;
 		}else{
 			speed *= 1;
@@ -96,7 +96,7 @@ public class Inputs {
 		}
 		if(driver1.getRawButton(6)){
 			speed *= .6;
-		}else if(driver1.getRawButton(2)){
+		}else if(driver1.getRawButton(1)){
 			speed *= .6;
 		}else{
 			speed *= 1;
@@ -106,19 +106,19 @@ public class Inputs {
     }
     public static double getRotation(){
         // return	 0.0;
-		double speed = -driver1.getRawAxis(4);
+		double speed = -driver1.getRawAxis(2);
 		if(Math.abs(speed) < .1){
 			speed = 0;
 		}
 		if(driver1.getRawButton(6)){
 			speed *= .75;
-		}else if(driver1.getRawButton(2)){
+		}else if(driver1.getRawButton(1)){
 			speed *= .6;
 		}else{
 			speed *= 1;
 		}
-		if(Math.abs(getTranslationX())>.1||Math.abs(getTranslationY())>.1)
-		speed += driver1.getRawAxis(3)*(getTranslationY()+getTranslationX())/2.0*.1;
+		// if(Math.abs(getTranslationX())>.1||Math.abs(getTranslationY())>.1)
+		// speed += driver1.getRawAxis(3)*(getTranslationY()+getTranslationX())/2.0*.1;
         return speed;
     }
 	public static Trigger getRobotRelative() {

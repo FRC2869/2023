@@ -4,11 +4,16 @@
 
 package frc.robot.subsystems;
 
+import java.io.File;
+import java.util.List;
+import java.util.Map;
+
 import com.pathplanner.lib.PathConstraints;
 import com.pathplanner.lib.PathPlanner;
 import com.pathplanner.lib.PathPlannerTrajectory;
 import com.pathplanner.lib.auto.PIDConstants;
 import com.pathplanner.lib.auto.SwerveAutoBuilder;
+
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -18,10 +23,9 @@ import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import java.io.File;
-import java.util.List;
-import java.util.Map;
 import swervelib.SwerveController;
 import swervelib.SwerveDrive;
 import swervelib.parser.SwerveControllerConfiguration;
@@ -81,6 +85,7 @@ public class SwerveSubsystem extends SubsystemBase
   public SwerveSubsystem(SwerveDriveConfiguration driveCfg, SwerveControllerConfiguration controllerCfg)
   {
     swerveDrive = new SwerveDrive(driveCfg, controllerCfg);
+	// swerveDrive.setGyro(new Rotation3d(0,0,0));
   }
 
   /**
@@ -290,6 +295,7 @@ public class SwerveSubsystem extends SubsystemBase
   {
     swerveDrive.addVisionMeasurement(new Pose2d(3, 3, Rotation2d.fromDegrees(65)), Timer.getFPGATimestamp(), true, 4);
   }
+  boolean first = true;
 
   /**
    * Factory to fetch the PathPlanner command to follow the defined path.
@@ -304,10 +310,11 @@ public class SwerveSubsystem extends SubsystemBase
    * @param useAllianceColor Automatically transform the path based on alliance color.
    * @return PathPlanner command to follow the given path.
    */
-  public Command createPathPlannerCommand(String path, PathConstraints constraints, Map<String, Command> eventMap,
+  public SequentialCommandGroup createPathPlannerCommand(String path, PathConstraints constraints, Map<String, Command> eventMap,
                                          PIDConstants translation, PIDConstants rotation, boolean useAllianceColor)
   {
-    List<PathPlannerTrajectory> pathGroup = PathPlanner.loadPathGroup(path, constraints);
+	
+	List<PathPlannerTrajectory> pathGroup = PathPlanner.loadPathGroup(path, constraints);
 //    SwerveAutoBuilder autoBuilder = new SwerveAutoBuilder(
 //      Pose2d supplier,
 //      Pose2d consumer- used to reset odometry at the beginning of auto,
@@ -330,7 +337,12 @@ public class SwerveSubsystem extends SubsystemBase
       );
     }
 
-    return autoBuilder.fullAuto(pathGroup);
+    return new SequentialCommandGroup(new InstantCommand(() -> {
+		// Reset odometry for the first path you run during auto
+		if(first){
+			this.resetOdometry(pathGroup.get(0).getInitialHolonomicPose());
+		}
+	  }),autoBuilder.fullAuto(pathGroup));
   }
 
 public Rotation2d getAdjustedGyroPitch() {

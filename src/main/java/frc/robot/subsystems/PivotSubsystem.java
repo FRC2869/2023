@@ -12,6 +12,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.RobotContainer;
 import frc.robot.Constants.Motors;
 import frc.robot.Constants.PivotConstants;
 import frc.robot.Constants.PivotConstants.PositionsPivot;
@@ -24,7 +25,7 @@ public class PivotSubsystem extends SubsystemBase {
 	private DecimalFormat rounder = new DecimalFormat("#.0");
 	private boolean isEnabled = true;
 	PositionsPivot currentPos = PositionsPivot.STARTING;
-	private boolean isPIDControl;
+	private String angleString = "";
 
 	public static PivotSubsystem getInstance() {
 		if (instance == null) {
@@ -36,6 +37,8 @@ public class PivotSubsystem extends SubsystemBase {
 	public PivotSubsystem() {
 		pivotMotor = new WPI_TalonFX(PivotConstants.pivotMotorId);
 		configurePivotMotor();
+		RobotContainer.auto.addDouble("Target Pivot Angle 2", ()->this.pos).withPosition(1, 2);
+		RobotContainer.auto.addString("Pivot Angle 2", ()->angleString).withPosition(0, 2);
 		new ArmFeedforward(PivotConstants.kS, PivotConstants.kG, PivotConstants.kV);
 	}
 
@@ -86,7 +89,10 @@ public class PivotSubsystem extends SubsystemBase {
 	}
 
 	public boolean isAtPosition(){
-		return Math.abs(pos-getAngle())<.5;
+		if(currentPos != PositionsPivot.BASE)
+			return Math.abs(pos-getAngle())<.5;
+		else 
+			return pos<PivotConstants.getTargetPos(PositionsPivot.BASE);
 	}
 
 	public double getVelocity() {
@@ -167,15 +173,12 @@ public class PivotSubsystem extends SubsystemBase {
 		}
 	}
 
-	public void setPIDControl(boolean isPIDControl){
-		this.isPIDControl = isPIDControl;
-	}
-
 	@Override
 	public void periodic() {
-		String angleString = rounder.format(getAngle());
-		SmartDashboard.putBoolean("Pivot Enabled", isEnabled);
-		SmartDashboard.putString("Pivot Angle", angleString);
+		angleString = rounder.format(getAngle());
+		// auto.add("Pivot Enabled",SmartDashboard.putBoolean("Pivot Enabled", isEnabled);
+		SmartDashboard.putString("Pivot Angle 1", angleString);
+
 		// Supplier<String> angleStringSupp = () -> angleString;
 		// RobotContainer.auto.addString("Pivot Angle", angleStringSupp).withPosition(3,
 		// 0);
@@ -193,9 +196,10 @@ public class PivotSubsystem extends SubsystemBase {
 			// // System.out.println("too high");
 			// return;
 			// }
-			SmartDashboard.putNumber("Target Pivot Angle", this.pos);
-			SmartDashboard.putNumber("pivot difference", Math.abs(getAngle()-this.pos));
-			SmartDashboard.putBoolean("pivot PID", isPIDControl);
+			SmartDashboard.putNumber("Target Pivot Angle 1", this.pos);
+
+			// SmartDashboard.putNumber("pivot difference", Math.abs(getAngle()-this.pos));
+			// SmartDashboard.putBoolean("pivot PID", isPIDControl);
 			double pos = (this.pos - PivotConstants.startingPosition) / 360.0 / PivotConstants.GEAR_RATIO * 2048 * -1;
 
 			if (getAngle()>-45 || this.pos>-50) {
