@@ -78,9 +78,7 @@ public class Inputs {
 			speed = 0;
 		}
 
-		if(driver1.getRawButton(6)){
-			speed *= .6;
-		}else if(driver1.getRawButton(1)){
+		if(driver1.getRawButton(1)){
 			speed *= .6;
 		}else{
 			speed *= 1;
@@ -94,9 +92,7 @@ public class Inputs {
 		if(Math.abs(speed) < .1){
 			speed = 0;
 		}
-		if(driver1.getRawButton(6)){
-			speed *= .6;
-		}else if(driver1.getRawButton(1)){
+		if(driver1.getRawButton(1)){
 			speed *= .6;
 		}else{
 			speed *= 1;
@@ -110,9 +106,7 @@ public class Inputs {
 		if(Math.abs(speed) < .1){
 			speed = 0;
 		}
-		if(driver1.getRawButton(6)){
-			speed *= .75;
-		}else if(driver1.getRawButton(1)){
+		if(driver1.getRawButton(1)){
 			speed *= .6;
 		}else{
 			speed *= 1;
@@ -127,12 +121,12 @@ public class Inputs {
 	public static Trigger getBalanceButton() {
 		return driver1Cmd.button(3);
 	}
-	public static Trigger cancelDriveButton() {
-		return driver1Cmd.button(1);
-	}
-	public static Trigger getResetGyroButton() {
-		return driver1Cmd.button(2);
-	}
+	// public static Trigger cancelDriveButton() {
+	// 	return driver1Cmd.button(1);
+	// }
+	// public static Trigger getResetGyroButton() {
+	// 	return driver1Cmd.button(2);
+	// }
 	public static boolean getSwerveReset() {
 		return driver1.getRawButton(4);
 	}

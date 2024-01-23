@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants.PivotConstants.PositionsPivot;
@@ -23,6 +24,7 @@ import frc.robot.Constants.WristConstants.PositionsWrist;
 import frc.robot.commands.ArmBasePos;
 import frc.robot.commands.ArmConeMidBack;
 import frc.robot.commands.ArmConeMidFront;
+import frc.robot.commands.ArmCubeMidBack;
 import frc.robot.commands.ArmCubeMidFront;
 import frc.robot.commands.ArmFloorPickupCube;
 import frc.robot.commands.ArmMove;
@@ -191,7 +193,7 @@ public class RobotContainer {
 					new ArmCubeMidFront(),
 					new WaitUntilAtPos(),
 					new OpenGrabber(),
-					new WaitCommand(1),
+					new ParallelRaceGroup(new WaitUntilAtPos(), new WaitCommand(2)),
 					new ArmBasePos(),
 					new WaitUntilAtPos(),
 					new OffGrabber(),
@@ -200,17 +202,17 @@ public class RobotContainer {
 					new CloseGrabber(),
 					new WaitCommand(1),
 					new OffGrabber(),
-					new ArmBasePos(),
-					SwerveSubsystem.getInstance().createPathPlannerCommand("Pathredtop2", new PathConstraints(1, 3), eventMap1, new PIDConstants(5, 0, 0), new PIDConstants(.5, 0, 0), false),
-					new ArmCubeMidFront(),
-					new WaitUntilAtPos(),
-					new CloseGrabberFast()
+					new ArmBasePos()
+					// SwerveSubsystem.getInstance().createPathPlannerCommand("Pathredtop2", new PathConstraints(1, 3), eventMap1, new PIDConstants(5, 0, 0), new PIDConstants(.5, 0, 0), false),
+					// new ArmCubeMidFront(),
+					// new WaitUntilAtPos(),
+					// new CloseGrabberFast()
 				);
 			case REDClearCone:
 				HashMap<String, Command> eventMap2 = new HashMap<>();
 				return new SequentialCommandGroup(
 					new ArmConeMidFront(),
-					new WaitUntilAtPos(),
+					new ParallelRaceGroup(new WaitUntilAtPos(), new WaitCommand(2)),
 					new OpenGrabber(),
 					new WaitCommand(1),
 					new ArmBasePos(),
@@ -230,8 +232,8 @@ public class RobotContainer {
 			case BLUEClearCube:
 				HashMap<String, Command> eventMap3 = new HashMap<>();
 				return new SequentialCommandGroup(
-					new ArmCubeMidFront(),
-					new WaitUntilAtPos(),
+					new ArmCubeMidBack(),
+					new ParallelRaceGroup(new WaitUntilAtPos(), new WaitCommand(2)),
 					new OpenGrabber(),
 					new WaitCommand(1),
 					new ArmBasePos(),
@@ -242,17 +244,17 @@ public class RobotContainer {
 					new CloseGrabber(),
 					new WaitCommand(1),
 					new OffGrabber(),
-					new ArmBasePos(),
-					SwerveSubsystem.getInstance().createPathPlannerCommand("Pathbluetop2", new PathConstraints(2, 1), eventMap3, new PIDConstants(0, 0, 0), new PIDConstants(0, 0, 0), false),
-					new ArmCubeMidFront(),
-					new WaitUntilAtPos(),
-					new CloseGrabberFast()
+					new ArmBasePos()
+					// SwerveSubsystem.getInstance().createPathPlannerCommand("Pathbluetop2", new PathConstraints(2, 1), eventMap3, new PIDConstants(0, 0, 0), new PIDConstants(0, 0, 0), false),
+					// new ArmCubeMidFront(),
+					// new WaitUntilAtPos(),
+					// new CloseGrabberFast()
 				);
 			case BLUEClearCone:
 				HashMap<String, Command> eventMap4 = new HashMap<>();
 				return new SequentialCommandGroup(
 					new ArmConeMidBack(),
-					new WaitUntilAtPos(),
+					new ParallelRaceGroup(new WaitUntilAtPos(), new WaitCommand(2)),
 					new OpenGrabber(),
 					new WaitCommand(1),
 					new ArmBasePos(),
@@ -273,8 +275,8 @@ public class RobotContainer {
 			case BLUEBumpCube:
 				HashMap<String, Command> eventMap5 = new HashMap<>();
 				return new SequentialCommandGroup(
-					new ArmConeMidFront(),
-					new WaitUntilAtPos(),
+					new ArmConeMidBack(),
+					new ParallelRaceGroup(new WaitUntilAtPos(), new WaitCommand(2)),
 					new OpenGrabber(),
 					new WaitCommand(1),
 					new ArmBasePos(),
@@ -285,17 +287,17 @@ public class RobotContainer {
 					new CloseGrabber(),
 					new WaitCommand(1),
 					new OffGrabber(),
-					new ArmBasePos(),
-					SwerveSubsystem.getInstance().createPathPlannerCommand("Pathbluebottom2", new PathConstraints(1, 3), eventMap5, new PIDConstants(5, 0, 0), new PIDConstants(.5, 0, 0), false),
-					new ArmCubeMidFront(),
-					new WaitUntilAtPos(),
-					new CloseGrabberFast()
+					new ArmBasePos()
+					// SwerveSubsystem.getInstance().createPathPlannerCommand("Pathbluebottom2", new PathConstraints(1, 3), eventMap5, new PIDConstants(5, 0, 0), new PIDConstants(.5, 0, 0), false),
+					// new ArmCubeMidFront(),
+					// new WaitUntilAtPos(),
+					// new CloseGrabberFast()
 				);
 			case BLUEBumpCone:
 				HashMap<String, Command> eventMap6 = new HashMap<>();
 				return new SequentialCommandGroup(
-					new ArmConeMidFront(),
-					new WaitUntilAtPos(),
+					new ArmConeMidBack(),
+					new ParallelRaceGroup(new WaitUntilAtPos(), new WaitCommand(2)),
 					new OpenGrabber(),
 					new WaitCommand(1),
 					new ArmBasePos(),
@@ -306,17 +308,17 @@ public class RobotContainer {
 					new CloseGrabber(),
 					new WaitCommand(1),
 					new OffGrabber(),
-					new ArmBasePos(),
-					SwerveSubsystem.getInstance().createPathPlannerCommand("Pathbluebottom2", new PathConstraints(1, 3), eventMap6, new PIDConstants(5, 0, 0), new PIDConstants(.5, 0, 0), false),
-					new ArmCubeMidFront(),
-					new WaitUntilAtPos(),
-					new CloseGrabberFast()
+					new ArmBasePos()
+					// SwerveSubsystem.getInstance().createPathPlannerCommand("Pathbluebottom2", new PathConstraints(1, 3), eventMap6, new PIDConstants(5, 0, 0), new PIDConstants(.5, 0, 0), false),
+					// new ArmCubeMidFront(),
+					// new WaitUntilAtPos(),
+					// new CloseGrabberFast()
 				);
 			case REDBumpCube:
 				HashMap<String, Command> eventMap7 = new HashMap<>();
 				return new SequentialCommandGroup(
 					new ArmConeMidFront(),
-					new WaitUntilAtPos(),
+					new ParallelRaceGroup(new WaitUntilAtPos(), new WaitCommand(2)),
 					new OpenGrabber(),
 					new WaitCommand(1),
 					new ArmBasePos(),
@@ -327,17 +329,17 @@ public class RobotContainer {
 					new CloseGrabber(),
 					new WaitCommand(1),
 					new OffGrabber(),
-					new ArmBasePos(),
-					SwerveSubsystem.getInstance().createPathPlannerCommand("Pathredbottom2", new PathConstraints(1, 3), eventMap7, new PIDConstants(5, 0, 0), new PIDConstants(.5, 0, 0), false),
-					new ArmCubeMidFront(),
-					new WaitUntilAtPos(),
-					new CloseGrabberFast()
+					new ArmBasePos()
+					// SwerveSubsystem.getInstance().createPathPlannerCommand("Pathredbottom2", new PathConstraints(1, 3), eventMap7, new PIDConstants(5, 0, 0), new PIDConstants(.5, 0, 0), false),
+					// new ArmCubeMidFront(),
+					// new WaitUntilAtPos(),
+					// new CloseGrabberFast()
 				);
 			case REDBumpCone:
 				HashMap<String, Command> eventMap8 = new HashMap<>();
 				return new SequentialCommandGroup(
 					new ArmConeMidFront(),
-					new WaitUntilAtPos(),
+					new ParallelRaceGroup(new WaitUntilAtPos(), new WaitCommand(2)),
 					new OpenGrabber(),
 					new WaitCommand(1),
 					new ArmBasePos(),
@@ -348,17 +350,18 @@ public class RobotContainer {
 					new CloseGrabber(),
 					new WaitCommand(1),
 					new OffGrabber(),
-					new ArmBasePos(),
-					SwerveSubsystem.getInstance().createPathPlannerCommand("Pathredbottom2", new PathConstraints(1, 3), eventMap8, new PIDConstants(5, 0, 0), new PIDConstants(.5, 0, 0), false),
-					new ArmCubeMidFront(),
-					new WaitUntilAtPos(),
-					new CloseGrabberFast()
+					new ArmBasePos()
+					// SwerveSubsystem.getInstance().createPathPlannerCommand("Pathredbottom2", new PathConstraints(1, 3), eventMap8, new PIDConstants(5, 0, 0), new PIDConstants(.5, 0, 0), false),
+					// new ArmCubeMidFront(),
+					// new WaitUntilAtPos(),
+					// new CloseGrabberFast()
 				);
 			case REDBumpMove:
 				HashMap<String, Command> eventMap9 = new HashMap<>();
 				return new SequentialCommandGroup(
 					new ArmConeMidFront(),
-					new WaitUntilAtPos(),
+					new ParallelRaceGroup(new WaitUntilAtPos(), new WaitCommand(2)),
+					new OpenGrabber(),
 					new WaitCommand(1),
 					new ArmBasePos(),
 					// new WaitUntilAtPos(),
@@ -369,7 +372,8 @@ public class RobotContainer {
 				HashMap<String, Command> eventMap10 = new HashMap<>();
 				return new SequentialCommandGroup(
 					new ArmConeMidFront(),
-					new WaitUntilAtPos(),
+					new ParallelRaceGroup(new WaitUntilAtPos(), new WaitCommand(2)),
+					new OpenGrabber(),
 					new WaitCommand(1),
 					new ArmBasePos(),
 					// new WaitUntilAtPos(),
@@ -380,7 +384,8 @@ public class RobotContainer {
 				HashMap<String, Command> eventMap11 = new HashMap<>();
 				return new SequentialCommandGroup(
 					new ArmConeMidFront(),
-					new WaitUntilAtPos(),
+					new ParallelRaceGroup(new WaitUntilAtPos(), new WaitCommand(2)),
+					new OpenGrabber(),
 					new WaitCommand(1),
 					new ArmBasePos(),
 					// new WaitUntilAtPos(),
@@ -391,13 +396,23 @@ public class RobotContainer {
 				HashMap<String, Command> eventMap12 = new HashMap<>();
 				return new SequentialCommandGroup(
 					new ArmConeMidFront(),
-					new WaitUntilAtPos(),
+					new ParallelRaceGroup(new WaitUntilAtPos(), new WaitCommand(2)),
+					new OpenGrabber(),
 					new WaitCommand(1),
 					new ArmBasePos(),
 					// new WaitUntilAtPos(),
 					new OffGrabber(),
 					SwerveSubsystem.getInstance().createPathPlannerCommand("topBlueMove", new PathConstraints(1, 3), eventMap12, new PIDConstants(5.0, 0.0, 0.0), new PIDConstants(0.5, 0.0, 0.0), false)
 				);
+			case ScoreMidCone:
+			return new SequentialCommandGroup(
+				new ArmConeMidBack(),
+				new ParallelRaceGroup(new WaitUntilAtPos(), new WaitCommand(2)),
+				new OpenGrabber(),
+				new WaitCommand(1),
+				new ArmBasePos(),
+				// new WaitUntilAtPos(),
+				new OffGrabber());
 			default:
 				return new WaitCommand(500000);
 				

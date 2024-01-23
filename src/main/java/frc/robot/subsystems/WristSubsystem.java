@@ -12,10 +12,10 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.RobotContainer;
 import frc.robot.Constants.Motors;
 import frc.robot.Constants.WristConstants;
 import frc.robot.Constants.WristConstants.PositionsWrist;
+import frc.robot.RobotContainer;
 
 public class WristSubsystem extends SubsystemBase {
 	private static WristSubsystem instance;
@@ -186,7 +186,8 @@ public class WristSubsystem extends SubsystemBase {
 		String angleString = rounder.format(getAngle());
 		// SmartDashboard.putBoolean("Wrist Enabled", isEnabled);
 		SmartDashboard.putString("Wrist Angle", angleString);
-
+		// wristMotor.set(TalonFXControlMode.PercentOutput,-.2);
+		// return;
 		// Supplier<String> angleStringSupp = () -> angleString;
 		// RobotContainer.auto.addString("Wrist Angle", angleStringSupp).withPosition(3,
 		// 0);

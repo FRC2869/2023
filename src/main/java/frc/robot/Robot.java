@@ -18,7 +18,6 @@ import frc.robot.Constants.PivotConstants.PositionsPivot;
 import frc.robot.Constants.WristConstants.PositionsWrist;
 import frc.robot.commands.ArmMove;
 import frc.robot.subsystems.PivotSubsystem;
-import frc.robot.subsystems.SwerveSubsystem;
 import frc.robot.subsystems.WristSubsystem;
 
 /**
@@ -184,9 +183,9 @@ public static UsbCamera camera;
   public void teleopPeriodic() {
 	SmartDashboard.putNumber("autoTimer",Constants.autoTimer.get());
 	Constants.locked = Inputs.getSwerveLock();
-	if(Inputs.cancelDriveButton().getAsBoolean()){
-		SwerveSubsystem.getInstance().getCurrentCommand().cancel();
-	}
+	// if(Inputs.cancelDriveButton().getAsBoolean()){
+	// 	SwerveSubsystem.getInstance().getCurrentCommand().cancel();
+	// }
   }
 
   @Override

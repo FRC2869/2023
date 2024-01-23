@@ -223,7 +223,7 @@ public final class Constants {
     public static final double kMaxAutoPower = .7;
     public static final double kMaxPower = .35;
 
-    public static final double startingPosition = -52;
+    public static final double startingPosition = -52+(50.5-47.7);
 
     public static double basePosition = -50;
 
@@ -241,8 +241,8 @@ public final class Constants {
     public static double lowBackAngle = 0;
     public static double lowFrontAngle = basePosition;
 
-    public static double midConeBackAngle = 108;
-    public static double midConeFrontAngle = 36;
+    public static double midConeBackAngle = 98;
+    public static double midConeFrontAngle = 34;
 
     public static double midCubeBackAngle = 114;
     public static double midCubeFrontAngle = -10;
@@ -400,9 +400,9 @@ public final class Constants {
     public static double lowFrontAngle = 70;
 
     public static double midConeBackAngle = 76;
-    public static double midConeFrontAngle = -28;
+    public static double midConeFrontAngle = -16;
 
-    public static double midCubeBackAngle = 106;
+    public static double midCubeBackAngle = 100;
     public static double midCubeFrontAngle = 68;
 
     public static double singleSubstationConeAngle = 100;
