@@ -1,6 +1,4 @@
 {
-  "maxSpeed": 14.5,
-  "optimalVoltage": 12,
   "imu": {
     "type": "navx",
     "id": 0,
@@ -12,5 +10,9 @@
     "frontright.json",
     "backleft.json",
     "backright.json"
-  ]
+  ],
+  "conversionFactor": {
+    "drive": 6.75,
+    "angle": 16.8
+  }
 }

@@ -20,6 +20,7 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.trajectory.Trajectory;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -41,8 +42,7 @@ public class SwerveSubsystem extends SubsystemBase
 
   public static SwerveSubsystem getInstance(){
     if(instance==null){
-      instance = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(),
-      "swerve"));
+      instance = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(),"swerve"));      
     }
     return instance;
   }
@@ -68,8 +68,13 @@ public class SwerveSubsystem extends SubsystemBase
     SwerveDriveTelemetry.verbosity = TelemetryVerbosity.HIGH;
     try
     {
+      // double DriveConversionFactor = SwerveMath.calculateMetersPerRotation(Units.inchesToMeters(4), 6.75, 142);
+      // double SteeringConversionFactor = SwerveMath.calculateDegreesPerSteeringRotation(150.0/7.0, 1);
+
       swerveDrive = new SwerveParser(directory).createSwerveDrive();
-	  
+      
+      swerveDrive.setMaximumSpeeds(Units.feetToMeters(15.1), Units.feetToMeters(15.1), 2*Math.PI);
+      swerveDrive.setModuleStateOptimization(true);
     } catch (Exception e)
     {
       throw new RuntimeException(e);
